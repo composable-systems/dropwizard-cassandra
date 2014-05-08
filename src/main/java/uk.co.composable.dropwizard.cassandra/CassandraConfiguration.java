@@ -3,6 +3,7 @@ package uk.co.composable.dropwizard.cassandra;
 import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ProtocolOptions;
+import com.google.common.base.Strings;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
@@ -17,7 +18,7 @@ public class CassandraConfiguration {
     @NotEmpty
     private String[] contactPoints;
 
-    @Min(0) @Max(40000)
+    @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
 
     @Max(2)
@@ -72,7 +73,7 @@ public class CassandraConfiguration {
             builder.withoutJMXReporting();
         }
 
-        if (clusterName != null) {
+        if (!Strings.isNullOrEmpty(clusterName)) {
             builder.withClusterName(clusterName);
         }
 
