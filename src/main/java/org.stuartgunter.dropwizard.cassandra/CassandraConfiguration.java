@@ -1,4 +1,4 @@
-package uk.co.composable.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra;
 
 import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.Cluster;

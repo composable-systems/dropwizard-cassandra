@@ -1,4 +1,4 @@
-package uk.co.composable.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
