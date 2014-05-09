@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>dropwizard-cassandra</name>
-    <url>http://www.composable.co.uk/dropwizard-cassandra</url>
+    <url>http://www.stuartgunter.org/open-source.html</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
