@@ -4,18 +4,18 @@ import org.junit.Test;
 
 public class CassandraHealthCheckTest {
     @Test
-    public void healthyOnConnectionToCluster() throws Exception {
+    public void isHealthyIfNoExceptionIsThrownOnConnectionToCluster() throws Exception {
     }
 
     @Test
-    public void unhealthyOnFailedConnectionToCluster() throws Exception {
+    public void isUnhealthyIfAnExceptionIsThrownOnFailedConnectionToCluster() throws Exception {
     }
 
     @Test
-    public void healthyOnConnectionToKeyspace() throws Exception {
+    public void isHealthyIfNoExceptionIsThrownOnConnectionToKeyspace() throws Exception {
     }
 
     @Test
-    public void unhealthyOnFailedConnectionToKeyspace() throws Exception {
+    public void isUnhealthyIfAnExceptionIsThrownOnFailedConnectionToKeyspace() throws Exception {
     }
 }

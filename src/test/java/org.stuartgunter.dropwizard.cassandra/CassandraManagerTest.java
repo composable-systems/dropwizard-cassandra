@@ -4,10 +4,10 @@ import org.junit.Test;
 
 public class CassandraManagerTest {
     @Test
-    public void gracefullyClosesCluster() throws Exception {
+    public void gracefullyClosesClusterOnStop() throws Exception {
     }
 
     @Test
-    public void forcesClusterToCloseAfterTimeout() throws Exception {
+    public void forcesClusterToCloseAfterTimeoutOnStop() throws Exception {
     }
 }

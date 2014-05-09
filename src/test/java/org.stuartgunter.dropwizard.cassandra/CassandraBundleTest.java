@@ -51,6 +51,6 @@ public class CassandraBundleTest {
     }
 
     @Test
-    public void hasACluster() throws Exception {
+    public void providesACluster() throws Exception {
     }
 }
