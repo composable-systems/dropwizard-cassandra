@@ -31,8 +31,10 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
         LOG.debug("Registering {} Cassandra health check", cassandraConfig.getClusterName());
         environment.healthChecks().register(name("org.stuartgunter.dropwizard.cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, cassandraConfig.getKeyspace()));
 
-        LOG.debug("Registering {} Cassandra metrics", cassandraConfig.getClusterName());
-        environment.metrics().registerAll(new CassandraMetricSet(cluster));
+        if (cassandraConfig.isMetricsEnabled()) {
+            LOG.debug("Registering {} Cassandra metrics", cassandraConfig.getClusterName());
+            environment.metrics().registerAll(new CassandraMetricSet(cluster));
+        }
     }
 
     @Override
