@@ -2,6 +2,7 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import com.datastax.driver.core.Cluster;
 import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
@@ -14,7 +15,9 @@ import static org.mockito.Mockito.when;
 public class CassandraBundleTest {
 
     private final CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
+
     private final Configuration configuration = mock(Configuration.class);
+    private final Cluster cluster = mock(Cluster.class);
     private final Environment environment = mock(Environment.class);
     private final LifecycleEnvironment lifecycle = mock(LifecycleEnvironment.class);
     private final HealthCheckRegistry healthChecks = mock(HealthCheckRegistry.class);
