@@ -127,6 +127,7 @@ public class CassandraConfiguration {
         builder.addContactPoints(contactPoints);
         builder.withPort(port);
         builder.withCompression(compression);
+        builder.withProtocolVersion(protocolVersion);
 
         if (!metricsEnabled) {
             builder.withoutMetrics();

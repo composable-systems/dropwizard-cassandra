@@ -38,7 +38,6 @@ public class CassandraConfigurationTest {
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
         configuration.setProtocolVersion(2);
-        configuration.setShutdownWaitSeconds(10);
 
         final Cluster result = configuration.buildCluster();
 
@@ -47,6 +46,7 @@ public class CassandraConfigurationTest {
         verify(builder).withPort(1234);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");
+        verify(builder).withProtocolVersion(2);
         verify(builder).withoutJMXReporting();
         verify(builder).withoutMetrics();
         verify(builder).build();
