@@ -1,0 +1,4 @@
+cassandra:
+  clusterName: "full-cluster"
+  contactPoints: ["localhost"]
+  compression: "LZ4"

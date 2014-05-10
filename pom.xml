@@ -47,6 +47,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.7.0</dropwizard.version>
         <cassandra-driver.version>2.0.2</cassandra-driver.version>
         <powermock.version>1.5.4</powermock.version>
@@ -76,6 +77,12 @@
             <artifactId>cassandra-driver-core</artifactId>
             <version>${cassandra-driver.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.jpountz.lz4</groupId>
+            <artifactId>lz4</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
