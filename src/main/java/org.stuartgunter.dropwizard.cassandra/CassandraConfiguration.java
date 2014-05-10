@@ -1,6 +1,5 @@
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ProtocolOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,10 +25,8 @@ public class CassandraConfiguration {
     private int protocolVersion = -1;
 
     @NotNull
-    private AuthProvider authProvider = AuthProvider.NONE;
-
-    @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
+
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
@@ -86,16 +83,6 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
-    public AuthProvider getAuthProvider() {
-        return authProvider;
-    }
-
-    @JsonProperty
-    public void setAuthProvider(AuthProvider authProvider) {
-        this.authProvider = authProvider;
-    }
-
-    @JsonProperty
     public ProtocolOptions.Compression getCompression() {
         return compression;
     }
@@ -136,11 +123,10 @@ public class CassandraConfiguration {
     }
 
     public Cluster buildCluster() {
-        Cluster.Builder builder = Cluster.builder()
-                .addContactPoints(contactPoints)
-                .withPort(port)
-                .withAuthProvider(authProvider)
-                .withCompression(compression);
+        final Cluster.Builder builder = Cluster.builder();
+        builder.addContactPoints(contactPoints);
+        builder.withPort(port);
+        builder.withCompression(compression);
 
         if (!metricsEnabled) {
             builder.withoutMetrics();
