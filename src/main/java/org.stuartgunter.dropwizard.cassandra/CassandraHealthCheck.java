@@ -2,6 +2,7 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 
 public class CassandraHealthCheck extends HealthCheck {
 
@@ -19,11 +20,18 @@ public class CassandraHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        if (keyspace == null) {
-            cluster.connect();
-        } else {
-            cluster.connect(keyspace);
+        return (keyspace == null) ? connectToCluster() : connectToKeyspace();
+    }
+
+    private Result connectToKeyspace() {
+        try (Session session = cluster.connect(keyspace)) {
+            return Result.healthy();
         }
-        return Result.healthy();
+    }
+
+    private Result connectToCluster() {
+        try (Session session = cluster.connect()) {
+            return Result.healthy();
+        }
     }
 }

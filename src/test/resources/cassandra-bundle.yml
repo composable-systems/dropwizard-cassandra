@@ -1,0 +1,3 @@
+cassandra:
+  clusterName: "my-cluster"
+  contactPoints: ["localhost"]
