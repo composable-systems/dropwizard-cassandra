@@ -15,7 +15,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CassandraConfiguration.class, Cluster.class})
+@PrepareForTest(Cluster.class)
 public class CassandraConfigurationTest {
 
     private final Cluster.Builder builder = mock(Cluster.Builder.class);
