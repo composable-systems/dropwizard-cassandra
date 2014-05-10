@@ -47,4 +47,17 @@ public class CassandraBundleIntegrationTest {
 
         assertThat(result, containsString("com.datastax.driver.core.Cluster.my-cluster"));
     }
+
+    @Test
+    public void cassandraHealthCheckIsPublished() throws Exception {
+        final URI uri = UriBuilder.fromUri("http://localhost")
+                .port(APP.getLocalPort() + 1)
+                .path("healthcheck")
+                .build();
+
+        final WebResource resource = Client.create().resource(uri);
+        final String result = resource.get(String.class);
+
+        assertThat(result, containsString("cassandra.my-cluster"));
+    }
 }
