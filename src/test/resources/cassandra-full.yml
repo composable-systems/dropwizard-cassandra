@@ -1,4 +1,10 @@
 cassandra:
   clusterName: "full-cluster"
+  port: 9042
+  protocolVersion: 2
+  metricsEnabled: false
+  jmxEnabled: false
+  shutdownWaitSeconds: 5
+  keyspace: "bundle"
   contactPoints: ["localhost"]
   compression: "LZ4"

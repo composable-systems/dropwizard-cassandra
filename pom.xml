@@ -179,6 +179,7 @@
                             <goal>stop</goal>
                         </goals>
                         <configuration>
+                            <cuDataSet>${project.basedir}/src/test/resources/cu-dataset.yaml</cuDataSet>
                             <stopPort>8082</stopPort>
                             <startNativeTransport>true</startNativeTransport>
                         </configuration>
