@@ -40,3 +40,6 @@ DataStax already expose metrics directly from the Cluster instance, but this bun
 
 ## Support for Multiple Clusters
 
+For apps that connect to multiple Cassandra clusters, all features described above are fully supported through separation
+by named clusters. Health checks and metrics are named according to cluster, allowing multiple separate clusters to
+operate safely within the same application.
