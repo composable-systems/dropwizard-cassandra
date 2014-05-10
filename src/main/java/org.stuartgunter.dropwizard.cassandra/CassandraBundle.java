@@ -29,7 +29,7 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
         environment.lifecycle().manage(new CassandraManager(cluster, cassandraConfig.getShutdownWaitSeconds()));
 
         LOG.debug("Registering {} Cassandra health check", cassandraConfig.getClusterName());
-        environment.healthChecks().register(name("org.stuartgunter.dropwizard.cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, cassandraConfig.getKeyspace()));
+        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, cassandraConfig.getKeyspace()));
 
         if (cassandraConfig.isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cassandraConfig.getClusterName());
