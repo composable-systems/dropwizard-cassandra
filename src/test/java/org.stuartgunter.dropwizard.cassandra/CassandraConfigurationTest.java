@@ -33,7 +33,7 @@ public class CassandraConfigurationTest {
         final CassandraConfiguration configuration = new CassandraConfiguration();
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
-        configuration.setContactPoints(new String[] {"localhost"});
+        configuration.setContactPoints(new String[] {"host1", "host2"});
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
@@ -43,7 +43,7 @@ public class CassandraConfigurationTest {
         final Cluster result = configuration.buildCluster();
 
         assertThat(result, sameInstance(cluster));
-        verify(builder).addContactPoints("localhost");
+        verify(builder).addContactPoints("host1", "host2");
         verify(builder).withPort(1234);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");
