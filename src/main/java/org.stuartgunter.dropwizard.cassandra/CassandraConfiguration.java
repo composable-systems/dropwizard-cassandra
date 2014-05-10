@@ -30,6 +30,7 @@ public class CassandraConfiguration {
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
+    @Min(0)
     private int shutdownWaitSeconds = 20;
 
     @JsonProperty
