@@ -4,7 +4,7 @@
 as a means to package common functionality in a modular form, easy to use in multiple applications. Some of the standard
 bundles include support for things like view rendering and Hibernate.
 
-This bundle aims to provide useful functionality for Dropwizard apps that communicate with [Cassandra](http://cassandra.apache.org).
+This bundle provides useful functionality for Dropwizard apps that communicate with [Cassandra](http://cassandra.apache.org).
 Under the hood, it uses the [DataStax Cassandra Driver](http://www.datastax.com/documentation/developer/java-driver/2.0/java-driver/whatsNew2.html).
 
 By default, you get:
