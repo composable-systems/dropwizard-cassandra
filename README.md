@@ -43,3 +43,29 @@ DataStax already expose metrics directly from the Cluster instance, but this bun
 For apps that connect to multiple Cassandra clusters, all features described above are fully supported through separation
 by named clusters. Health checks and metrics are named according to cluster, allowing multiple separate clusters to
 operate safely within the same application.
+
+
+# Usage
+
+Using the bundle is as simple as registering it in your Dropwizard application. The `CassandraBundle` is abstract and
+requires you to implement a single method in order to provide the correct configuration (similar to the `dropwizard-hibernate` module).
+
+    public class YourApp extends Application<YourAppConfig> {
+        private final CassandraBundle<YourAppConfig> cassandraBundle =
+                new CassandraBundle<YourAppConfig>() {
+                    @Override
+                    protected CassandraConfiguration cassandraConfiguration(YourAppConfig appConfig) {
+                        return appConfig.getCassandraConfig();
+                    }
+                };
+
+        @Override
+        public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
+            bootstrap.addBundle(cassandraBundle);
+        }
+
+        @Override
+        public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
+            // you can now use `cassandraBundle.getCluster()` to use the cluster instance in your app
+        }
+    }
