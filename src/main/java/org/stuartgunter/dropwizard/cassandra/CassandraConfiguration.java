@@ -20,6 +20,7 @@ import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;

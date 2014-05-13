@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.auth;
 
 import com.datastax.driver.core.AuthProvider;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

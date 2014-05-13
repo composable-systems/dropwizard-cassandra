@@ -1,9 +1,10 @@
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.auth;
 
 import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.PlainTextAuthProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
 
 @JsonTypeName("plainText")
 public class PlainTextAuthProviderFactory implements AuthProviderFactory {

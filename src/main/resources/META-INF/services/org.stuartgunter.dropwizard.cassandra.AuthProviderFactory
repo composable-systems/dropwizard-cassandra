@@ -1,1 +1,1 @@
-org.stuartgunter.dropwizard.cassandra.PlainTextAuthProviderFactory
+org.stuartgunter.dropwizard.cassandra.auth.PlainTextAuthProviderFactory
