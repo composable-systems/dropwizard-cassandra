@@ -49,6 +49,9 @@ public class CassandraConfiguration {
     @Valid
     private AuthProviderFactory authProvider;
 
+    @Valid
+    private RetryPolicyFactory retryPolicy;
+
     private QueryOptions queryOptions;
     private SocketOptions socketOptions;
     private PoolingOptions poolingOptions;
@@ -139,6 +142,16 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
+    public RetryPolicyFactory getRetryPolicy() {
+        return retryPolicy;
+    }
+
+    @JsonProperty
+    public void setRetryPolicy(RetryPolicyFactory retryPolicy) {
+        this.retryPolicy = retryPolicy;
+    }
+
+    @JsonProperty
     public QueryOptions getQueryOptions() {
         return queryOptions;
     }
@@ -211,6 +224,10 @@ public class CassandraConfiguration {
 
         if (reconnectionPolicy != null) {
             builder.withReconnectionPolicy(reconnectionPolicy.build());
+        }
+
+        if (retryPolicy != null) {
+            builder.withRetryPolicy(retryPolicy.build());
         }
 
         if (queryOptions != null) {

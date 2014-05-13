@@ -1,2 +1,3 @@
 org.stuartgunter.dropwizard.cassandra.ReconnectionPolicyFactory
 org.stuartgunter.dropwizard.cassandra.AuthProviderFactory
+org.stuartgunter.dropwizard.cassandra.RetryPolicyFactory
