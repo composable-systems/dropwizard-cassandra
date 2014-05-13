@@ -80,7 +80,7 @@ public class YourApp extends Application<YourAppConfig> {
     }
 
     @Override
-    public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
+    public void run(YourAppConfig configuration, Environment environment) throws Exception {
         // you can now use `cassandra.getCluster()` to use the cluster instance in your app
     }
 }
