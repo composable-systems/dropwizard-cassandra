@@ -1,8 +1,9 @@
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.reconnection;
 
 import com.datastax.driver.core.policies.ExponentialReconnectionPolicy;
 import io.dropwizard.util.Duration;
 import org.junit.Test;
+import org.stuartgunter.dropwizard.cassandra.reconnection.ExponentialReconnectionPolicyFactory;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

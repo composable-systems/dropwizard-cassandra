@@ -1,10 +1,11 @@
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.reconnection;
 
 import com.datastax.driver.core.policies.ExponentialReconnectionPolicy;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.dropwizard.util.Duration;
+import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 
 import javax.validation.constraints.NotNull;
 

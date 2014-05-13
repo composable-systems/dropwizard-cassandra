@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.retry;
 
-import com.datastax.driver.core.policies.ReconnectionPolicy;
+import com.datastax.driver.core.policies.RetryPolicy;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.dropwizard.jackson.Discoverable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-public interface ReconnectionPolicyFactory extends Discoverable {
+public interface RetryPolicyFactory extends Discoverable {
 
-    ReconnectionPolicy build();
+    RetryPolicy build();
 }

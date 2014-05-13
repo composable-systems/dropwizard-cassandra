@@ -1,9 +1,10 @@
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.retry;
 
 import com.datastax.driver.core.policies.LoggingRetryPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

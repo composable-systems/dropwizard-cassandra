@@ -1,7 +1,8 @@
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.retry;
 
 import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import org.junit.Test;
+import org.stuartgunter.dropwizard.cassandra.retry.DowngradingConsistencyRetryPolicyFactory;
 
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
