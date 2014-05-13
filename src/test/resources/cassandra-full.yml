@@ -6,7 +6,7 @@ cassandra:
   compression: "LZ4"
   metricsEnabled: false
   jmxEnabled: false
-  shutdownWaitSeconds: 5
+  shutdownGracePeriod: "5 seconds"
   keyspace: "bundle"
   reconnectionPolicy:
     type: "constant"

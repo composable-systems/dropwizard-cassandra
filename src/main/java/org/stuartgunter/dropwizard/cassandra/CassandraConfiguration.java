@@ -19,6 +19,7 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+import io.dropwizard.util.Duration;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
@@ -61,8 +62,8 @@ public class CassandraConfiguration {
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
-    @Min(0)
-    private int shutdownWaitSeconds = 20;
+    @NotNull
+    private Duration shutdownGracePeriod = Duration.seconds(30);
 
     @JsonProperty
     public String getClusterName() {
@@ -205,13 +206,13 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
-    public int getShutdownWaitSeconds() {
-        return shutdownWaitSeconds;
+    public Duration getShutdownGracePeriod() {
+        return shutdownGracePeriod;
     }
 
     @JsonProperty
-    public void setShutdownWaitSeconds(int shutdownWaitSeconds) {
-        this.shutdownWaitSeconds = shutdownWaitSeconds;
+    public void setShutdownGracePeriod(Duration shutdownGracePeriod) {
+        this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
     public Cluster buildCluster() {

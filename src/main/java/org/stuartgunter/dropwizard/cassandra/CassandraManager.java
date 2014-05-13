@@ -19,6 +19,7 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.datastax.driver.core.CloseFuture;
 import com.datastax.driver.core.Cluster;
 import io.dropwizard.lifecycle.Managed;
+import io.dropwizard.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +31,11 @@ public class CassandraManager implements Managed {
     private final Logger LOG = LoggerFactory.getLogger(CassandraManager.class);
 
     private final Cluster cluster;
-    private final int shutdownWaitSeconds;
+    private final Duration shutdownGracePeriod;
 
-    public CassandraManager(Cluster cluster, int shutdownWaitSeconds) {
+    public CassandraManager(Cluster cluster, Duration shutdownGracePeriod) {
         this.cluster = cluster;
-        this.shutdownWaitSeconds = shutdownWaitSeconds;
+        this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
     @Override
@@ -46,9 +47,9 @@ public class CassandraManager implements Managed {
         LOG.debug("Attempting graceful shutdown of Cassandra cluster: {}", cluster.getClusterName());
         CloseFuture future = cluster.closeAsync();
         try {
-            future.get(shutdownWaitSeconds, TimeUnit.SECONDS);
+            future.get(shutdownGracePeriod.toMilliseconds(), TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            LOG.warn("Cassandra cluster did not close in {} seconds. Forcing it now.", shutdownWaitSeconds);
+            LOG.warn("Cassandra cluster did not close in {}. Forcing it now.", shutdownGracePeriod);
             future.force();
         }
     }

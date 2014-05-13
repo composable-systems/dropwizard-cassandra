@@ -50,22 +50,72 @@ operate safely within the same application.
 Using the bundle is as simple as registering it in your Dropwizard application. The `CassandraBundle` is abstract and
 requires you to implement a single method in order to provide the correct configuration (similar to the `dropwizard-hibernate` module).
 
-    public class YourApp extends Application<YourAppConfig> {
-        private final CassandraBundle<YourAppConfig> cassandraBundle =
-                new CassandraBundle<YourAppConfig>() {
-                    @Override
-                    protected CassandraConfiguration cassandraConfiguration(YourAppConfig appConfig) {
-                        return appConfig.getCassandraConfig();
-                    }
-                };
+```java
+public class YourApp extends Application<YourAppConfig> {
+    private final CassandraBundle<YourAppConfig> cassandraBundle =
+            new CassandraBundle<YourAppConfig>() {
+                @Override
+                protected CassandraConfiguration cassandraConfiguration(YourAppConfig appConfig) {
+                    return appConfig.getCassandraConfig();
+                }
+            };
 
-        @Override
-        public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
-            bootstrap.addBundle(cassandraBundle);
-        }
-
-        @Override
-        public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
-            // you can now use `cassandraBundle.getCluster()` to use the cluster instance in your app
-        }
+    @Override
+    public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
+        bootstrap.addBundle(cassandraBundle);
     }
+
+    @Override
+    public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
+        // you can now use `cassandraBundle.getCluster()` to use the cluster instance in your app
+    }
+}
+```
+
+
+# Configuration Reference
+
+The `dropwizard-cassandra` bundle defines a number of configuration options that are largely based on the requirements
+of the DataStax Cassandra driver. Some additional configuration is included for the bundle to register everything correctly
+with Dropwizard. This section describes all configuration options that are available and their default values.
+
+
+```yaml
+clusterName:
+keyspace:
+contactPoints:
+port:
+protocolVersion:
+compression:
+reconnectionPolicy:
+  type:
+authProvider:
+  type:
+retryPolicy:
+  type:
+queryOptions:
+  consistencyLevel:
+  serialConsistencyLevel:
+  fetchSize:
+socketOptions:
+  connectTimeoutMillis:
+  readTimeoutMillis:
+  keepAlive:
+  reuseAddress:
+  soLinger:
+  tcpNoDelay:
+  receiveBufferSize:
+  sendBufferSize:
+poolingOptions:
+  minSimultaneousRequestsForLocal:
+  minSimultaneousRequestsForRemote:
+  maxSimultaneousRequestsForLocal:
+  maxSimultaneousRequestsForRemote:
+  coreConnectionsForLocal:
+  coreConnectionsForRemote:
+  maxConnectionsForLocal:
+  maxConnectionsForRemote:
+metricsEnabled:
+jmxEnabled:
+shutdownGracePeriod:
+```

@@ -42,7 +42,7 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
         cluster = cassandraConfig.buildCluster();
 
         LOG.debug("Registering {} Cassandra cluster for lifecycle management", cassandraConfig.getClusterName());
-        environment.lifecycle().manage(new CassandraManager(cluster, cassandraConfig.getShutdownWaitSeconds()));
+        environment.lifecycle().manage(new CassandraManager(cluster, cassandraConfig.getShutdownGracePeriod()));
 
         LOG.debug("Registering {} Cassandra health check", cassandraConfig.getClusterName());
         environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, cassandraConfig.getKeyspace()));

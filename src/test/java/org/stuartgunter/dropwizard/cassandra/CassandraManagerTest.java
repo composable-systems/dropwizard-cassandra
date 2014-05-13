@@ -18,6 +18,7 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.datastax.driver.core.CloseFuture;
 import com.datastax.driver.core.Cluster;
+import io.dropwizard.util.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class CassandraManagerTest {
 
     private final Cluster cluster = mock(Cluster.class);
     private final CloseFuture closeFuture = mock(CloseFuture.class);
-    private final CassandraManager manager = new CassandraManager(cluster, 5);
+    private final CassandraManager manager = new CassandraManager(cluster, Duration.seconds(5));
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +47,7 @@ public class CassandraManagerTest {
         manager.stop();
 
         verify(cluster).closeAsync();
-        verify(closeFuture).get(5, TimeUnit.SECONDS);
+        verify(closeFuture).get(5000L, TimeUnit.MILLISECONDS);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class CassandraManagerTest {
         manager.stop();
 
         verify(cluster).closeAsync();
-        verify(closeFuture).get(5, TimeUnit.SECONDS);
+        verify(closeFuture).get(5000L, TimeUnit.MILLISECONDS);
         verify(closeFuture).force();
     }
 }
