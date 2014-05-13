@@ -91,8 +91,11 @@ public class YourApp extends Application<YourAppConfig> {
 
 The `dropwizard-cassandra` bundle defines a number of configuration options that are largely based on the requirements
 of the DataStax Cassandra driver. Some additional configuration is included for the bundle to register everything correctly
-with Dropwizard. This section describes all configuration options that are available and their default values.
+with Dropwizard.
 
+The full set of configuration options are shown below. Only configuration keys and their respective default values are shown.
+Some configurations are type-dependent (e.g. `authProvider`) and have multiple variations. These are fully documented via
+test configuration. To find examples of particular config variants, take a look at the [test resources](src/test/resources) folder.
 
 ```yaml
 clusterName:
