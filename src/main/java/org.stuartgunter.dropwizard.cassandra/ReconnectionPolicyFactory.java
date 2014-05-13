@@ -16,25 +16,12 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.Configuration;
+import com.datastax.driver.core.policies.ReconnectionPolicy;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.dropwizard.jackson.Discoverable;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+public interface ReconnectionPolicyFactory extends Discoverable {
 
-public class CassandraBundleConfiguration extends Configuration {
-
-    @Valid
-    @NotNull
-    private CassandraConfiguration cassandra;
-
-    @JsonProperty("cassandra")
-    public CassandraConfiguration getCassandraConfig() {
-        return cassandra;
-    }
-
-    @JsonProperty("cassandra")
-    public void setCassandraConfig(CassandraConfiguration cassndraConfig) {
-        this.cassandra = cassndraConfig;
-    }
+    ReconnectionPolicy build();
 }

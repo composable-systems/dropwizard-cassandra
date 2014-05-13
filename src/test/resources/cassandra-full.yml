@@ -8,3 +8,6 @@ cassandra:
   jmxEnabled: false
   shutdownWaitSeconds: 5
   keyspace: "bundle"
+  reconnectionPolicy:
+    type: "constant"
+    delay: "5 seconds"

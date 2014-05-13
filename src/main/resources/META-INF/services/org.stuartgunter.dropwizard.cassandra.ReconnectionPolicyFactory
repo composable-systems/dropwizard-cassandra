@@ -1,0 +1,2 @@
+org.stuartgunter.dropwizard.cassandra.ConstantReconnectionPolicyFactory
+org.stuartgunter.dropwizard.cassandra.ExponentialReconnectionPolicyFactory

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -42,6 +43,9 @@ public class CassandraConfiguration {
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
+
+    @Valid
+    private ReconnectionPolicyFactory reconnectionPolicy;
 
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
@@ -110,6 +114,16 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
+    public ReconnectionPolicyFactory getReconnectionPolicy() {
+        return reconnectionPolicy;
+    }
+
+    @JsonProperty
+    public void setReconnectionPolicy(ReconnectionPolicyFactory reconnectionPolicy) {
+        this.reconnectionPolicy = reconnectionPolicy;
+    }
+
+    @JsonProperty
     public boolean isMetricsEnabled() {
         return metricsEnabled;
     }
@@ -145,6 +159,10 @@ public class CassandraConfiguration {
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
+
+        if (reconnectionPolicy != null) {
+            builder.withReconnectionPolicy(reconnectionPolicy.build());
+        }
 
         if (!metricsEnabled) {
             builder.withoutMetrics();
