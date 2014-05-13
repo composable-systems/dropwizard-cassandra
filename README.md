@@ -7,7 +7,7 @@ bundles include support for things like view rendering and Hibernate.
 This bundle provides useful functionality for Dropwizard apps that communicate with [Cassandra](http://cassandra.apache.org).
 Under the hood, it uses the [DataStax Cassandra Driver](http://www.datastax.com/documentation/developer/java-driver/2.0/java-driver/whatsNew2.html).
 
-# What's Included
+## What's Included
 
 By default, the bundle includes:
 
@@ -49,8 +49,20 @@ operate safely within the same application.
 
 ## Usage
 
-Using the bundle is as simple as registering it in your Dropwizard application. The `CassandraBundle` is abstract and
-requires you to implement a single method in order to provide the correct configuration (similar to the `dropwizard-hibernate` module).
+Using the bundle is as simple as registering it in your Dropwizard application. The dependency can be found in Maven Central
+with the following coordinates:
+
+```xml
+<dependency>
+  <groupId>org.stuartgunter</groupId>
+  <artifactId>dropwizard-cassandra</artifactId>
+  <version>${dropwizard-cassandra.version}</version>
+</dependency>
+```
+
+Once you have the dependency registered, it's just a matter of adding the bundle to your `Application` class.
+`CassandraBundle` is abstract and requires you to implement a single method in order to provide the correct
+configuration (similar to the `dropwizard-hibernate` module).
 
 ```java
 public class YourApp extends Application<YourAppConfig> {
