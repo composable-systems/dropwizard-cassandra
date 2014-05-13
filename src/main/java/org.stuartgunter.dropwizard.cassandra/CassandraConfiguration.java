@@ -16,8 +16,7 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ProtocolOptions;
+import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -50,6 +49,9 @@ public class CassandraConfiguration {
     @Valid
     private AuthProviderFactory authProvider;
 
+    private QueryOptions queryOptions;
+    private SocketOptions socketOptions;
+    private PoolingOptions poolingOptions;
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
@@ -137,6 +139,36 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
+    public QueryOptions getQueryOptions() {
+        return queryOptions;
+    }
+
+    @JsonProperty
+    public void setQueryOptions(QueryOptions queryOptions) {
+        this.queryOptions = queryOptions;
+    }
+
+    @JsonProperty
+    public SocketOptions getSocketOptions() {
+        return socketOptions;
+    }
+
+    @JsonProperty
+    public void setSocketOptions(SocketOptions socketOptions) {
+        this.socketOptions = socketOptions;
+    }
+
+    @JsonProperty
+    public PoolingOptions getPoolingOptions() {
+        return poolingOptions;
+    }
+
+    @JsonProperty
+    public void setPoolingOptions(PoolingOptions poolingOptions) {
+        this.poolingOptions = poolingOptions;
+    }
+
+    @JsonProperty
     public boolean isMetricsEnabled() {
         return metricsEnabled;
     }
@@ -179,6 +211,18 @@ public class CassandraConfiguration {
 
         if (reconnectionPolicy != null) {
             builder.withReconnectionPolicy(reconnectionPolicy.build());
+        }
+
+        if (queryOptions != null) {
+            builder.withQueryOptions(queryOptions);
+        }
+
+        if (socketOptions != null) {
+            builder.withSocketOptions(socketOptions);
+        }
+
+        if (poolingOptions != null) {
+            builder.withPoolingOptions(poolingOptions);
         }
 
         if (!metricsEnabled) {
