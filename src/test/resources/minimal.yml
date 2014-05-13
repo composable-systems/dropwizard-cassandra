@@ -1,3 +1,3 @@
 cassandra:
-  clusterName: "basic-cluster"
+  clusterName: "minimal-cluster"
   contactPoints: ["localhost"]

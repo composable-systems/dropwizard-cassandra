@@ -1,5 +1,5 @@
 cassandra:
-  clusterName: "basic-cluster"
+  clusterName: "smoke-cluster"
   contactPoints: ["localhost"]
   authProvider:
     type: plainText

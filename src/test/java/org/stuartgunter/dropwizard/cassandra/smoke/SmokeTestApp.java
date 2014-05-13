@@ -14,29 +14,32 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.smoke;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.stuartgunter.dropwizard.cassandra.CassandraBundle;
+import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
+import org.stuartgunter.dropwizard.cassandra.CassandraResource;
 
-public class CassandraBundleApp extends Application<CassandraBundleConfiguration> {
+public class SmokeTestApp extends Application<SmokeTestConfiguration> {
 
-    private final CassandraBundle<CassandraBundleConfiguration> cassandraBundle =
-            new CassandraBundle<CassandraBundleConfiguration>() {
+    private final CassandraBundle<SmokeTestConfiguration> cassandraBundle =
+            new CassandraBundle<SmokeTestConfiguration>() {
                 @Override
-                protected CassandraConfiguration cassandraConfiguration(CassandraBundleConfiguration configuration) {
+                protected CassandraConfiguration cassandraConfiguration(SmokeTestConfiguration configuration) {
                     return configuration.getCassandraConfig();
                 }
             };
 
     @Override
-    public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
+    public void initialize(Bootstrap<SmokeTestConfiguration> bootstrap) {
         bootstrap.addBundle(cassandraBundle);
     }
 
     @Override
-    public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
+    public void run(SmokeTestConfiguration configuration, Environment environment) throws Exception {
         environment.jersey().register(new CassandraResource(cassandraBundle.getCluster()));
     }
 }

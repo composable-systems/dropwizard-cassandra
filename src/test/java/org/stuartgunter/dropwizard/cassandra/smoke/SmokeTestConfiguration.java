@@ -14,15 +14,16 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.smoke;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class CassandraBundleConfiguration extends Configuration {
+public class SmokeTestConfiguration extends Configuration {
 
     @Valid
     @NotNull

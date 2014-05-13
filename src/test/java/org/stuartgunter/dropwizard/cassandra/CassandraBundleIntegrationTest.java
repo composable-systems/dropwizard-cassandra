@@ -23,6 +23,8 @@ import com.sun.jersey.api.client.WebResource;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestApp;
+import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
@@ -32,11 +34,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class CassandraBundleBasicIntegrationTest {
+public class CassandraBundleIntegrationTest {
 
     @ClassRule
-    public static final DropwizardAppRule<CassandraBundleConfiguration> APP =
-            new DropwizardAppRule<>(CassandraBundleApp.class, Resources.getResource("cassandra-basic.yml").getPath());
+    public static final DropwizardAppRule<SmokeTestConfiguration> APP =
+            new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
 
     @Test
     public void canQueryCassandra() throws Exception {
@@ -61,7 +63,7 @@ public class CassandraBundleBasicIntegrationTest {
         final WebResource resource = Client.create().resource(uri);
         final String result = resource.get(String.class);
 
-        assertThat(result, containsString("com.datastax.driver.core.Cluster.basic-cluster"));
+        assertThat(result, containsString("com.datastax.driver.core.Cluster.minimal-cluster"));
     }
 
     @Test
@@ -74,6 +76,6 @@ public class CassandraBundleBasicIntegrationTest {
         final WebResource resource = Client.create().resource(uri);
         final String result = resource.get(String.class);
 
-        assertThat(result, containsString("cassandra.basic-cluster"));
+        assertThat(result, containsString("cassandra.minimal-cluster"));
     }
 }
