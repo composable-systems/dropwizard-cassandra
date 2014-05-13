@@ -47,6 +47,9 @@ public class CassandraConfiguration {
     @Valid
     private ReconnectionPolicyFactory reconnectionPolicy;
 
+    @Valid
+    private AuthProviderFactory authProvider;
+
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
@@ -124,6 +127,16 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
+    public AuthProviderFactory getAuthProvider() {
+        return authProvider;
+    }
+
+    @JsonProperty
+    public void setAuthProvider(AuthProviderFactory authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    @JsonProperty
     public boolean isMetricsEnabled() {
         return metricsEnabled;
     }
@@ -159,6 +172,10 @@ public class CassandraConfiguration {
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
+
+        if (authProvider != null) {
+            builder.withAuthProvider(authProvider.build());
+        }
 
         if (reconnectionPolicy != null) {
             builder.withReconnectionPolicy(reconnectionPolicy.build());
