@@ -66,7 +66,7 @@ configuration (similar to the `dropwizard-hibernate` module).
 
 ```java
 public class YourApp extends Application<YourAppConfig> {
-    private final CassandraBundle<YourAppConfig> cassandraBundle =
+    private final CassandraBundle<YourAppConfig> cassandra =
             new CassandraBundle<YourAppConfig>() {
                 @Override
                 protected CassandraConfiguration cassandraConfiguration(YourAppConfig appConfig) {
@@ -76,12 +76,12 @@ public class YourApp extends Application<YourAppConfig> {
 
     @Override
     public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
-        bootstrap.addBundle(cassandraBundle);
+        bootstrap.addBundle(cassandra);
     }
 
     @Override
     public void run(CassandraBundleConfiguration configuration, Environment environment) throws Exception {
-        // you can now use `cassandraBundle.getCluster()` to use the cluster instance in your app
+        // you can now use `cassandra.getCluster()` to use the cluster instance in your app
     }
 }
 ```
