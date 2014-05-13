@@ -1,0 +1,7 @@
+cassandra:
+  clusterName: "basic-cluster"
+  contactPoints: ["localhost"]
+  authProvider:
+    type: plainText
+    username: some_username
+    password: some_password

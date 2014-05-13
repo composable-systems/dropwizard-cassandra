@@ -1,0 +1,7 @@
+cassandra:
+  clusterName: "basic-cluster"
+  contactPoints: ["localhost"]
+  reconnectionPolicy:
+    type: exponential
+    baseDelay: 10 milliseconds
+    maxDelay: 1 second

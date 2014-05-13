@@ -1,0 +1,5 @@
+cassandra:
+  clusterName: "basic-cluster"
+  contactPoints: ["localhost"]
+  retryPolicy:
+    type: downgradingConsistency
