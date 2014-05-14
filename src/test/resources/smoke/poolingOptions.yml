@@ -1,0 +1,14 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  poolingOptions:
+    local:
+      minSimultaneousRequests: 10
+      maxSimultaneousRequests: 50
+      coreConnections: 3
+      maxConnections: 4
+    remote:
+      minSimultaneousRequests: 10
+      maxSimultaneousRequests: 50
+      coreConnections: 2
+      maxConnections: 1

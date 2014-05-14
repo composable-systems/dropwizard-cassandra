@@ -49,6 +49,7 @@ public class SmokeTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 { "smoke/basic.yml" },
+                { "smoke/poolingOptions.yml" },
                 { "smoke/queryOptions.yml" },
                 { "smoke/socketOptions.yml" },
                 { "smoke/auth/authProvider-plainText.yml" },

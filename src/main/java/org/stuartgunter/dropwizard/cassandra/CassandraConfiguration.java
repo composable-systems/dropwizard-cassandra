@@ -58,7 +58,10 @@ public class CassandraConfiguration {
 
     private QueryOptions queryOptions;
     private SocketOptions socketOptions;
-    private PoolingOptions poolingOptions;
+
+    @Valid
+    private PoolingOptionsFactory poolingOptions;
+
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = true;
 
@@ -176,12 +179,12 @@ public class CassandraConfiguration {
     }
 
     @JsonProperty
-    public PoolingOptions getPoolingOptions() {
+    public PoolingOptionsFactory getPoolingOptions() {
         return poolingOptions;
     }
 
     @JsonProperty
-    public void setPoolingOptions(PoolingOptions poolingOptions) {
+    public void setPoolingOptions(PoolingOptionsFactory poolingOptions) {
         this.poolingOptions = poolingOptions;
     }
 
@@ -243,7 +246,7 @@ public class CassandraConfiguration {
         }
 
         if (poolingOptions != null) {
-            builder.withPoolingOptions(poolingOptions);
+            builder.withPoolingOptions(poolingOptions.build());
         }
 
         if (!metricsEnabled) {
