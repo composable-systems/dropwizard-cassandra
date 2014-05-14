@@ -1,0 +1,12 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  socketOptions:
+    connectTimeoutMillis: 1000
+    readTimeoutMillis: 2000
+    keepAlive: true
+    reuseAddress: true
+    soLinger: 1000
+    tcpNoDelay: true
+    receiveBufferSize: 1024
+    sendBufferSize: 1024

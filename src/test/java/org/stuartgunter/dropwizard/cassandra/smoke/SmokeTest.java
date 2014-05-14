@@ -50,6 +50,7 @@ public class SmokeTest {
         return Arrays.asList(new Object[][] {
                 { "smoke/basic.yml" },
                 { "smoke/queryOptions.yml" },
+                { "smoke/socketOptions.yml" },
                 { "smoke/auth/authProvider-plainText.yml" },
                 { "smoke/reconnection/reconnectionPolicy-constant.yml" },
                 { "smoke/reconnection/reconnectionPolicy-exponential.yml" },
