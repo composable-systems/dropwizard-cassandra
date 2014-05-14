@@ -1,0 +1,7 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  queryOptions:
+    consistencyLevel: "TWO"
+    serialConsistencyLevel: "TWO"
+    fetchSize: 1000
