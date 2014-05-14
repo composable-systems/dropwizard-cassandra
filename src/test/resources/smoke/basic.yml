@@ -1,0 +1,10 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  keyspace: "smoke"
+  contactPoints: ["localhost"]
+  port: 9999
+  protocolVersion: 2
+  compression: "LZ4"
+  metricsEnabled: false
+  jmxEnabled: false
+  shutdownGracePeriod: "10 seconds"

@@ -48,6 +48,7 @@ public class SmokeTest {
     @Parameterized.Parameters(name = "Config: {0}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
+                { "smoke/basic.yml" },
                 { "smoke/auth/authProvider-plainText.yml" },
                 { "smoke/reconnection/reconnectionPolicy-constant.yml" },
                 { "smoke/reconnection/reconnectionPolicy-exponential.yml" },
