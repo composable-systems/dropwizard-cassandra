@@ -124,14 +124,16 @@ socketOptions:
   receiveBufferSize:
   sendBufferSize:
 poolingOptions:
-  minSimultaneousRequestsForLocal:
-  minSimultaneousRequestsForRemote:
-  maxSimultaneousRequestsForLocal:
-  maxSimultaneousRequestsForRemote:
-  coreConnectionsForLocal:
-  coreConnectionsForRemote:
-  maxConnectionsForLocal:
-  maxConnectionsForRemote:
+  local:
+    minSimultaneousRequests:
+    maxSimultaneousRequests:
+    coreConnections:
+    maxConnections:
+  remote:
+    minSimultaneousRequests:
+    maxSimultaneousRequests:
+    coreConnections:
+    maxConnections:
 metricsEnabled:
 jmxEnabled:
 shutdownGracePeriod:
