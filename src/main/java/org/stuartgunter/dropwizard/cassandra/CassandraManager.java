@@ -26,6 +26,10 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Manages the lifecycle of the Cassandra Cluster instance, ensuring that it is appropriately
+ * closed when the application terminates.
+ */
 public class CassandraManager implements Managed {
 
     private final Logger LOG = LoggerFactory.getLogger(CassandraManager.class);

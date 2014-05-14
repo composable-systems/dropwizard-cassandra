@@ -25,6 +25,9 @@ import java.util.Map;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
+/**
+ * Exposes the metrics provided by the provided Cluster, embedding the cluster name in the metric name.
+ */
 public class CassandraMetricSet implements MetricSet {
 
     private Map<String, Metric> metrics;

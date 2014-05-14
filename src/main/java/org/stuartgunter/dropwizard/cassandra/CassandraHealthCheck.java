@@ -20,6 +20,12 @@ import com.codahale.metrics.health.HealthCheck;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
+/**
+ * HealthCheck for the Cassandra Cluster.
+ *
+ * If a keyspace is specified, the health check attempts
+ * to initialise a Session with that keyspace; otherwise it attempts to initialise a Session with the Cluster.
+ */
 public class CassandraHealthCheck extends HealthCheck {
 
     private final Cluster cluster;

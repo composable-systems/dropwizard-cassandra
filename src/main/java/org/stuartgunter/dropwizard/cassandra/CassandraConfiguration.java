@@ -30,6 +30,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Root configuration class for CassandraBundle. Your application should contain an instance of this configuration
+ * class in order to initialise the Bundle.
+ */
 public class CassandraConfiguration {
 
     private String clusterName;
