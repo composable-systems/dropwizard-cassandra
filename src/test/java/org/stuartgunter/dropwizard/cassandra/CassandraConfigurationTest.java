@@ -16,13 +16,17 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ProtocolOptions;
+import com.datastax.driver.core.*;
+import com.datastax.driver.core.policies.ReconnectionPolicy;
+import com.datastax.driver.core.policies.RetryPolicy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
+import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
+import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,17 +40,32 @@ public class CassandraConfigurationTest {
 
     private final Cluster.Builder builder = mock(Cluster.Builder.class);
     private final Cluster cluster = mock(Cluster.class);
+    private final AuthProviderFactory authProviderFactory = mock(AuthProviderFactory.class);
+    private final AuthProvider authProvider = mock(AuthProvider.class);
+    private final ReconnectionPolicyFactory reconnectionPolicyFactory = mock(ReconnectionPolicyFactory.class);
+    private final ReconnectionPolicy reconnectionPolicy = mock(ReconnectionPolicy.class);
+    private final RetryPolicyFactory retryPolicyFactory = mock(RetryPolicyFactory.class);
+    private final RetryPolicy retryPolicy = mock(RetryPolicy.class);
+    private final QueryOptions queryOptions = mock(QueryOptions.class);
+    private final SocketOptions socketOptions = mock(SocketOptions.class);
+    private final PoolingOptionsFactory poolingOptionsFactory = mock(PoolingOptionsFactory.class);
+    private final PoolingOptions poolingOptions = mock(PoolingOptions.class);
 
     @Before
     public void setUp() throws Exception {
         mockStatic(Cluster.class);
         when(Cluster.builder()).thenReturn(builder);
         when(builder.build()).thenReturn(cluster);
+        when(authProviderFactory.build()).thenReturn(authProvider);
+        when(reconnectionPolicyFactory.build()).thenReturn(reconnectionPolicy);
+        when(retryPolicyFactory.build()).thenReturn(retryPolicy);
+        when(poolingOptionsFactory.build()).thenReturn(poolingOptions);
     }
 
     @Test
     public void buildsACluster() throws Exception {
         final CassandraConfiguration configuration = new CassandraConfiguration();
+        configuration.setAuthProvider(authProviderFactory);
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
         configuration.setContactPoints(new String[] {"host1", "host2"});
@@ -54,6 +73,11 @@ public class CassandraConfigurationTest {
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
         configuration.setProtocolVersion(2);
+        configuration.setReconnectionPolicy(reconnectionPolicyFactory);
+        configuration.setRetryPolicy(retryPolicyFactory);
+        configuration.setQueryOptions(queryOptions);
+        configuration.setSocketOptions(socketOptions);
+        configuration.setPoolingOptions(poolingOptionsFactory);
 
         final Cluster result = configuration.buildCluster();
 
@@ -65,6 +89,12 @@ public class CassandraConfigurationTest {
         verify(builder).withProtocolVersion(2);
         verify(builder).withoutJMXReporting();
         verify(builder).withoutMetrics();
+        verify(builder).withAuthProvider(authProvider);
+        verify(builder).withReconnectionPolicy(reconnectionPolicy);
+        verify(builder).withRetryPolicy(retryPolicy);
+        verify(builder).withQueryOptions(queryOptions);
+        verify(builder).withSocketOptions(socketOptions);
+        verify(builder).withPoolingOptions(poolingOptions);
         verify(builder).build();
         verifyNoMoreInteractions(builder);
     }
