@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
 
 public class CassandraBundleTest {
 
-    private final CassandraConfiguration cassandraConfiguration = mock(CassandraConfiguration.class);
+    private final CassandraFactory cassandraFactory = mock(CassandraFactory.class);
     private final Configuration configuration = mock(Configuration.class);
     private final Cluster cluster = mock(Cluster.class);
     private final Environment environment = mock(Environment.class);
@@ -48,8 +48,8 @@ public class CassandraBundleTest {
 
     private final CassandraBundle<Configuration> bundle = new CassandraBundle<Configuration>() {
         @Override
-        protected CassandraConfiguration cassandraConfiguration(Configuration configuration) {
-            return cassandraConfiguration;
+        protected CassandraFactory cassandraConfiguration(Configuration configuration) {
+            return cassandraFactory;
         }
     };
 
@@ -58,7 +58,7 @@ public class CassandraBundleTest {
         when(environment.lifecycle()).thenReturn(lifecycle);
         when(environment.metrics()).thenReturn(metrics);
         when(environment.healthChecks()).thenReturn(healthChecks);
-        when(cassandraConfiguration.buildCluster()).thenReturn(cluster);
+        when(cassandraFactory.buildCluster()).thenReturn(cluster);
         when(cluster.getClusterName()).thenReturn("test-cluster");
     }
 
@@ -66,7 +66,7 @@ public class CassandraBundleTest {
     public void buildsCluster() throws Exception {
         bundle.run(configuration, environment);
 
-        verify(cassandraConfiguration).buildCluster();
+        verify(cassandraFactory).buildCluster();
     }
 
     @Test
@@ -84,7 +84,7 @@ public class CassandraBundleTest {
         when(cluster.getMetrics()).thenReturn(clusterMetrics);
         when(clusterMetrics.getRegistry()).thenReturn(registry);
         when(registry.getMetrics()).thenReturn(driverMetrics);
-        when(cassandraConfiguration.isMetricsEnabled()).thenReturn(true);
+        when(cassandraFactory.isMetricsEnabled()).thenReturn(true);
 
         bundle.run(configuration, environment);
 

@@ -18,7 +18,7 @@ package org.stuartgunter.dropwizard.cassandra.smoke;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
+import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,15 +27,15 @@ public class SmokeTestConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private CassandraConfiguration cassandra;
+    private CassandraFactory cassandra;
 
     @JsonProperty("cassandra")
-    public CassandraConfiguration getCassandraConfig() {
+    public CassandraFactory getCassandraConfig() {
         return cassandra;
     }
 
     @JsonProperty("cassandra")
-    public void setCassandraConfig(CassandraConfiguration cassndraConfig) {
+    public void setCassandraConfig(CassandraFactory cassndraConfig) {
         this.cassandra = cassndraConfig;
     }
 }

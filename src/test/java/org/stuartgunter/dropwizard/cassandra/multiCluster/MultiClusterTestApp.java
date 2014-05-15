@@ -20,14 +20,14 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.stuartgunter.dropwizard.cassandra.CassandraBundle;
-import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
+import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 
 public class MultiClusterTestApp extends Application<MultiClusterTestConfiguration> {
 
     private final CassandraBundle<MultiClusterTestConfiguration> cassandraBundle1 =
             new CassandraBundle<MultiClusterTestConfiguration>() {
                 @Override
-                protected CassandraConfiguration cassandraConfiguration(MultiClusterTestConfiguration configuration) {
+                protected CassandraFactory cassandraConfiguration(MultiClusterTestConfiguration configuration) {
                     return configuration.getCassandra1Config();
                 }
             };
@@ -35,7 +35,7 @@ public class MultiClusterTestApp extends Application<MultiClusterTestConfigurati
     private final CassandraBundle<MultiClusterTestConfiguration> cassandraBundle2 =
             new CassandraBundle<MultiClusterTestConfiguration>() {
                 @Override
-                protected CassandraConfiguration cassandraConfiguration(MultiClusterTestConfiguration configuration) {
+                protected CassandraFactory cassandraConfiguration(MultiClusterTestConfiguration configuration) {
                     return configuration.getCassandra2Config();
                 }
             };

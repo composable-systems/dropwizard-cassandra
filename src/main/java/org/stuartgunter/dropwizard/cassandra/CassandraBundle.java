@@ -32,11 +32,11 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
 
     private Cluster cluster;
 
-    protected abstract CassandraConfiguration cassandraConfiguration(C configuration);
+    protected abstract CassandraFactory cassandraConfiguration(C configuration);
 
     @Override
     public void run(C configuration, Environment environment) throws Exception {
-        CassandraConfiguration cassandraConfig = cassandraConfiguration(configuration);
+        CassandraFactory cassandraConfig = cassandraConfiguration(configuration);
 
         LOG.debug("Building {} Cassandra cluster", cassandraConfig.getClusterName());
         cluster = cassandraConfig.buildCluster();

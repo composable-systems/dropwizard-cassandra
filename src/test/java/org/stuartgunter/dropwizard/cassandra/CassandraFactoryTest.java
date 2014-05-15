@@ -37,7 +37,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Cluster.class)
-public class CassandraConfigurationTest {
+public class CassandraFactoryTest {
 
     private final Cluster.Builder builder = mock(Cluster.Builder.class);
     private final Cluster cluster = mock(Cluster.class);
@@ -65,7 +65,7 @@ public class CassandraConfigurationTest {
 
     @Test
     public void buildsACluster() throws Exception {
-        final CassandraConfiguration configuration = new CassandraConfiguration();
+        final CassandraFactory configuration = new CassandraFactory();
         configuration.setAuthProvider(authProviderFactory);
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);

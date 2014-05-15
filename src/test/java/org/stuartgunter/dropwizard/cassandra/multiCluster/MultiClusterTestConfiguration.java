@@ -18,7 +18,7 @@ package org.stuartgunter.dropwizard.cassandra.multiCluster;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
+import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,29 +27,29 @@ public class MultiClusterTestConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    private CassandraConfiguration cassandra1;
+    private CassandraFactory cassandra1;
 
     @Valid
     @NotNull
-    private CassandraConfiguration cassandra2;
+    private CassandraFactory cassandra2;
 
     @JsonProperty("cassandra1")
-    public CassandraConfiguration getCassandra1Config() {
+    public CassandraFactory getCassandra1Config() {
         return cassandra1;
     }
 
     @JsonProperty("cassandra1")
-    public void setCassandra1Config(CassandraConfiguration cassndraConfig) {
+    public void setCassandra1Config(CassandraFactory cassndraConfig) {
         this.cassandra1 = cassndraConfig;
     }
 
     @JsonProperty("cassandra2")
-    public CassandraConfiguration getCassandra2Config() {
+    public CassandraFactory getCassandra2Config() {
         return cassandra2;
     }
 
     @JsonProperty("cassandra2")
-    public void setCassandra2Config(CassandraConfiguration cassndraConfig) {
+    public void setCassandra2Config(CassandraFactory cassndraConfig) {
         this.cassandra2 = cassndraConfig;
     }
 }

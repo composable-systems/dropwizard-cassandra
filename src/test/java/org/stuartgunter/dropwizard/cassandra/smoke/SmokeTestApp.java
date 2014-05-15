@@ -20,7 +20,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.stuartgunter.dropwizard.cassandra.CassandraBundle;
-import org.stuartgunter.dropwizard.cassandra.CassandraConfiguration;
+import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 import org.stuartgunter.dropwizard.cassandra.CassandraResource;
 
 public class SmokeTestApp extends Application<SmokeTestConfiguration> {
@@ -28,7 +28,7 @@ public class SmokeTestApp extends Application<SmokeTestConfiguration> {
     private final CassandraBundle<SmokeTestConfiguration> cassandraBundle =
             new CassandraBundle<SmokeTestConfiguration>() {
                 @Override
-                protected CassandraConfiguration cassandraConfiguration(SmokeTestConfiguration configuration) {
+                protected CassandraFactory cassandraConfiguration(SmokeTestConfiguration configuration) {
                     return configuration.getCassandraConfig();
                 }
             };

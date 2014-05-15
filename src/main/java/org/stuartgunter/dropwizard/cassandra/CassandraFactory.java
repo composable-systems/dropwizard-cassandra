@@ -32,10 +32,93 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
- * Root configuration class for CassandraBundle. Your application should contain an instance of this configuration
- * class in order to initialise the Bundle.
+ * A factory for configuring the Cassandra bundle.
+ * <p/>
+ * <b>Configuration Parameters:</b>
+ * <table>
+ *     <tr>
+ *         <td>Name</td>
+ *         <td>Default</td>
+ *         <td>Description</td>
+ *     </tr>
+ *     <tr>
+ *         <td>clusterName</td>
+ *         <td>Defaults to the cluster name provided by the Cassandra driver.</td>
+ *         <td>The name of the cluster, as defined by the Cassandra driver; also used in metrics and health checks.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>keyspace</td>
+ *         <td>No default. If provided, this will be included in the health check.</td>
+ *         <td>The name of the keyspace to connect to (used in health checks).</td>
+ *     </tr>
+ *     <tr>
+ *         <td>contactPoints</td>
+ *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
+ *         <td></td>
+ *     </tr>
+ *     <tr>
+ *         <td>port</td>
+ *         <td>9042</td>
+ *         <td>The port to use to connect to the Cassandra host.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>protocolVersion</td>
+ *         <td>-1</td>
+ *         <td>The native protocol version to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>compression</td>
+ *         <td>NONE</td>
+ *         <td>Sets the compression to use for the transport. Must a value in the {@link ProtocolOptions.Compression compression enum}.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>reconnectionPolicy</td>
+ *         <td>No default.</td>
+ *         <td>The {@link ReconnectionPolicyFactory reconnection policy} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>authProvider</td>
+ *         <td>No default.</td>
+ *         <td>The {@link AuthProviderFactory auth provider} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>retryPolicy</td>
+ *         <td>No default.</td>
+ *         <td>The {@link RetryPolicyFactory retry policy} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>queryOptions</td>
+ *         <td>No default.</td>
+ *         <td>The {@link QueryOptions} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>socketOptions</td>
+ *         <td>No default.</td>
+ *         <td>The {@link SocketOptions} to use</td>
+ *     </tr>
+ *     <tr>
+ *         <td>poolingOptions</td>
+ *         <td>No default.</td>
+ *         <td>The {@link PoolingOptionsFactory pooling options} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>metricsEnabled</td>
+ *         <td>true</td>
+ *         <td>Whether or not to enable metrics reporting.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>jmxEnabled</td>
+ *         <td>false</td>
+ *         <td>Whether or not to enable JMX metrics reporting.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>shutdownGracePeriod</td>
+ *         <td>30 seconds</td>
+ *         <td>The time to wait while the cluster closes gracefully; after which, the cluster will be forcefully terminated.</td>
+ *     </tr>
+ * </table>
  */
-public class CassandraConfiguration {
+public class CassandraFactory {
 
     private String clusterName;
     private String keyspace;
@@ -68,7 +151,7 @@ public class CassandraConfiguration {
     private PoolingOptionsFactory poolingOptions;
 
     private boolean metricsEnabled = true;
-    private boolean jmxEnabled = true;
+    private boolean jmxEnabled = false;
 
     @NotNull
     private Duration shutdownGracePeriod = Duration.seconds(30);
