@@ -27,6 +27,32 @@ import static com.codahale.metrics.MetricRegistry.name;
 
 /**
  * Exposes the metrics provided by the provided Cluster, embedding the cluster name in the metric name.
+ * <p/>
+ * Metrics are named based on the DataStax {@link Cluster} class, the cluster name, and the original name of the metric
+ * exposed by the driver. With the current version of the driver - v2.0.2 at the time of writing - this includes:
+ *
+ * <b>Counters:</b>
+ * <ul>
+ *     <li>com.datastax.core.Cluster.clusterName.connection-errors</li>
+ *     <li>com.datastax.core.Cluster.clusterName.write-timeouts</li>
+ *     <li>com.datastax.core.Cluster.clusterName.read-timeouts</li>
+ *     <li>com.datastax.core.Cluster.clusterName.unavailables</li>
+ *     <li>com.datastax.core.Cluster.clusterName.other-errors</li>
+ *     <li>com.datastax.core.Cluster.clusterName.retries</li>
+ *     <li>com.datastax.core.Cluster.clusterName.ignores</li>
+ * </ul>
+ *
+ * <b>Gauges:</b>
+ * <ul>
+ *     <li>com.datastax.core.Cluster.clusterName.open-connections</li>
+ *     <li>com.datastax.core.Cluster.clusterName.connected-to</li>
+ *     <li>com.datastax.core.Cluster.clusterName.known-hosts</li>
+ * </ul>
+ *
+ * <b>Timers:</b>
+ * <ul>
+ *     <li>com.datastax.core.Cluster.clusterName.requests</li>
+ * </ul>
  */
 public class CassandraMetricSet implements MetricSet {
 
