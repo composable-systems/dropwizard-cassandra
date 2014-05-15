@@ -109,7 +109,8 @@ import javax.validation.constraints.NotNull;
  *     <tr>
  *         <td>jmxEnabled</td>
  *         <td>false</td>
- *         <td>Whether or not to enable JMX metrics reporting.</td>
+ *         <td>Whether or not to enable JMX metrics reporting. This should ideally remain disabled in a Dropwizard app,
+ *         as metrics reporters should be configured via the {@code metrics} configuration option.</td>
  *     </tr>
  *     <tr>
  *         <td>shutdownGracePeriod</td>
