@@ -48,6 +48,7 @@ public class CassandraHealthCheckTest {
 
         assertThat(result.isHealthy(), is(false));
         verify(cluster).connect();
+        verify(cluster).getClusterName();
         verifyNoMoreInteractions(cluster);
     }
 
@@ -71,6 +72,7 @@ public class CassandraHealthCheckTest {
 
         assertThat(result.isHealthy(), is(false));
         verify(cluster).connect("keyspace");
+        verify(cluster).getClusterName();
         verifyNoMoreInteractions(cluster);
     }
 }

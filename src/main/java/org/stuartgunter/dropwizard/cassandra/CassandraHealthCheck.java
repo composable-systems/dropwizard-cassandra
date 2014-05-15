@@ -19,14 +19,18 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.codahale.metrics.health.HealthCheck;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * HealthCheck for the Cassandra Cluster.
- *
- * If a keyspace is specified, the health check attempts
- * to initialise a Session with that keyspace; otherwise it attempts to initialise a Session with the Cluster.
+ * HealthCheck for a Cassandra Cluster.
+ * <p/>
+ * If a keyspace is specified, the health check attempts to initialise a Session with that keyspace; otherwise it
+ * attempts to initialise a Session with the Cluster.
  */
 public class CassandraHealthCheck extends HealthCheck {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CassandraHealthCheck.class);
 
     private final Cluster cluster;
     private final String keyspace;
@@ -48,12 +52,20 @@ public class CassandraHealthCheck extends HealthCheck {
     private Result connectToKeyspace() {
         try (Session session = cluster.connect(keyspace)) {
             return Result.healthy();
+        } catch (Exception ex) {
+            LOG.error("Unable to connect to Cassandra cluster [{}] with keyspace [{}]",
+                    cluster.getClusterName(), keyspace, ex);
+            throw ex;
         }
     }
 
     private Result connectToCluster() {
         try (Session session = cluster.connect()) {
             return Result.healthy();
+        } catch (Exception ex) {
+            LOG.error("Unable to connect to Cassandra cluster [{}]",
+                    cluster.getClusterName(), ex);
+            throw ex;
         }
     }
 }

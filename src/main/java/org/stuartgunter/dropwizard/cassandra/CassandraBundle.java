@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
+/**
+ * A bundle for integrating with Cassandra.
+ */
 public abstract class CassandraBundle<C extends Configuration> implements ConfiguredBundle<C> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraBundle.class);
