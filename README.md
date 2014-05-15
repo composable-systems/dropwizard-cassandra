@@ -93,9 +93,11 @@ The `dropwizard-cassandra` bundle defines a number of configuration options that
 of the DataStax Cassandra driver. Some additional configuration is included for the bundle to register everything correctly
 with Dropwizard.
 
-The full set of configuration options are shown below. Only configuration keys and their respective default values are shown.
-Some configurations are type-dependent (e.g. `authProvider`) and have multiple variations. These are fully documented via
-test configuration. To find examples of particular config variants, take a look at the [test resources](src/test/resources) folder.
+The full set of configuration options are shown below. Only configuration keys are shown; please see the JavaDocs on the various
+configuration classes for more details about the configuration options available and their default values - particularly
+for polymorphic configuration - e.g. `ReconnectionPolicyFactory`. There are also a number of smoke tests ensuring
+that the major configuration options are parseable. To find examples of particular config variants, take a look at the
+[test resources](src/test/resources) folder.
 
 ```yaml
 clusterName:
