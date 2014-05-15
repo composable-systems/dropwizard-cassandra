@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.pooling;
 
 import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.PoolingOptions;
@@ -43,8 +43,8 @@ public class PoolingOptionsFactoryTest {
         assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE), is(8000));
     }
 
-    private PoolingOptionsFactory.HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int maxSimultaneousRequests, int minSimultaneousRequests) {
-        PoolingOptionsFactory.HostDistanceOptions options = new PoolingOptionsFactory.HostDistanceOptions();
+    private HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int maxSimultaneousRequests, int minSimultaneousRequests) {
+        HostDistanceOptions options = new HostDistanceOptions();
         options.setCoreConnections(coreConnections);
         options.setMaxConnections(maxConnections);
         options.setMaxSimultaneousRequests(maxSimultaneousRequests);

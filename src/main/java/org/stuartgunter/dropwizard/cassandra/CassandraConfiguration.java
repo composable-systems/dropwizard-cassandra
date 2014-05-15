@@ -22,6 +22,7 @@ import com.google.common.base.Strings;
 import io.dropwizard.util.Duration;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
+import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 

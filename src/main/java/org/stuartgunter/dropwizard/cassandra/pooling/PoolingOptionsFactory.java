@@ -14,15 +14,36 @@
  *    limitations under the License.
  */
 
-package org.stuartgunter.dropwizard.cassandra;
+package org.stuartgunter.dropwizard.cassandra.pooling;
 
 import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.PoolingOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
+/**
+ * A factory for configuring and building {@link PoolingOptions} instances.
+ * <p/>
+ * <b>Configuration Parameters:</b>
+ * <table>
+ *     <tr>
+ *         <td>Name</td>
+ *         <td>Default</td>
+ *         <td>Description</td>
+ *     </tr>
+ *     <tr>
+ *         <td>local</td>
+ *         <td>No default. You must specify local pooling options.</td>
+ *         <td>Specifies connection {@link HostDistanceOptions pooling options} for local hosts.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>remote</td>
+ *         <td>No default. You must specify remote pooling options.</td>
+ *         <td>Specifies connection {@link HostDistanceOptions pooling options} for remote hosts.</td>
+ *     </tr>
+ * </table>
+ */
 public class PoolingOptionsFactory {
 
     @Valid
@@ -76,55 +97,4 @@ public class PoolingOptionsFactory {
         }
     }
 
-    public static class HostDistanceOptions {
-
-        @Min(0)
-        private Integer minSimultaneousRequests;
-        @Min(0)
-        private Integer maxSimultaneousRequests;
-        @Min(0)
-        private Integer coreConnections;
-        @Min(0)
-        private Integer maxConnections;
-
-        @JsonProperty
-        public Integer getMinSimultaneousRequests() {
-            return minSimultaneousRequests;
-        }
-
-        @JsonProperty
-        public void setMinSimultaneousRequests(Integer minSimultaneousRequests) {
-            this.minSimultaneousRequests = minSimultaneousRequests;
-        }
-
-        @JsonProperty
-        public Integer getMaxSimultaneousRequests() {
-            return maxSimultaneousRequests;
-        }
-
-        @JsonProperty
-        public void setMaxSimultaneousRequests(Integer maxSimultaneousRequests) {
-            this.maxSimultaneousRequests = maxSimultaneousRequests;
-        }
-
-        @JsonProperty
-        public Integer getCoreConnections() {
-            return coreConnections;
-        }
-
-        @JsonProperty
-        public void setCoreConnections(Integer coreConnections) {
-            this.coreConnections = coreConnections;
-        }
-
-        @JsonProperty
-        public Integer getMaxConnections() {
-            return maxConnections;
-        }
-
-        @JsonProperty
-        public void setMaxConnections(Integer maxConnections) {
-            this.maxConnections = maxConnections;
-        }
-    }
 }
