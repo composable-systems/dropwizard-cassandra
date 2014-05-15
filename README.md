@@ -69,7 +69,7 @@ public class YourApp extends Application<YourAppConfig> {
     private final CassandraBundle<YourAppConfig> cassandra =
             new CassandraBundle<YourAppConfig>() {
                 @Override
-                protected CassandraConfiguration cassandraConfiguration(YourAppConfig appConfig) {
+                protected CassandraFactory cassandraConfiguration(YourAppConfig appConfig) {
                     return appConfig.getCassandraConfig();
                 }
             };
