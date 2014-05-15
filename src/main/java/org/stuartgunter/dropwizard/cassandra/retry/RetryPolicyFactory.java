@@ -20,6 +20,22 @@ import com.datastax.driver.core.policies.RetryPolicy;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.dropwizard.jackson.Discoverable;
 
+/**
+ * A service provider interface for creating DataStax {@link RetryPolicy retry policies}.
+ * <p/>
+ * To create your own, just:
+ * <ol>
+ *     <li>Create a class which implements {@link RetryPolicyFactory}.</li>
+ *     <li>Annotate it with {@code @JsonTypeName} and give it a unique type name.</li>
+ *     <li>Add a {@code META-INF/services/org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory}
+ *     file with your implementation's full class name to the class path.</li>
+ * </ol>
+ *
+ * @see DefaultRetryPolicyFactory
+ * @see DowngradingConsistencyRetryPolicyFactory
+ * @see FallthroughRetryPolicyFactory
+ * @see LoggingRetryPolicyFactory
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface RetryPolicyFactory extends Discoverable {
 

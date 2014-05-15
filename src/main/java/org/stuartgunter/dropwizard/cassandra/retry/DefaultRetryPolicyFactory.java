@@ -3,8 +3,22 @@ package org.stuartgunter.dropwizard.cassandra.retry;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
+/**
+ * A factory for configuring and building {@link DefaultRetryPolicy} instances.
+ * <p/>
+ * <b>Configuration Parameters:</b>
+ * <table>
+ *     <tr>
+ *         <td>Name</td>
+ *         <td>Default</td>
+ *         <td>Description</td>
+ *     </tr>
+ *     <tr colspan="3">
+ *         <td>No configuration options available.</td>
+ *     </tr>
+ * </table>
+ */
 @JsonTypeName("default")
 public class DefaultRetryPolicyFactory implements RetryPolicyFactory {
     @Override

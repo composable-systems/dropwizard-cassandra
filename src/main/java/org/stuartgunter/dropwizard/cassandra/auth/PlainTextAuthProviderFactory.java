@@ -4,8 +4,29 @@ import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.PlainTextAuthProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
 
+/**
+ * A factory for configuring and building {@link PlainTextAuthProvider} instances.
+ * <p/>
+ * <b>Configuration Parameters:</b>
+ * <table>
+ *     <tr>
+ *         <td>Name</td>
+ *         <td>Default</td>
+ *         <td>Description</td>
+ *     </tr>
+ *     <tr>
+ *         <td>username</td>
+ *         <td>No default. You must define a username.</td>
+ *         <td>The username to authenticate with.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>password</td>
+ *         <td>No default. You must define a password.</td>
+ *         <td>The password to authenticate with.</td>
+ *     </tr>
+ * </table>
+ */
 @JsonTypeName("plainText")
 public class PlainTextAuthProviderFactory implements AuthProviderFactory {
 
