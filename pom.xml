@@ -163,6 +163,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <additionalparam>${javadoc.doclint.none}</additionalparam>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -258,6 +261,15 @@
     </distributionManagement>
 
     <profiles>
+        <profile>
+            <id>java8-disable-strict-javadoc</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <javadoc.doclint.none>-Xdoclint:none</javadoc.doclint.none>
+            </properties>
+        </profile>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
