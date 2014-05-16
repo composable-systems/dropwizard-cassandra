@@ -17,6 +17,7 @@
 package org.stuartgunter.dropwizard.cassandra;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -34,12 +35,14 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
     private static final Logger LOG = LoggerFactory.getLogger(CassandraBundle.class);
 
     private Cluster cluster;
+    private String keyspace;
 
     protected abstract CassandraFactory cassandraConfiguration(C configuration);
 
     @Override
     public void run(C configuration, Environment environment) throws Exception {
         CassandraFactory cassandraConfig = cassandraConfiguration(configuration);
+        keyspace = cassandraConfig.getKeyspace();
 
         LOG.debug("Building {} Cassandra cluster", cassandraConfig.getClusterName());
         cluster = cassandraConfig.buildCluster();
@@ -62,5 +65,9 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
 
     public Cluster getCluster() {
         return cluster;
+    }
+
+    public Session newSession() {
+        return keyspace == null ? cluster.connect() : cluster.connect(keyspace);
     }
 }

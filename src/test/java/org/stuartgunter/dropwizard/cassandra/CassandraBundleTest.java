@@ -21,6 +21,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Metrics;
+import com.datastax.driver.core.Session;
 import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
@@ -110,5 +111,30 @@ public class CassandraBundleTest {
         bundle.run(configuration, environment);
 
         assertThat(bundle.getCluster(), sameInstance(cluster));
+    }
+
+    @Test
+    public void createsNewSessionWithoutKeyspace() throws Exception {
+        Session session = mock(Session.class);
+        when(cluster.connect()).thenReturn(session);
+
+        bundle.run(configuration, environment);
+        Session newSession = bundle.newSession();
+
+        assertThat(newSession, sameInstance(session));
+        verify(cluster).connect();
+    }
+
+    @Test
+    public void createsNewSessionWithKeyspace() throws Exception {
+        Session session = mock(Session.class);
+        when(cluster.connect(anyString())).thenReturn(session);
+        when(cassandraFactory.getKeyspace()).thenReturn("keyspace");
+
+        bundle.run(configuration, environment);
+        Session newSession = bundle.newSession();
+
+        assertThat(newSession, sameInstance(session));
+        verify(cluster).connect("keyspace");
     }
 }
