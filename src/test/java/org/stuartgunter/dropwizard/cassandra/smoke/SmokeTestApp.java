@@ -40,6 +40,6 @@ public class SmokeTestApp extends Application<SmokeTestConfiguration> {
 
     @Override
     public void run(SmokeTestConfiguration configuration, Environment environment) throws Exception {
-        environment.jersey().register(new CassandraResource(cassandraBundle.getCluster()));
+        environment.jersey().register(new CassandraResource(cassandraBundle.getSessionFactory()));
     }
 }

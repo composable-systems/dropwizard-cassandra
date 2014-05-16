@@ -51,7 +51,7 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
         environment.lifecycle().manage(new CassandraManager(cluster, cassandraConfig.getShutdownGracePeriod()));
 
         LOG.debug("Registering {} Cassandra health check", cassandraConfig.getClusterName());
-        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, cassandraConfig.getKeyspace()));
+        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(sessionFactory));
 
         if (cassandraConfig.isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cassandraConfig.getClusterName());

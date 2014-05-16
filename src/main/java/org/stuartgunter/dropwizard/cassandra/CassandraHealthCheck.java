@@ -17,7 +17,6 @@
 package org.stuartgunter.dropwizard.cassandra;
 
 import com.codahale.metrics.health.HealthCheck;
-import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,40 +30,22 @@ import org.slf4j.LoggerFactory;
 public class CassandraHealthCheck extends HealthCheck {
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraHealthCheck.class);
+    private final SessionFactory sessionFactory;
 
-    private final Cluster cluster;
-    private final String keyspace;
-
-    public CassandraHealthCheck(Cluster cluster) {
-        this(cluster, null);
-    }
-
-    public CassandraHealthCheck(Cluster cluster, String keyspace) {
-        this.cluster = cluster;
-        this.keyspace = keyspace;
+    public CassandraHealthCheck(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     protected Result check() throws Exception {
-        return (keyspace == null) ? connectToCluster() : connectToKeyspace();
-    }
-
-    private Result connectToKeyspace() {
-        try (Session session = cluster.connect(keyspace)) {
+        String keyspace = null;
+        String clusterName = null;
+        try (Session session = sessionFactory.create()) {
+            clusterName = session.getCluster().getClusterName();
+            keyspace = session.getLoggedKeyspace();
             return Result.healthy();
         } catch (Exception ex) {
-            LOG.error("Unable to connect to Cassandra cluster [{}] with keyspace [{}]",
-                    cluster.getClusterName(), keyspace, ex);
-            throw ex;
-        }
-    }
-
-    private Result connectToCluster() {
-        try (Session session = cluster.connect()) {
-            return Result.healthy();
-        } catch (Exception ex) {
-            LOG.error("Unable to connect to Cassandra cluster [{}]",
-                    cluster.getClusterName(), ex);
+            LOG.error("Unable to connect to Cassandra cluster [{}] with keyspace [{}]", clusterName, keyspace, ex);
             throw ex;
         }
     }

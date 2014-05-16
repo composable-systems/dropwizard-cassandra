@@ -16,14 +16,11 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -35,18 +32,16 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class CassandraResource {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CassandraResource.class);
+    private final SessionFactory sessionFactory;
 
-    private final Cluster cluster;
-
-    public CassandraResource(Cluster cluster) {
-        this.cluster = cluster;
+    public CassandraResource(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @GET
     @Path("/query")
     public List<String> query() {
-        try (Session session = cluster.connect()) {
+        try (Session session = sessionFactory.create()) {
             final ResultSet resultSet = session.execute("SELECT * FROM SYSTEM.SCHEMA_COLUMNFAMILIES;");
             return FluentIterable.from(resultSet.all())
                     .transform(new Function<Row, String>() {
