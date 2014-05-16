@@ -81,7 +81,11 @@ public class YourApp extends Application<YourAppConfig> {
 
     @Override
     public void run(YourAppConfig configuration, Environment environment) throws Exception {
-        // you can now use `cassandra.getCluster()` to use the cluster instance in your app
+        /*
+         * you can now use `cassandra.getCluster()` to use the cluster instance in your app,
+         * or pass around a SessionFactory with `cassandra.getSessionFactory()` if you just need
+         * to be able to create new sessions without knowing whether a keyspace was configured or not
+         */
     }
 }
 ```
