@@ -16,6 +16,14 @@ public class SessionFactory {
         this.keyspace = keyspace;
     }
 
+    public String getClusterName() {
+        return cluster.getClusterName();
+    }
+
+    public String getKeyspace() {
+        return keyspace;
+    }
+
     /**
      * Creates a new initialised {@link Session session} to the Cassandra cluster. If provided, the keyspace will
      * set on the Session before returning it.

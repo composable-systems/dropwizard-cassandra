@@ -38,14 +38,11 @@ public class CassandraHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        String keyspace = null;
-        String clusterName = null;
         try (Session session = sessionFactory.create()) {
-            clusterName = session.getCluster().getClusterName();
-            keyspace = session.getLoggedKeyspace();
             return Result.healthy();
         } catch (Exception ex) {
-            LOG.error("Unable to connect to Cassandra cluster [{}] with keyspace [{}]", clusterName, keyspace, ex);
+            LOG.error("Unable to connect to Cassandra cluster [{}] with keyspace [{}]",
+                    sessionFactory.getClusterName(), sessionFactory.getKeyspace(), ex);
             throw ex;
         }
     }
