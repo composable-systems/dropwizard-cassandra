@@ -30,9 +30,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CassandraBundleIntegrationTest {
 
@@ -50,7 +48,7 @@ public class CassandraBundleIntegrationTest {
         final WebResource resource = Client.create().resource(uri);
         final List<String> result = Lists.newArrayList(resource.get(String[].class));
 
-        assertThat(result, hasItem("system"));
+        assertThat(result).contains("system");
     }
 
     @Test
@@ -63,7 +61,7 @@ public class CassandraBundleIntegrationTest {
         final WebResource resource = Client.create().resource(uri);
         final String result = resource.get(String.class);
 
-        assertThat(result, containsString("com.datastax.driver.core.Cluster.minimal-cluster"));
+        assertThat(result).contains("com.datastax.driver.core.Cluster.minimal-cluster");
     }
 
     @Test
@@ -76,6 +74,6 @@ public class CassandraBundleIntegrationTest {
         final WebResource resource = Client.create().resource(uri);
         final String result = resource.get(String.class);
 
-        assertThat(result, containsString("cassandra.minimal-cluster"));
+        assertThat(result).contains("cassandra.minimal-cluster");
     }
 }

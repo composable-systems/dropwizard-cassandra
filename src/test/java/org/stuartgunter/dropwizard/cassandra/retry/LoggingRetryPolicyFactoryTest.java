@@ -3,8 +3,6 @@ package org.stuartgunter.dropwizard.cassandra.retry;
 import com.datastax.driver.core.policies.RetryPolicy;
 import org.junit.Before;
 import org.junit.Test;
-import org.stuartgunter.dropwizard.cassandra.retry.LoggingRetryPolicyFactory;
-import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
 import static org.mockito.Mockito.*;
 

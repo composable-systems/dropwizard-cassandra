@@ -3,10 +3,8 @@ package org.stuartgunter.dropwizard.cassandra.reconnection;
 import com.datastax.driver.core.policies.ExponentialReconnectionPolicy;
 import io.dropwizard.util.Duration;
 import org.junit.Test;
-import org.stuartgunter.dropwizard.cassandra.reconnection.ExponentialReconnectionPolicyFactory;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExponentialReconnectionPolicyFactoryTest {
 
@@ -18,7 +16,7 @@ public class ExponentialReconnectionPolicyFactoryTest {
 
         final ExponentialReconnectionPolicy policy = (ExponentialReconnectionPolicy) factory.build();
 
-        assertThat(policy.getBaseDelayMs(), is(4000L));
-        assertThat(policy.getMaxDelayMs(), is(7000L));
+        assertThat(policy.getBaseDelayMs()).isEqualTo(4000L);
+        assertThat(policy.getMaxDelayMs()).isEqualTo(7000L);
     }
 }

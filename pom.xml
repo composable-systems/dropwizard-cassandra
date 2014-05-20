@@ -50,6 +50,7 @@
         <dropwizard.version>0.7.0</dropwizard.version>
         <cassandra-driver.version>2.0.2</cassandra-driver.version>
         <powermock.version>1.5.4</powermock.version>
+        <assertj.version>1.5.0</assertj.version>
     </properties>
 
     <dependencies>
@@ -88,11 +89,17 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

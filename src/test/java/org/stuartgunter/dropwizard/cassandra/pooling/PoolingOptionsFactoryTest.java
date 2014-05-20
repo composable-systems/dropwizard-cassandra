@@ -20,8 +20,7 @@ import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.PoolingOptions;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PoolingOptionsFactoryTest {
 
@@ -33,14 +32,14 @@ public class PoolingOptionsFactoryTest {
 
         final PoolingOptions poolingOptions = factory.build();
 
-        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL), is(1000));
-        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL), is(2000));
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL), is(3000));
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL), is(4000));
-        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.REMOTE), is(5000));
-        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE), is(6000));
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE), is(7000));
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE), is(8000));
+        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(1000);
+        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(2000);
+        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(3000);
+        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(4000);
+        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(5000);
+        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(6000);
+        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(7000);
+        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(8000);
     }
 
     private HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int maxSimultaneousRequests, int minSimultaneousRequests) {
@@ -64,13 +63,13 @@ public class PoolingOptionsFactoryTest {
     }
 
     private void verifySamePoolingOptions(PoolingOptions poolingOptions, PoolingOptions defaultPoolingOptions, HostDistance hostDistance) {
-        assertThat(poolingOptions.getCoreConnectionsPerHost(hostDistance),
-                is(defaultPoolingOptions.getCoreConnectionsPerHost(hostDistance)));
-        assertThat(poolingOptions.getMaxConnectionsPerHost(hostDistance),
-                is(defaultPoolingOptions.getMaxConnectionsPerHost(hostDistance)));
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance),
-                is(defaultPoolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance)));
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance),
-                is(defaultPoolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance)));
+        assertThat(poolingOptions.getCoreConnectionsPerHost(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getCoreConnectionsPerHost(hostDistance));
+        assertThat(poolingOptions.getMaxConnectionsPerHost(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getMaxConnectionsPerHost(hostDistance));
+        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance));
+        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance));
     }
 }

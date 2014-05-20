@@ -26,8 +26,7 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A series of smoke tests that ensure the application can load and initialise the Cassandra cluster under
@@ -64,7 +63,7 @@ public class SmokeTest {
 
     @Test
     public void supportsConfiguration() throws Exception {
-        assertThat(app.getEnvironment().healthChecks().getNames(),
-                hasItem("cassandra.smoke-cluster"));
+        assertThat(app.getEnvironment().healthChecks().getNames())
+                .contains("cassandra.smoke-cluster");
     }
 }

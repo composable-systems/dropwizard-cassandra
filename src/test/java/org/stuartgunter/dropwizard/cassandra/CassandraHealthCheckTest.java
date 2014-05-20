@@ -22,8 +22,7 @@ import com.datastax.driver.core.Session;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CassandraHealthCheckTest {
@@ -44,7 +43,7 @@ public class CassandraHealthCheckTest {
 
         final HealthCheck.Result result = healthCheck.execute();
 
-        assertThat(result.isHealthy(), is(true));
+        assertThat(result.isHealthy()).isTrue();
         verify(sessionFactory).create();
     }
 
@@ -55,7 +54,7 @@ public class CassandraHealthCheckTest {
 
         final HealthCheck.Result result = healthCheck.execute();
 
-        assertThat(result.isHealthy(), is(false));
+        assertThat(result.isHealthy()).isFalse();
         verify(sessionFactory).create();
     }
 }

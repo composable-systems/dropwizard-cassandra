@@ -2,10 +2,8 @@ package org.stuartgunter.dropwizard.cassandra.retry;
 
 import com.datastax.driver.core.policies.FallthroughRetryPolicy;
 import org.junit.Test;
-import org.stuartgunter.dropwizard.cassandra.retry.FallthroughRetryPolicyFactory;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FallthroughRetryPolicyFactoryTest {
 
@@ -15,6 +13,6 @@ public class FallthroughRetryPolicyFactoryTest {
 
         final FallthroughRetryPolicy policy = (FallthroughRetryPolicy) factory.build();
 
-        assertThat(policy, sameInstance(FallthroughRetryPolicy.INSTANCE));
+        assertThat(policy).isSameAs(FallthroughRetryPolicy.INSTANCE);
     }
 }

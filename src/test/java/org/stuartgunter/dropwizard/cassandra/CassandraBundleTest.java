@@ -30,8 +30,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
@@ -109,7 +108,7 @@ public class CassandraBundleTest {
     public void providesACluster() throws Exception {
         bundle.run(configuration, environment);
 
-        assertThat(bundle.getCluster(), sameInstance(cluster));
+        assertThat(bundle.getCluster()).isSameAs(cluster);
     }
 
     @Test
@@ -119,6 +118,6 @@ public class CassandraBundleTest {
         SessionFactory sessionFactory1 = bundle.getSessionFactory();
         SessionFactory sessionFactory2 = bundle.getSessionFactory();
 
-        assertThat(sessionFactory1, sameInstance(sessionFactory2));
+        assertThat(sessionFactory1).isSameAs(sessionFactory2);
     }
 }

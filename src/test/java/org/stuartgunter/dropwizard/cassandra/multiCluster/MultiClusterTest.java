@@ -21,8 +21,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiClusterTest {
 
@@ -32,7 +31,8 @@ public class MultiClusterTest {
 
     @Test
     public void supportsConfiguration() throws Exception {
-        assertThat(app.getEnvironment().healthChecks().getNames(), hasItem("cassandra.cluster1"));
-        assertThat(app.getEnvironment().healthChecks().getNames(), hasItem("cassandra.cluster2"));
+        assertThat(app.getEnvironment().healthChecks().getNames())
+                .contains("cassandra.cluster1")
+                .contains("cassandra.cluster2");
     }
 }

@@ -2,10 +2,8 @@ package org.stuartgunter.dropwizard.cassandra.retry;
 
 import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import org.junit.Test;
-import org.stuartgunter.dropwizard.cassandra.retry.DowngradingConsistencyRetryPolicyFactory;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DowngradingConsistencyRetryPolicyFactoryTest {
 
@@ -15,6 +13,6 @@ public class DowngradingConsistencyRetryPolicyFactoryTest {
 
         final DowngradingConsistencyRetryPolicy policy = (DowngradingConsistencyRetryPolicy) factory.build();
 
-        assertThat(policy, sameInstance(DowngradingConsistencyRetryPolicy.INSTANCE));
+        assertThat(policy).isSameAs(DowngradingConsistencyRetryPolicy.INSTANCE);
     }
 }

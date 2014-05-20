@@ -26,8 +26,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,7 +55,8 @@ public class CassandraMetricSetTest {
 
         final Map<String, Metric> result = metricSet.getMetrics();
 
-        assertThat(result, hasEntry("com.datastax.driver.core.Cluster.test-cluster.metricA", metricA));
-        assertThat(result, hasEntry("com.datastax.driver.core.Cluster.test-cluster.metricB", metricB));
+        assertThat(result)
+                .containsEntry("com.datastax.driver.core.Cluster.test-cluster.metricA", metricA)
+                .containsEntry("com.datastax.driver.core.Cluster.test-cluster.metricB", metricB);
     }
 }
