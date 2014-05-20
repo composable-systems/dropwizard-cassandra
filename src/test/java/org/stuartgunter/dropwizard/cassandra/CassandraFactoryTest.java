@@ -16,9 +16,14 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
+import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
+import io.dropwizard.setup.Environment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +34,9 @@ import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -38,6 +46,10 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(Cluster.class)
 public class CassandraFactoryTest {
 
+    private final Environment environment = mock(Environment.class);
+    private final LifecycleEnvironment lifecycle = mock(LifecycleEnvironment.class);
+    private final HealthCheckRegistry healthChecks = mock(HealthCheckRegistry.class);
+    private final MetricRegistry metrics = mock(MetricRegistry.class);
     private final Cluster.Builder builder = mock(Cluster.Builder.class);
     private final Cluster cluster = mock(Cluster.class);
     private final AuthProviderFactory authProviderFactory = mock(AuthProviderFactory.class);
@@ -50,16 +62,25 @@ public class CassandraFactoryTest {
     private final SocketOptions socketOptions = mock(SocketOptions.class);
     private final PoolingOptionsFactory poolingOptionsFactory = mock(PoolingOptionsFactory.class);
     private final PoolingOptions poolingOptions = mock(PoolingOptions.class);
+    private final Map<String, Metric> driverMetrics = Collections.emptyMap();
+    private final Metrics clusterMetrics = mock(Metrics.class);
+    private final MetricRegistry driverRegistry = mock(MetricRegistry.class);
 
     @Before
     public void setUp() throws Exception {
         mockStatic(Cluster.class);
+        when(environment.lifecycle()).thenReturn(lifecycle);
+        when(environment.metrics()).thenReturn(metrics);
+        when(environment.healthChecks()).thenReturn(healthChecks);
         when(Cluster.builder()).thenReturn(builder);
         when(builder.build()).thenReturn(cluster);
         when(authProviderFactory.build()).thenReturn(authProvider);
         when(reconnectionPolicyFactory.build()).thenReturn(reconnectionPolicy);
         when(retryPolicyFactory.build()).thenReturn(retryPolicy);
         when(poolingOptionsFactory.build()).thenReturn(poolingOptions);
+        when(cluster.getMetrics()).thenReturn(clusterMetrics);
+        when(clusterMetrics.getRegistry()).thenReturn(driverRegistry);
+        when(driverRegistry.getMetrics()).thenReturn(driverMetrics);
     }
 
     @Test
@@ -79,7 +100,7 @@ public class CassandraFactoryTest {
         configuration.setSocketOptions(socketOptions);
         configuration.setPoolingOptions(poolingOptionsFactory);
 
-        final Cluster result = configuration.buildCluster();
+        final Cluster result = configuration.build(environment);
 
         assertThat(result).isSameAs(cluster);
         verify(builder).addContactPoints("host1", "host2");
@@ -98,4 +119,44 @@ public class CassandraFactoryTest {
         verify(builder).build();
         verifyNoMoreInteractions(builder);
     }
+
+    @Test
+    public void registersHealthCheck() throws Exception {
+        final CassandraFactory configuration = new CassandraFactory();
+        when(cluster.getClusterName()).thenReturn("test-cluster");
+
+        final Cluster result = configuration.build(environment);
+        assertThat(result).isNotNull();
+        verify(healthChecks).register(eq("cassandra.test-cluster"), isA(CassandraHealthCheck.class));
+    }
+
+    @Test
+    public void registersMetricsWhenEnabled() throws Exception {
+        final CassandraFactory configuration = new CassandraFactory();
+        configuration.setMetricsEnabled(true);
+
+        final Cluster result = configuration.build(environment);
+        assertThat(result).isNotNull();
+        verify(metrics).registerAll(isA(CassandraMetricSet.class));
+    }
+
+    @Test
+    public void doesNotRegistersMetricsWhenDisabled() throws Exception {
+        final CassandraFactory configuration = new CassandraFactory();
+        configuration.setMetricsEnabled(false);
+
+        final Cluster result = configuration.build(environment);
+        assertThat(result).isNotNull();
+        verifyZeroInteractions(metrics);
+    }
+
+    @Test
+    public void managesClusterLifecycle() throws Exception {
+        final CassandraFactory configuration = new CassandraFactory();
+
+        final Cluster result = configuration.build(environment);
+        assertThat(result).isNotNull();
+        verify(lifecycle).manage(isA(CassandraManager.class));
+    }
+
 }

@@ -60,7 +60,41 @@ with the following coordinates:
 </dependency>
 ```
 
-Once you have the dependency registered, it's just a matter of adding the bundle to your `Application` class.
+Once you have the dependency registered, it's just a matter of adding `CassandraFactory` instances to your 
+`Configuration` class:
+
+```java
+public class YourAppConfig extends Configuration {
+
+    @Valid
+    @NotNull
+    private CassandraFactory cassandra = new CassandraFactory();
+
+    @JsonProperty("cassandra")
+    public CassandraFactory getCassandraFactory() {
+        return cassandra;
+    }
+
+    @JsonProperty("cassandra")
+    public void setCassandraFactory(CassandraFactory cassandra) {
+        this.cassandra = cassandra;
+    }
+}
+```
+
+Then, in your `Application`, build `Cluster` instances when you need them:
+
+```java
+public class YourApp extends Application<YourAppConfig> {
+    
+    @Override
+    public void run(YourAppConfig configuration, Environment environment) throws Exception {
+        Cluster cassandra = configuration.getCassandraFactory().build(environment);
+    }
+}
+```
+
+Alternatively, you may use the `CassandraBundle` to ensure a `Cluster` has been initialized during startup.
 `CassandraBundle` is abstract and requires you to implement a single method in order to provide the correct
 configuration (similar to the `dropwizard-hibernate` module).
 
@@ -70,7 +104,7 @@ public class YourApp extends Application<YourAppConfig> {
             new CassandraBundle<YourAppConfig>() {
                 @Override
                 protected CassandraFactory cassandraConfiguration(YourAppConfig appConfig) {
-                    return appConfig.getCassandraConfig();
+                    return appConfig.getCassandraFactory();
                 }
             };
 

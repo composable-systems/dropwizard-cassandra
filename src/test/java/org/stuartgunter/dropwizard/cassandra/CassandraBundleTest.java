@@ -16,23 +16,17 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
-import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Metrics;
 import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 
 public class CassandraBundleTest {
@@ -57,7 +51,7 @@ public class CassandraBundleTest {
         when(environment.lifecycle()).thenReturn(lifecycle);
         when(environment.metrics()).thenReturn(metrics);
         when(environment.healthChecks()).thenReturn(healthChecks);
-        when(cassandraFactory.buildCluster()).thenReturn(cluster);
+        when(cassandraFactory.build(any(Environment.class))).thenReturn(cluster);
         when(cluster.getClusterName()).thenReturn("test-cluster");
     }
 
@@ -65,43 +59,7 @@ public class CassandraBundleTest {
     public void buildsCluster() throws Exception {
         bundle.run(configuration, environment);
 
-        verify(cassandraFactory).buildCluster();
-    }
-
-    @Test
-    public void registersHealthCheck() throws Exception {
-        bundle.run(configuration, environment);
-
-        verify(healthChecks).register(eq("cassandra.test-cluster"), isA(CassandraHealthCheck.class));
-    }
-
-    @Test
-    public void registersMetricsWhenEnabled() throws Exception {
-        Metrics clusterMetrics = mock(Metrics.class);
-        MetricRegistry registry = mock(MetricRegistry.class);
-        Map<String, Metric> driverMetrics = Collections.emptyMap();
-        when(cluster.getMetrics()).thenReturn(clusterMetrics);
-        when(clusterMetrics.getRegistry()).thenReturn(registry);
-        when(registry.getMetrics()).thenReturn(driverMetrics);
-        when(cassandraFactory.isMetricsEnabled()).thenReturn(true);
-
-        bundle.run(configuration, environment);
-
-        verify(metrics).registerAll(isA(CassandraMetricSet.class));
-    }
-
-    @Test
-    public void doesNotRegistersMetricsWhenDisabled() throws Exception {
-        bundle.run(configuration, environment);
-
-        verifyZeroInteractions(metrics);
-    }
-
-    @Test
-    public void managesClusterLifecycle() throws Exception {
-        bundle.run(configuration, environment);
-
-        verify(lifecycle).manage(isA(CassandraManager.class));
+        verify(cassandraFactory).build(eq(environment));
     }
 
     @Test

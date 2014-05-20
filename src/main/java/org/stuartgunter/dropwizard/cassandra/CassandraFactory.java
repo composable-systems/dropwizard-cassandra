@@ -19,8 +19,11 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+import io.dropwizard.setup.Environment;
 import io.dropwizard.util.Duration;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
@@ -30,6 +33,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import static com.codahale.metrics.MetricRegistry.name;
 
 /**
  * A factory for configuring the Cassandra bundle.
@@ -120,6 +125,8 @@ import javax.validation.constraints.NotNull;
  * </table>
  */
 public class CassandraFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CassandraFactory.class);
 
     private String clusterName;
     private String keyspace;
@@ -307,7 +314,7 @@ public class CassandraFactory {
         this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
-    public Cluster buildCluster() {
+    public Cluster build(Environment environment) {
         final Cluster.Builder builder = Cluster.builder();
         builder.addContactPoints(contactPoints);
         builder.withPort(port);
@@ -350,6 +357,19 @@ public class CassandraFactory {
             builder.withClusterName(clusterName);
         }
 
-        return builder.build();
+        Cluster cluster = builder.build();
+
+        LOG.debug("Registering {} Cassandra cluster for lifecycle management", getClusterName());
+        environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
+
+        LOG.debug("Registering {} Cassandra health check", getClusterName());
+        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(new SessionFactory(cluster, getKeyspace())));
+
+        if (isMetricsEnabled()) {
+            LOG.debug("Registering {} Cassandra metrics", getClusterName());
+            environment.metrics().registerAll(new CassandraMetricSet(cluster));
+        }
+
+        return cluster;
     }
 }
