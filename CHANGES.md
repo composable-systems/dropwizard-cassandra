@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4
+
+* [Pull 1](https://github.com/stuartgunter/dropwizard-cassandra/pull/1) Make building independent of the Bundle
+
 ## 0.3.1
 
 * Added `SessionFactory` to allow for easy session initialisation based on configuration (a session is established with
