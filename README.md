@@ -27,8 +27,7 @@ up correctly.
 
 The Cluster instance is wrapped as a `Managed` object in Dropwizard, allowing it to be properly closed when the application
 terminates. Graceful termination is attempted first (with a configurable wait period), after which the cluster will be
-forcefully terminated. Remember that we're talking about the client driver being closed... not the actual Cassandra cluster
-(unfortunately DataStax used a confusing term for their client API in this case).
+forcefully terminated. Remember that we're talking about the client driver being closed... not the actual Cassandra cluster.
 
 ### Health Check
 
