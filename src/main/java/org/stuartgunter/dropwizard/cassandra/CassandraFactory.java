@@ -359,14 +359,14 @@ public class CassandraFactory {
 
         Cluster cluster = builder.build();
 
-        LOG.debug("Registering {} Cassandra cluster for lifecycle management", getClusterName());
+        LOG.debug("Registering {} Cassandra cluster for lifecycle management", cluster.getClusterName());
         environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
 
-        LOG.debug("Registering {} Cassandra health check", getClusterName());
+        LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
         environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(new SessionFactory(cluster, getKeyspace())));
 
         if (isMetricsEnabled()) {
-            LOG.debug("Registering {} Cassandra metrics", getClusterName());
+            LOG.debug("Registering {} Cassandra metrics", cluster.getClusterName());
             environment.metrics().registerAll(new CassandraMetricSet(cluster));
         }
 
