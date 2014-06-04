@@ -1,5 +1,7 @@
 # Dropwizard Bundle for Cassandra
 
+[![Build Status](https://travis-ci.org/stuartgunter/dropwizard-cassandra.png?branch=master)](https://travis-ci.org/stuartgunter/dropwizard-cassandra)
+
 [Dropwizard](http://dropwizard.io) provides [bundles](http://dropwizard.github.io/dropwizard/manual/core.html#bundles)
 as a means to package common functionality in a modular form, easy to use in multiple applications. Some of the standard
 bundles include support for things like view rendering and Hibernate.
