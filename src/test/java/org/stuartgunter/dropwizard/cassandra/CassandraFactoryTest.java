@@ -34,6 +34,7 @@ import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
+import java.net.InetAddress;
 import java.util.Collections;
 import java.util.Map;
 
@@ -89,7 +90,7 @@ public class CassandraFactoryTest {
         configuration.setAuthProvider(authProviderFactory);
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
-        configuration.setContactPoints(new String[] {"host1", "host2"});
+        configuration.setContactPoints(new InetAddress[] { InetAddress.getByName("localhost") });
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
@@ -103,7 +104,7 @@ public class CassandraFactoryTest {
         final Cluster result = configuration.build(environment);
 
         assertThat(result).isSameAs(cluster);
-        verify(builder).addContactPoints("host1", "host2");
+        verify(builder).addContactPoints(InetAddress.getByName("localhost"));
         verify(builder).withPort(1234);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");
