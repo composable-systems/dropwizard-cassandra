@@ -34,6 +34,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import java.net.InetAddress;
+
 import static com.codahale.metrics.MetricRegistry.name;
 
 /**
@@ -132,7 +134,7 @@ public class CassandraFactory {
     private String keyspace;
 
     @NotEmpty
-    private String[] contactPoints;
+    private InetAddress[] contactPoints;
 
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
@@ -185,12 +187,12 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public String[] getContactPoints() {
+    public InetAddress[] getContactPoints() {
         return contactPoints;
     }
 
     @JsonProperty
-    public void setContactPoints(String[] contactPoints) {
+    public void setContactPoints(InetAddress[] contactPoints) {
         this.contactPoints = contactPoints;
     }
 
