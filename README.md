@@ -1,4 +1,4 @@
-# Dropwizard Bundle for Cassandra
+# dropwizard-cassandra
 
 [![Build Status](https://travis-ci.org/stuartgunter/dropwizard-cassandra.png?branch=master)](https://travis-ci.org/stuartgunter/dropwizard-cassandra)
 
