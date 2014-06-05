@@ -1,5 +1,12 @@
 # Changes
 
+## 0.5 (IN PROGRESS)
+
+* [Issue 5](https://github.com/stuartgunter/dropwizard-cassandra/issues/5) Fixed memory issue with `CassandraHealthCheck`
+* Removed `SessionFactory`, as this was not adding any real value and might encourage poor use of `Session` instances
+* [Pull 3](https://github.com/stuartgunter/dropwizard-cassandra/pull/3) Use `InetAddress` for contactPoints
+* [Pull 2](https://github.com/stuartgunter/dropwizard-cassandra/pull/2) Fix null clusterName in log messages
+
 ## 0.4
 
 * [Pull 1](https://github.com/stuartgunter/dropwizard-cassandra/pull/1) Make building independent of the Bundle
