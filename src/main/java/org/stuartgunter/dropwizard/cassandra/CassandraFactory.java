@@ -365,7 +365,7 @@ public class CassandraFactory {
         environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(new SessionFactory(cluster, getKeyspace())));
+        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster));
 
         if (isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cluster.getClusterName());

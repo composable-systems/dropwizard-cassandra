@@ -32,25 +32,23 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class CassandraResource {
 
-    private final SessionFactory sessionFactory;
+    private final Session session;
 
-    public CassandraResource(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public CassandraResource(Session session) {
+        this.session = session;
     }
 
     @GET
     @Path("/query")
     public List<String> query() {
-        try (Session session = sessionFactory.create()) {
-            final ResultSet resultSet = session.execute("SELECT * FROM SYSTEM.SCHEMA_COLUMNFAMILIES;");
-            return FluentIterable.from(resultSet.all())
-                    .transform(new Function<Row, String>() {
-                        @Override
-                        public String apply(Row input) {
-                            return input.getString(0);
-                        }
-                    })
-                    .toList();
-        }
+        final ResultSet resultSet = session.execute("SELECT * FROM SYSTEM.SCHEMA_COLUMNFAMILIES;");
+        return FluentIterable.from(resultSet.all())
+                .transform(new Function<Row, String>() {
+                    @Override
+                    public String apply(Row input) {
+                        return input.getString(0);
+                    }
+                })
+                .toList();
     }
 }

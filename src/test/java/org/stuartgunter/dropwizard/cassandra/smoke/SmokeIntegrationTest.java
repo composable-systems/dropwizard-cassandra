@@ -35,12 +35,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * This doesn't test that it works correctly - just that the configuration can be successfully loaded.
  */
 @RunWith(Parameterized.class)
-public class SmokeTest {
+public class SmokeIntegrationTest {
 
     @Rule
     public final DropwizardAppRule<SmokeTestConfiguration> app;
 
-    public SmokeTest(String configPath) {
+    public SmokeIntegrationTest(String configPath) {
         this.app = new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource(configPath).getPath());
     }
 

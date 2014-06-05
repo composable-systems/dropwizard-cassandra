@@ -19,35 +19,18 @@ package org.stuartgunter.dropwizard.cassandra.multiCluster;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.stuartgunter.dropwizard.cassandra.CassandraBundle;
-import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 
 public class MultiClusterTestApp extends Application<MultiClusterTestConfiguration> {
 
-    private final CassandraBundle<MultiClusterTestConfiguration> cassandraBundle1 =
-            new CassandraBundle<MultiClusterTestConfiguration>() {
-                @Override
-                protected CassandraFactory cassandraConfiguration(MultiClusterTestConfiguration configuration) {
-                    return configuration.getCassandra1Config();
-                }
-            };
-
-    private final CassandraBundle<MultiClusterTestConfiguration> cassandraBundle2 =
-            new CassandraBundle<MultiClusterTestConfiguration>() {
-                @Override
-                protected CassandraFactory cassandraConfiguration(MultiClusterTestConfiguration configuration) {
-                    return configuration.getCassandra2Config();
-                }
-            };
-
     @Override
     public void initialize(Bootstrap<MultiClusterTestConfiguration> bootstrap) {
-        bootstrap.addBundle(cassandraBundle1);
-        bootstrap.addBundle(cassandraBundle2);
     }
 
     @Override
     public void run(MultiClusterTestConfiguration configuration, Environment environment) throws Exception {
+        configuration.getCassandra1Config().build(environment);
+        configuration.getCassandra2Config().build(environment);
+
         environment.jersey().register(new HelloWorldResource());
     }
 }

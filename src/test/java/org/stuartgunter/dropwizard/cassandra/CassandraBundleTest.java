@@ -68,14 +68,4 @@ public class CassandraBundleTest {
 
         assertThat(bundle.getCluster()).isSameAs(cluster);
     }
-
-    @Test
-    public void providesASingletonSessionFactory() throws Exception {
-        bundle.run(configuration, environment);
-
-        SessionFactory sessionFactory1 = bundle.getSessionFactory();
-        SessionFactory sessionFactory2 = bundle.getSessionFactory();
-
-        assertThat(sessionFactory1).isSameAs(sessionFactory2);
-    }
 }

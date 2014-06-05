@@ -26,13 +26,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A bundle for integrating with Cassandra.
+ *
+ * @deprecated This class will be removed in a future release. Please use {@link CassandraFactory} instead.
  */
+@Deprecated
 public abstract class CassandraBundle<C extends Configuration> implements ConfiguredBundle<C> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraBundle.class);
 
     private Cluster cluster;
-    private SessionFactory sessionFactory;
 
     protected abstract CassandraFactory cassandraConfiguration(C configuration);
 
@@ -42,8 +44,6 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
 
         LOG.debug("Building {} Cassandra cluster", cassandraConfig.getClusterName());
         cluster = cassandraConfig.build(environment);
-
-        sessionFactory = new SessionFactory(cluster, cassandraConfig.getKeyspace());
     }
 
     @Override
@@ -52,9 +52,5 @@ public abstract class CassandraBundle<C extends Configuration> implements Config
 
     public Cluster getCluster() {
         return cluster;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 }

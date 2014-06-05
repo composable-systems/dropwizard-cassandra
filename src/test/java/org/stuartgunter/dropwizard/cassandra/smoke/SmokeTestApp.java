@@ -16,30 +16,25 @@
 
 package org.stuartgunter.dropwizard.cassandra.smoke;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.stuartgunter.dropwizard.cassandra.CassandraBundle;
-import org.stuartgunter.dropwizard.cassandra.CassandraFactory;
 import org.stuartgunter.dropwizard.cassandra.CassandraResource;
 
 public class SmokeTestApp extends Application<SmokeTestConfiguration> {
 
-    private final CassandraBundle<SmokeTestConfiguration> cassandraBundle =
-            new CassandraBundle<SmokeTestConfiguration>() {
-                @Override
-                protected CassandraFactory cassandraConfiguration(SmokeTestConfiguration configuration) {
-                    return configuration.getCassandraConfig();
-                }
-            };
-
     @Override
     public void initialize(Bootstrap<SmokeTestConfiguration> bootstrap) {
-        bootstrap.addBundle(cassandraBundle);
     }
 
     @Override
     public void run(SmokeTestConfiguration configuration, Environment environment) throws Exception {
-        environment.jersey().register(new CassandraResource(cassandraBundle.getSessionFactory()));
+        final Cluster cluster = configuration.getCassandraConfig().build(environment);
+        final String keyspace = configuration.getCassandraConfig().getKeyspace();
+        final Session session = keyspace != null ? cluster.connect(keyspace) : cluster.connect();
+
+        environment.jersey().register(new CassandraResource(session));
     }
 }
