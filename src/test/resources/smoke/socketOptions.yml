@@ -2,7 +2,7 @@ cassandra:
   clusterName: "smoke-cluster"
   contactPoints: ["localhost"]
   socketOptions:
-    connectTimeoutMillis: 1000
+    connectTimeoutMillis: 10000
     readTimeoutMillis: 2000
     keepAlive: true
     reuseAddress: true
