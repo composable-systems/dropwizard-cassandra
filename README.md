@@ -95,34 +95,6 @@ public class YourApp extends Application<YourAppConfig> {
 }
 ```
 
-Alternatively, you may use the `CassandraBundle` to ensure a `Cluster` has been initialized during startup.
-`CassandraBundle` is abstract and requires you to implement a single method in order to provide the correct
-configuration (similar to the `dropwizard-hibernate` module).
-
-```java
-public class YourApp extends Application<YourAppConfig> {
-    private final CassandraBundle<YourAppConfig> cassandra =
-            new CassandraBundle<YourAppConfig>() {
-                @Override
-                protected CassandraFactory cassandraConfiguration(YourAppConfig appConfig) {
-                    return appConfig.getCassandraFactory();
-                }
-            };
-
-    @Override
-    public void initialize(Bootstrap<CassandraBundleConfiguration> bootstrap) {
-        bootstrap.addBundle(cassandra);
-    }
-
-    @Override
-    public void run(YourAppConfig configuration, Environment environment) throws Exception {
-        /*
-         * you can now use `cassandra.getCluster()` to use the cluster instance in your app
-         */
-    }
-}
-```
-
 
 ## Configuration Reference
 
