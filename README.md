@@ -17,25 +17,26 @@ By default, the bundle includes:
 
 ### Configuration
 
-A configuration class is defined for you, with sensible defaults (wherever possible, relying on those provided by the driver).
-All you need to do is override the default configuration as required and then let the bundle do the work of wiring everything
-up correctly.
+A configuration class is defined for you with sensible defaults (wherever possible, relying on those provided by the driver).
+All you need to do is override the default configuration as required and then let the `CassandraFactory` do the work of
+wiring everything up correctly.
 
 ### Managed Cluster
 
-The Cluster instance is wrapped as a `Managed` object in Dropwizard, allowing it to be properly closed when the application
+The `Cluster` instance is wrapped as a `Managed` object in Dropwizard, allowing it to be properly closed when the application
 terminates. Graceful termination is attempted first (with a configurable wait period), after which the cluster will be
 forcefully terminated. Remember that we're talking about the client driver being closed... not the actual Cassandra cluster.
 
 ### Health Check
 
 A health check is registered automatically for you, ensuring that your application reports the correct status based on
-its ability to connect to Cassandra. This will either connect just to the cluster, or to a particular keyspace (if configured).
+its ability to connect to Cassandra. The cluster is considered healthy if at least one node is up (as determined by
+ `Host.isUp()` in the DataStax driver).
 
 ### Metrics
 
-DataStax already expose metrics directly from the Cluster instance, but this bundle extracts and registers them with the
-`MetricRegistry` of your app - ensuring that they get correctly reported.
+DataStax already expose metrics directly from the Cluster instance, but `CassandraFactory` extracts and registers them
+with the `MetricRegistry` of your app - ensuring that they get correctly reported.
 
 ### Support for Multiple Clusters
 
