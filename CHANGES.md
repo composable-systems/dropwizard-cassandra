@@ -1,6 +1,6 @@
 # Changes
 
-## 0.5 (IN PROGRESS)
+## 0.5
 
 * [Issue 5](https://github.com/stuartgunter/dropwizard-cassandra/issues/5) Fixed memory issue with `CassandraHealthCheck`
 * Removed `SessionFactory`, as this was not adding any real value and might encourage poor use of `Session` instances
