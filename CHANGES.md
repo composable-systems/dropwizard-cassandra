@@ -2,7 +2,7 @@
 
 ## 0.5
 
-* [Issue 5](https://github.com/stuartgunter/dropwizard-cassandra/issues/5) Fixed memory issue with `CassandraHealthCheck`
+* [Issue 5](https://github.com/stuartgunter/dropwizard-cassandra/issues/5) Changed implementation of `CassandraHealthCheck` to work around driver memory leak
 * Removed `SessionFactory`, as this was not adding any real value and might encourage poor use of `Session` instances
 * [Pull 3](https://github.com/stuartgunter/dropwizard-cassandra/pull/3) Use `InetAddress` for contactPoints
 * [Pull 2](https://github.com/stuartgunter/dropwizard-cassandra/pull/2) Fix null clusterName in log messages
