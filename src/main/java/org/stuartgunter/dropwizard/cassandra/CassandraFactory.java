@@ -16,6 +16,8 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
@@ -317,6 +319,15 @@ public class CassandraFactory {
     }
 
     public Cluster build(Environment environment) {
+        final Cluster cluster = build(environment.metrics(), environment.healthChecks());
+
+        LOG.debug("Registering {} Cassandra cluster for lifecycle management", cluster.getClusterName());
+        environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
+
+        return cluster;
+    }
+
+    public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
         final Cluster.Builder builder = Cluster.builder();
         builder.addContactPoints(contactPoints);
         builder.withPort(port);
@@ -361,15 +372,12 @@ public class CassandraFactory {
 
         Cluster cluster = builder.build();
 
-        LOG.debug("Registering {} Cassandra cluster for lifecycle management", cluster.getClusterName());
-        environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
-
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster));
+        healthChecks.register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster));
 
         if (isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cluster.getClusterName());
-            environment.metrics().registerAll(new CassandraMetricSet(cluster));
+            metrics.registerAll(new CassandraMetricSet(cluster));
         }
 
         return cluster;
