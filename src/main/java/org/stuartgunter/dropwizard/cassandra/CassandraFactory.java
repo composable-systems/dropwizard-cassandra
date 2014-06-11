@@ -56,7 +56,12 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     <tr>
  *         <td>keyspace</td>
  *         <td>No default. If provided, this will be included in the health check.</td>
- *         <td>The name of the keyspace to connect to (used in health checks).</td>
+ *         <td>The name of the keyspace to connect to.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>validationQuery</td>
+ *         <td>SELECT * FROM system.schema_keyspaces</td>
+ *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
  *         <td>contactPoints</td>

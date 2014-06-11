@@ -1,5 +1,9 @@
 # Changes
 
+## IN PROGRESS
+
+* `CassandraHealthCheck` now uses a validation query instead of relying on the driver, which was giving false positives
+
 ## 0.5
 
 * [Issue 5](https://github.com/stuartgunter/dropwizard-cassandra/issues/5) Changed implementation of `CassandraHealthCheck` to work around driver memory leak

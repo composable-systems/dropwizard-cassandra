@@ -30,8 +30,8 @@ forcefully terminated. Remember that we're talking about the client driver being
 ### Health Check
 
 A health check is registered automatically for you, ensuring that your application reports the correct status based on
-its ability to connect to Cassandra. The cluster is considered healthy if at least one node is up (as determined by
- `Host.isUp()` in the DataStax driver).
+its ability to connect to Cassandra. The cluster is considered healthy if it can successfully execute the `validationQuery`
+defined in configuration.
 
 ### Metrics
 
@@ -108,6 +108,7 @@ that the major configuration options are parseable. To find examples of particul
 ```yaml
 clusterName:
 keyspace:
+validationQuery:
 contactPoints:
 port:
 protocolVersion:
