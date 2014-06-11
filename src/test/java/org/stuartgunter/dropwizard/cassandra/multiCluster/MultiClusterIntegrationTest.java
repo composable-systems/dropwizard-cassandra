@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MultiClusterTest {
+public class MultiClusterIntegrationTest {
 
     @Rule
     public final DropwizardAppRule<MultiClusterTestConfiguration> app =

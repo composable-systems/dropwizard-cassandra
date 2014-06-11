@@ -134,6 +134,9 @@ public class CassandraFactory {
     private String keyspace;
 
     @NotEmpty
+    private String validationQuery = "SELECT * FROM system.schema_keyspaces";
+
+    @NotEmpty
     private InetAddress[] contactPoints;
 
     @Min(1)
@@ -184,6 +187,16 @@ public class CassandraFactory {
     @JsonProperty
     public void setKeyspace(String keyspace) {
         this.keyspace = keyspace;
+    }
+
+    @JsonProperty
+    public String getValidationQuery() {
+        return validationQuery;
+    }
+
+    @JsonProperty
+    public void setValidationQuery(String validationQuery) {
+        this.validationQuery = validationQuery;
     }
 
     @JsonProperty
@@ -365,7 +378,7 @@ public class CassandraFactory {
         environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster));
+        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, validationQuery));
 
         if (isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cluster.getClusterName());
