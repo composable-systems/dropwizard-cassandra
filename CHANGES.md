@@ -2,6 +2,7 @@
 
 ## IN PROGRESS
 
+* [Pull 6](https://github.com/stuartgunter/dropwizard-cassandra/pull/6) Add `build()` overload that doesn't use `Environment`
 * `CassandraHealthCheck` now uses a validation query instead of relying on the driver, which was giving false positives
 
 ## 0.5
