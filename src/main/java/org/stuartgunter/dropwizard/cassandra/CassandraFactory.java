@@ -16,6 +16,8 @@
 
 package org.stuartgunter.dropwizard.cassandra;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
@@ -334,7 +336,35 @@ public class CassandraFactory {
         this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
+    /**
+     * Builds a {@link Cluster} instance for the given {@link Environment}.
+     * <p/>
+     * The {@code environment} will be used for lifecycle management, as well as metrics and
+     * health-checks.
+     *
+     * @param environment the environment to manage the lifecycle, metrics and health-checks.
+     * @return a fully configured and managed {@link Cluster}.
+     */
     public Cluster build(Environment environment) {
+        final Cluster cluster = build(environment.metrics(), environment.healthChecks());
+
+        LOG.debug("Registering {} Cassandra cluster for lifecycle management", cluster.getClusterName());
+        environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
+
+        return cluster;
+    }
+
+    /**
+     * Builds a {@link Cluster} instance.
+     * <p/>
+     * The {@link MetricRegistry} will be used to register client metrics, and the {@link
+     * HealthCheckRegistry} to register client health-checks.
+     *
+     * @param metrics the registry to register client metrics.
+     * @param healthChecks the registry to register client health-checks.
+     * @return a fully configured {@link Cluster}.
+     */
+    public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
         final Cluster.Builder builder = Cluster.builder();
         builder.addContactPoints(contactPoints);
         builder.withPort(port);
@@ -379,15 +409,13 @@ public class CassandraFactory {
 
         Cluster cluster = builder.build();
 
-        LOG.debug("Registering {} Cassandra cluster for lifecycle management", cluster.getClusterName());
-        environment.lifecycle().manage(new CassandraManager(cluster, getShutdownGracePeriod()));
-
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        environment.healthChecks().register(name("cassandra", cluster.getClusterName()), new CassandraHealthCheck(cluster, validationQuery));
+        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery);
+        healthChecks.register(name("cassandra", cluster.getClusterName()), healthCheck);
 
         if (isMetricsEnabled()) {
             LOG.debug("Registering {} Cassandra metrics", cluster.getClusterName());
-            environment.metrics().registerAll(new CassandraMetricSet(cluster));
+            metrics.registerAll(new CassandraMetricSet(cluster));
         }
 
         return cluster;
