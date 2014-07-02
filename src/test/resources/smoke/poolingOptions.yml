@@ -10,5 +10,5 @@ cassandra:
     remote:
       minSimultaneousRequests: 10
       maxSimultaneousRequests: 50
-      coreConnections: 2
+      coreConnections: 1
       maxConnections: 1
