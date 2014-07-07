@@ -27,20 +27,20 @@ public class PoolingOptionsFactoryTest {
     @Test
     public void buildsPoolingOptionsWithConfiguredValues() throws Exception {
         final PoolingOptionsFactory factory = new PoolingOptionsFactory();
-        factory.setLocal(createHostDistanceOptions(8, 64, 0, 128));
-        factory.setRemote(createHostDistanceOptions(2, 64, 0, 128));
+        factory.setLocal(createHostDistanceOptions(1, 3, 5, 25));
+        factory.setRemote(createHostDistanceOptions(2, 4, 6, 30));
 
         final PoolingOptions poolingOptions = factory.build();
 
-        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(8);
-        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(64);
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(0);
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(128);
+        assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(1);
+        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(3);
+        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(5);
+        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(25);
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(2);
-        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(64);
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(0);
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(128);
+        assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(4);
+        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(6);
+        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(30);
     }
 
     private HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int minSimultaneousRequests, int maxSimultaneousRequests) {
