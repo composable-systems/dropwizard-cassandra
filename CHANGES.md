@@ -2,6 +2,10 @@
 
 ## IN PROGRESS
 
+* TBC
+
+## 0.6.1
+
 * [Pull 7](https://github.com/stuartgunter/dropwizard-cassandra/pull/7) Upgraded to 2.0.3 Datastax Cassandra Driver
 
 ## 0.6
