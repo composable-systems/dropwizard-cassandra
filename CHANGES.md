@@ -2,7 +2,7 @@
 
 ## IN PROGRESS
 
-* TBC
+* [Issue 8](https://github.com/stuartgunter/dropwizard-cassandra/issues/8) Changed versioning scheme to incorporate Dropwizard version.
 
 ## 0.6.1
 
