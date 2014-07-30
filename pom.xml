@@ -48,7 +48,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.7.0</dropwizard.version>
-        <cassandra-driver.version>2.0.3</cassandra-driver.version>
+        <cassandra-driver.version>2.0.4</cassandra-driver.version>
         <powermock.version>1.5.4</powermock.version>
         <assertj.version>1.5.0</assertj.version>
     </properties>
