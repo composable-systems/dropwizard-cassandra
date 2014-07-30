@@ -32,7 +32,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CassandraBundleIntegrationTest {
+public class DropwizardCassandraIntegrationTest {
 
     @ClassRule
     public static final DropwizardAppRule<SmokeTestConfiguration> APP =
