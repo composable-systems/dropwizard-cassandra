@@ -94,7 +94,7 @@ public class CassandraFactoryTest {
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
-        configuration.setProtocolVersion(2);
+        configuration.setProtocolVersion(ProtocolVersion.V2);
         configuration.setReconnectionPolicy(reconnectionPolicyFactory);
         configuration.setRetryPolicy(retryPolicyFactory);
         configuration.setQueryOptions(queryOptions);
@@ -108,7 +108,7 @@ public class CassandraFactoryTest {
         verify(builder).withPort(1234);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");
-        verify(builder).withProtocolVersion(2);
+        verify(builder).withProtocolVersion(ProtocolVersion.V2);
         verify(builder).withoutJMXReporting();
         verify(builder).withoutMetrics();
         verify(builder).withAuthProvider(authProvider);

@@ -3,7 +3,7 @@ cassandra:
   keyspace: "bundle"
   contactPoints: ["localhost"]
   port: 9042
-  protocolVersion: 2
+  protocolVersion: "V2"
   compression: "LZ4"
   metricsEnabled: false
   jmxEnabled: false

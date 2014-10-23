@@ -47,8 +47,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>0.7.0</dropwizard.version>
-        <cassandra-driver.version>2.0.4</cassandra-driver.version>
+        <dropwizard.version>0.7.1</dropwizard.version>
+        <cassandra-driver.version>2.1.2</cassandra-driver.version>
         <powermock.version>1.5.4</powermock.version>
         <assertj.version>1.5.0</assertj.version>
     </properties>
@@ -171,7 +171,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <additionalparam>${javadoc.doclint.none}</additionalparam>
+                    <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
             </plugin>
             <plugin>
@@ -268,15 +268,6 @@
     </distributionManagement>
 
     <profiles>
-        <profile>
-            <id>java8-disable-strict-javadoc</id>
-            <activation>
-                <jdk>[1.8,)</jdk>
-            </activation>
-            <properties>
-                <javadoc.doclint.none>-Xdoclint:none</javadoc.doclint.none>
-            </properties>
-        </profile>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>

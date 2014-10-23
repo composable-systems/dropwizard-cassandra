@@ -31,6 +31,7 @@ import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
+import javax.net.ssl.SSLContext;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -149,8 +150,7 @@ public class CassandraFactory {
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
 
-    @Max(2)
-    private int protocolVersion = -1;
+    private ProtocolVersion protocolVersion;
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
@@ -227,12 +227,12 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public int getProtocolVersion() {
+    public ProtocolVersion getProtocolVersion() {
         return protocolVersion;
     }
 
     @JsonProperty
-    public void setProtocolVersion(int protocolVersion) {
+    public void setProtocolVersion(ProtocolVersion protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
