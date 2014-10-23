@@ -1,10 +1,14 @@
 # Changes
 
-## IN PROGRESS
+## 1.0-dw0.7-cs2.1 (Dropwizard 0.7.x & Cassandra Driver 2.1.x)
+
+* Upgraded to DataStax Cassandra Driver 2.1.2 (note: this includes breaking changes in the definition of `ProtocolVersion` - only relevant if you explicitly configure it though)
+
+## 1.0-dw0.7-cs2.0 (Dropwizard 0.7.x & Cassandra Driver 2.0.x)
 
 * [Issue 8](https://github.com/stuartgunter/dropwizard-cassandra/issues/8) Changed versioning scheme to incorporate Dropwizard version.
 * Removed the deprecated `CassandraBundle` (superceded by `CassandraFactory` in v0.4)
-* Upgraded to DataStax Cassandra Driver 2.1.2 (note: this includes breaking changes in the definition of `ProtocolVersion` - only relevant if you explicitly configure it though)
+* Upgraded to DataStax Cassandra Driver 2.0.6
 * Upgraded to Dropwizard 0.7.1
 
 ## 0.6.1
