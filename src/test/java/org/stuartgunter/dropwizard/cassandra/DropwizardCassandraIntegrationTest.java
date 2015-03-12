@@ -18,14 +18,14 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestApp;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.List;
@@ -45,8 +45,8 @@ public class DropwizardCassandraIntegrationTest {
                 .path("query")
                 .build();
 
-        final WebResource resource = Client.create().resource(uri);
-        final List<String> result = Lists.newArrayList(resource.get(String[].class));
+        final WebTarget target = ClientBuilder.newClient().target(uri);
+        final List<String> result = Lists.newArrayList(target.request().get(String[].class));
 
         assertThat(result).contains("system");
     }
@@ -58,8 +58,8 @@ public class DropwizardCassandraIntegrationTest {
                 .path("metrics")
                 .build();
 
-        final WebResource resource = Client.create().resource(uri);
-        final String result = resource.get(String.class);
+        final WebTarget target = ClientBuilder.newClient().target(uri);
+        final String result = target.request().get(String.class);
 
         assertThat(result).contains("com.datastax.driver.core.Cluster.minimal-cluster");
     }
@@ -71,8 +71,8 @@ public class DropwizardCassandraIntegrationTest {
                 .path("healthcheck")
                 .build();
 
-        final WebResource resource = Client.create().resource(uri);
-        final String result = resource.get(String.class);
+        final WebTarget target = ClientBuilder.newClient().target(uri);
+        final String result = target.request().get(String.class);
 
         assertThat(result).contains("cassandra.minimal-cluster");
     }

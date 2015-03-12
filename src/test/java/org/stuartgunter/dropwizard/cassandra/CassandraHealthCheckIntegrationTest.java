@@ -17,14 +17,14 @@
 package org.stuartgunter.dropwizard.cassandra;
 
 import com.google.common.io.Resources;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestApp;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.Map;
@@ -44,8 +44,8 @@ public class CassandraHealthCheckIntegrationTest {
                 .path("healthcheck")
                 .build();
 
-        final WebResource resource = Client.create().resource(uri);
-        final Map<String, Map<String, Object>> result = resource.get(Map.class);
+        final WebTarget target = ClientBuilder.newClient().target(uri);
+        final Map<String, Map<String, Object>> result = target.request().get(Map.class);
 
         final String healthCheckName = "cassandra.minimal-cluster";
         assertThat(result).containsKey(healthCheckName);
