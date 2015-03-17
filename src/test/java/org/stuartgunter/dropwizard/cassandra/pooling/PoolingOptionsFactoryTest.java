@@ -18,6 +18,7 @@ package org.stuartgunter.dropwizard.cassandra.pooling;
 
 import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.PoolingOptions;
+import io.dropwizard.util.Duration;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,11 +27,19 @@ public class PoolingOptionsFactoryTest {
 
     @Test
     public void buildsPoolingOptionsWithConfiguredValues() throws Exception {
+        // given
         final PoolingOptionsFactory factory = new PoolingOptionsFactory();
+        factory.setHeartbeatInterval(Duration.minutes(1));
+        factory.setPoolTimeout(Duration.seconds(2));
         factory.setLocal(createHostDistanceOptions(1, 3, 5, 25));
         factory.setRemote(createHostDistanceOptions(2, 4, 6, 30));
 
+        // when
         final PoolingOptions poolingOptions = factory.build();
+
+        // then
+        assertThat(poolingOptions.getHeartbeatIntervalSeconds()).isEqualTo(60);
+        assertThat(poolingOptions.getPoolTimeoutMillis()).isEqualTo(2000);
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(1);
         assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(3);
@@ -59,6 +68,8 @@ public class PoolingOptionsFactoryTest {
 
         final PoolingOptions poolingOptions = factory.build();
 
+        assertThat(poolingOptions.getHeartbeatIntervalSeconds()).isEqualTo(defaultPoolingOptions.getHeartbeatIntervalSeconds());
+        assertThat(poolingOptions.getPoolTimeoutMillis()).isEqualTo(defaultPoolingOptions.getPoolTimeoutMillis());
         verifySamePoolingOptions(poolingOptions, defaultPoolingOptions, HostDistance.LOCAL);
         verifySamePoolingOptions(poolingOptions, defaultPoolingOptions, HostDistance.REMOTE);
     }

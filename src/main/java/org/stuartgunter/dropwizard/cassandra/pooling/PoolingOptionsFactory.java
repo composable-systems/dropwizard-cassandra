@@ -19,6 +19,7 @@ package org.stuartgunter.dropwizard.cassandra.pooling;
 import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.PoolingOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.util.Duration;
 
 import javax.validation.Valid;
 
@@ -31,6 +32,16 @@ import javax.validation.Valid;
  *         <td>Name</td>
  *         <td>Default</td>
  *         <td>Description</td>
+ *     </tr>
+ *     <tr>
+ *         <td>heartbeatInterval</td>
+ *         <td>Defaults to 30 seconds.</td>
+ *         <td>Specifies the heart beat interval, after which a message is sent on an idle connection to make sure it's still alive.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>poolTimeout</td>
+ *         <td>Defaults to 5 seconds.</td>
+ *         <td>Specifies the timeout when trying to acquire a connection from a host's pool.</td>
  *     </tr>
  *     <tr>
  *         <td>local</td>
@@ -47,9 +58,33 @@ import javax.validation.Valid;
 public class PoolingOptionsFactory {
 
     @Valid
+    private Duration heartbeatInterval;
+    @Valid
+    private Duration poolTimeout;
+    @Valid
     private HostDistanceOptions remote;
     @Valid
     private HostDistanceOptions local;
+
+    @JsonProperty
+    public Duration getHeartbeatInterval() {
+        return heartbeatInterval;
+    }
+
+    @JsonProperty
+    public void setHeartbeatInterval(Duration heartbeatInterval) {
+        this.heartbeatInterval = heartbeatInterval;
+    }
+
+    @JsonProperty
+    public Duration getPoolTimeout() {
+        return poolTimeout;
+    }
+
+    @JsonProperty
+    public void setPoolTimeout(Duration poolTimeout) {
+        this.poolTimeout = poolTimeout;
+    }
 
     @JsonProperty
     public HostDistanceOptions getRemote() {
@@ -78,6 +113,12 @@ public class PoolingOptionsFactory {
         }
         if (remote != null) {
             setPoolingOptions(poolingOptions, HostDistance.REMOTE, remote);
+        }
+        if (heartbeatInterval != null) {
+            poolingOptions.setHeartbeatIntervalSeconds((int) heartbeatInterval.toSeconds());
+        }
+        if (poolTimeout != null) {
+            poolingOptions.setPoolTimeoutMillis((int) poolTimeout.toMilliseconds());
         }
         return poolingOptions;
     }
