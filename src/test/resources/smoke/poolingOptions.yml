@@ -2,6 +2,8 @@ cassandra:
   clusterName: "smoke-cluster"
   contactPoints: ["localhost"]
   poolingOptions:
+    heartbeatInterval: 5 seconds
+    poolTimeout: 2 seconds
     local:
       minSimultaneousRequests: 10
       maxSimultaneousRequests: 50
