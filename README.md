@@ -133,6 +133,8 @@ socketOptions:
   receiveBufferSize:
   sendBufferSize:
 poolingOptions:
+  heartbeatInterval:
+  poolTimeout:
   local:
     minSimultaneousRequests:
     maxSimultaneousRequests:
