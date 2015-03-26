@@ -3,7 +3,7 @@
 
     <groupId>org.stuartgunter</groupId>
     <artifactId>dropwizard-cassandra</artifactId>
-    <version>1.0-dw0.8-cs2.1-SNAPSHOT</version>
+    <version>1.0-dw0.8-cs2.1</version>
     <packaging>jar</packaging>
 
     <name>dropwizard-cassandra</name>
@@ -36,7 +36,7 @@
         <url>https://github.com/stuartgunter/dropwizard-cassandra</url>
         <connection>scm:git:git@github.com:stuartgunter/dropwizard-cassandra.git</connection>
         <developerConnection>scm:git:git@github.com:stuartgunter/dropwizard-cassandra.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.0-dw0.8-cs2.1</tag>
     </scm>
 
     <issueManagement>
