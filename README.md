@@ -104,6 +104,7 @@ configuration classes for more details about the configuration options available
 for polymorphic configuration - e.g. `ReconnectionPolicyFactory`. There are also a number of smoke tests ensuring
 that the major configuration options are parseable. To find examples of particular config variants, take a look at the
 [test resources](src/test/resources) folder.
+Load balancing policies can both be nested and have typed parameters so they can be specified in the yml file as you would code them in Java. See samples below. 
 
 ```yaml
 clusterName:
@@ -119,6 +120,7 @@ authProvider:
   type:
 retryPolicy:
   type:
+loadBalancingPolicy:
 queryOptions:
   consistencyLevel:
   serialConsistencyLevel:
