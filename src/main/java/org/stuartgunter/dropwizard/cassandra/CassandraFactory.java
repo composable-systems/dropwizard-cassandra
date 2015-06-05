@@ -21,12 +21,15 @@ import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+
 import io.dropwizard.setup.Environment;
 import io.dropwizard.util.Duration;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
+import org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyParser;
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
@@ -37,6 +40,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 
 import static com.codahale.metrics.MetricRegistry.name;
@@ -95,6 +99,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>authProvider</td>
  *         <td>No default.</td>
  *         <td>The {@link AuthProviderFactory auth provider} to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>loadBalancingPolicy</td>
+ *         <td>No default.</td>
+ *         <td>The load balancing policy to use.</td>
  *     </tr>
  *     <tr>
  *         <td>retryPolicy</td>
@@ -163,6 +172,9 @@ public class CassandraFactory {
 
     @Valid
     private RetryPolicyFactory retryPolicy;
+    
+    @Valid
+    private String loadBalancingPolicy;
 
     private QueryOptions queryOptions;
     private SocketOptions socketOptions;
@@ -275,6 +287,16 @@ public class CassandraFactory {
     public void setRetryPolicy(RetryPolicyFactory retryPolicy) {
         this.retryPolicy = retryPolicy;
     }
+    
+    @JsonProperty
+    public String getLoadBalancingPolicy() {
+        return loadBalancingPolicy;
+    }
+
+    @JsonProperty
+    public void setLoadBalancingPolicy(String loadBalancingPolicy) {
+        this.loadBalancingPolicy = loadBalancingPolicy;
+    }
 
     @JsonProperty
     public QueryOptions getQueryOptions() {
@@ -286,6 +308,7 @@ public class CassandraFactory {
         this.queryOptions = queryOptions;
     }
 
+    
     @JsonProperty
     public SocketOptions getSocketOptions() {
         return socketOptions;
@@ -405,6 +428,18 @@ public class CassandraFactory {
 
         if (!Strings.isNullOrEmpty(clusterName)) {
             builder.withClusterName(clusterName);
+        }
+        
+        if (!Strings.isNullOrEmpty(getLoadBalancingPolicy())) {
+        	try {
+				builder.withLoadBalancingPolicy(LoadBalancingPolicyParser.parseLbPolicy(getLoadBalancingPolicy()));
+			} catch (InstantiationException | IllegalAccessException
+					| ClassNotFoundException | NoSuchMethodException
+					| SecurityException | IllegalArgumentException
+					| InvocationTargetException e) {
+				
+				LOG.warn("Cannot parse {} load balancing policy. Reverting to default", getLoadBalancingPolicy());
+			}
         }
 
         Cluster cluster = builder.build();
