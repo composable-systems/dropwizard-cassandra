@@ -104,7 +104,6 @@ configuration classes for more details about the configuration options available
 for polymorphic configuration - e.g. `ReconnectionPolicyFactory`. There are also a number of smoke tests ensuring
 that the major configuration options are parseable. To find examples of particular config variants, take a look at the
 [test resources](src/test/resources) folder.
-Load balancing policies can have both parameters and nested load balancing policies so in order to make things simple, it can be passed as if it was java code in the yml like that > loadBalancingPolicy: TokenAwarePolicy(DCAwareRoundRobinPolicy("dc1"))
 
 ```yaml
 clusterName:
@@ -114,7 +113,6 @@ contactPoints:
 port:
 protocolVersion:
 compression:
-loadBalancingPolicy:
 reconnectionPolicy:
   type:
 authProvider:
@@ -150,4 +148,13 @@ poolingOptions:
 metricsEnabled:
 jmxEnabled:
 shutdownGracePeriod:
+```
+
+### Sample load balancing policies
+```yaml
+  loadBalancingPolicy: TokenAwarePolicy(DCAwareRoundRobinPolicy("DC1"))
+  loadBalancingPolicy: DCAwareRoundRobinPolicy('DC1')
+  loadBalancingPolicy: RoundRobinPolicy()
+  loadBalancingPolicy: LatencyAwarePolicy(TokenAwarePolicy(RoundRobinPolicy()),(double)10.5,(long)1,(long)10,(long)1,10)
+  loadBalancingPolicy: com.company.package.CustomPolicy()
 ```
