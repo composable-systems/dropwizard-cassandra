@@ -43,12 +43,10 @@ public class PoolingOptionsFactoryTest {
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(1);
         assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(3);
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(5);
         assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(25);
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(2);
         assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(4);
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(6);
         assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(30);
     }
 
@@ -81,7 +79,5 @@ public class PoolingOptionsFactoryTest {
                 .isEqualTo(defaultPoolingOptions.getMaxConnectionsPerHost(hostDistance));
         assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance))
                 .isEqualTo(defaultPoolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance));
-        assertThat(poolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance))
-                .isEqualTo(defaultPoolingOptions.getMinSimultaneousRequestsPerConnectionThreshold(hostDistance));
     }
 }

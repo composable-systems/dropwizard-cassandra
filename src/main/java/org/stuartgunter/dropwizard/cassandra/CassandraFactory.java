@@ -27,16 +27,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
+import org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 
-import javax.net.ssl.SSLContext;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
 import java.net.InetAddress;
 
 import static com.codahale.metrics.MetricRegistry.name;
@@ -102,6 +100,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The {@link RetryPolicyFactory retry policy} to use.</td>
  *     </tr>
  *     <tr>
+ *         <td>loadBalancingPolicy</td>
+ *         <td>No default.</td>
+ *         <td>The {@link LoadBalancingPolicyFactory load balancing policy} to use.</td>
+ *     </tr>
+ *     <tr>
  *         <td>queryOptions</td>
  *         <td>No default.</td>
  *         <td>The {@link QueryOptions} to use.</td>
@@ -163,6 +166,9 @@ public class CassandraFactory {
 
     @Valid
     private RetryPolicyFactory retryPolicy;
+
+    @Valid
+    private LoadBalancingPolicyFactory loadBalancingPolicy;
 
     private QueryOptions queryOptions;
     private SocketOptions socketOptions;
@@ -277,6 +283,16 @@ public class CassandraFactory {
     }
 
     @JsonProperty
+    public LoadBalancingPolicyFactory getLoadBalancingPolicy() {
+        return loadBalancingPolicy;
+    }
+
+    @JsonProperty
+    public void setLoadBalancingPolicy(LoadBalancingPolicyFactory loadBalancingPolicy) {
+        this.loadBalancingPolicy = loadBalancingPolicy;
+    }
+
+    @JsonProperty
     public QueryOptions getQueryOptions() {
         return queryOptions;
     }
@@ -381,6 +397,10 @@ public class CassandraFactory {
 
         if (retryPolicy != null) {
             builder.withRetryPolicy(retryPolicy.build());
+        }
+
+        if (loadBalancingPolicy != null) {
+            builder.withLoadBalancingPolicy(loadBalancingPolicy.build());
         }
 
         if (queryOptions != null) {

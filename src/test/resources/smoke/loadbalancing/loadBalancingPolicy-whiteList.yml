@@ -1,0 +1,11 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  loadBalancingPolicy:
+    type: whiteList
+    childPolicy:
+      type: dcAwareRoundRobin
+      localDC: dc1
+      usedHostsPerRemoteDC: 2
+      allowRemoteDCsForLocalConsistencyLevel: true
+    whiteList: ["localhost:8911", "10.1.65.123"]

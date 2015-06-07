@@ -1,0 +1,15 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  loadBalancingPolicy:
+    type: latencyAware
+    exclusionThreshold: 1.0
+    minimumMeasurements: 5
+    retryPeriod: 5 seconds
+    scale: 10 seconds
+    updateRate: 1 minute
+    childPolicy:
+      type: dcAwareRoundRobin
+      localDC: dc1
+      usedHostsPerRemoteDC: 2
+      allowRemoteDCsForLocalConsistencyLevel: true

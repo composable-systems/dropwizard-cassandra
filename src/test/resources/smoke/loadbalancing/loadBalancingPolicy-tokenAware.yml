@@ -1,0 +1,11 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  loadBalancingPolicy:
+    type: tokenAware
+    shuffleReplicas: true
+    childPolicy:
+      type: dcAwareRoundRobin
+      localDC: dc1
+      usedHostsPerRemoteDC: 2
+      allowRemoteDCsForLocalConsistencyLevel: true

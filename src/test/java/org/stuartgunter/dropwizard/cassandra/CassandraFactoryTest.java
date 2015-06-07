@@ -20,6 +20,7 @@ import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.datastax.driver.core.*;
+import com.datastax.driver.core.policies.LoadBalancingPolicy;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
@@ -30,6 +31,7 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory;
+import org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
@@ -41,6 +43,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -59,6 +62,8 @@ public class CassandraFactoryTest {
     private final ReconnectionPolicy reconnectionPolicy = mock(ReconnectionPolicy.class);
     private final RetryPolicyFactory retryPolicyFactory = mock(RetryPolicyFactory.class);
     private final RetryPolicy retryPolicy = mock(RetryPolicy.class);
+    private final LoadBalancingPolicyFactory loadBalancingPolicyFactory = mock(LoadBalancingPolicyFactory.class);
+    private final LoadBalancingPolicy loadBalancingPolicy = mock(LoadBalancingPolicy.class);
     private final QueryOptions queryOptions = mock(QueryOptions.class);
     private final SocketOptions socketOptions = mock(SocketOptions.class);
     private final PoolingOptionsFactory poolingOptionsFactory = mock(PoolingOptionsFactory.class);
@@ -78,6 +83,7 @@ public class CassandraFactoryTest {
         when(authProviderFactory.build()).thenReturn(authProvider);
         when(reconnectionPolicyFactory.build()).thenReturn(reconnectionPolicy);
         when(retryPolicyFactory.build()).thenReturn(retryPolicy);
+        when(loadBalancingPolicyFactory.build()).thenReturn(loadBalancingPolicy);
         when(poolingOptionsFactory.build()).thenReturn(poolingOptions);
         when(cluster.getMetrics()).thenReturn(clusterMetrics);
         when(clusterMetrics.getRegistry()).thenReturn(driverRegistry);
@@ -97,6 +103,7 @@ public class CassandraFactoryTest {
         configuration.setProtocolVersion(ProtocolVersion.V2);
         configuration.setReconnectionPolicy(reconnectionPolicyFactory);
         configuration.setRetryPolicy(retryPolicyFactory);
+        configuration.setLoadBalancingPolicy(loadBalancingPolicyFactory);
         configuration.setQueryOptions(queryOptions);
         configuration.setSocketOptions(socketOptions);
         configuration.setPoolingOptions(poolingOptionsFactory);
@@ -114,6 +121,7 @@ public class CassandraFactoryTest {
         verify(builder).withAuthProvider(authProvider);
         verify(builder).withReconnectionPolicy(reconnectionPolicy);
         verify(builder).withRetryPolicy(retryPolicy);
+        verify(builder).withLoadBalancingPolicy(loadBalancingPolicy);
         verify(builder).withQueryOptions(queryOptions);
         verify(builder).withSocketOptions(socketOptions);
         verify(builder).withPoolingOptions(poolingOptions);
