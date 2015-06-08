@@ -22,28 +22,28 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(LatencyAwarePolicy.class)
 public class LatencyAwarePolicyFactoryTest {
 
-    private final LoadBalancingPolicyFactory childPolicyFactory = mock(LoadBalancingPolicyFactory.class);
-    private final LoadBalancingPolicy childPolicy = mock(LoadBalancingPolicy.class);
+    private final LoadBalancingPolicyFactory subPolicyFactory = mock(LoadBalancingPolicyFactory.class);
+    private final LoadBalancingPolicy subPolicy = mock(LoadBalancingPolicy.class);
     private final LatencyAwarePolicy.Builder policyBuilder = mock(LatencyAwarePolicy.Builder.class);
     private final LatencyAwarePolicy resultingPolicy = mock(LatencyAwarePolicy.class);
 
     @Before
     public void setUp() throws Exception {
-        when(childPolicyFactory.build()).thenReturn(childPolicy);
+        when(subPolicyFactory.build()).thenReturn(subPolicy);
         mockStatic(LatencyAwarePolicy.class);
-        when(LatencyAwarePolicy.builder(childPolicy)).thenReturn(policyBuilder);
+        when(LatencyAwarePolicy.builder(subPolicy)).thenReturn(policyBuilder);
         when(policyBuilder.build()).thenReturn(resultingPolicy);
     }
 
     @Test
     public void buildsPolicyWithNoParams() throws Exception {
         final LatencyAwarePolicyFactory factory = new LatencyAwarePolicyFactory();
-        factory.setChildPolicy(childPolicyFactory);
+        factory.setSubPolicy(subPolicyFactory);
 
         final LoadBalancingPolicy policy = factory.build();
 
         assertThat(policy).isSameAs(resultingPolicy);
-        verify(childPolicyFactory).build();
+        verify(subPolicyFactory).build();
 
         verify(policyBuilder, never()).withExclusionThreshold(anyDouble());
         verify(policyBuilder, never()).withMininumMeasurements(anyInt());
@@ -56,7 +56,7 @@ public class LatencyAwarePolicyFactoryTest {
     @Test
     public void buildsPolicyWithAllParams() throws Exception {
         final LatencyAwarePolicyFactory factory = new LatencyAwarePolicyFactory();
-        factory.setChildPolicy(childPolicyFactory);
+        factory.setSubPolicy(subPolicyFactory);
         factory.setExclusionThreshold(1.0d);
         factory.setMinimumMeasurements(2);
         factory.setRetryPeriod(Duration.minutes(3));
@@ -66,7 +66,7 @@ public class LatencyAwarePolicyFactoryTest {
         final LoadBalancingPolicy policy = factory.build();
 
         assertThat(policy).isSameAs(resultingPolicy);
-        verify(childPolicyFactory).build();
+        verify(subPolicyFactory).build();
 
         InOrder inOrder = inOrder(policyBuilder);
         inOrder.verify(policyBuilder).withExclusionThreshold(1.0d);

@@ -95,7 +95,7 @@ public class YourApp extends Application<YourAppConfig> {
 
 ## Configuration Reference
 
-The `dropwizard-cassandra` bundle defines a number of configuration options that are largely based on the requirements
+The `dropwizard-cassandra` library defines a number of configuration options that are largely based on the requirements
 of the DataStax Cassandra driver. Some additional configuration is included for the bundle to register everything correctly
 with Dropwizard.
 
@@ -118,6 +118,10 @@ reconnectionPolicy:
 authProvider:
   type:
 retryPolicy:
+  type:
+loadBalancingPolicy:
+  type:
+speculativeExecutionPolicy:
   type:
 queryOptions:
   consistencyLevel:

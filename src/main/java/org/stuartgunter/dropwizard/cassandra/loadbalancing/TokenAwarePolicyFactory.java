@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  *         <td>Description</td>
  *     </tr>
  *     <tr>
- *         <td>childPolicy</td>
+ *         <td>subPolicy</td>
  *         <td>No default. You must provide a child policy.</td>
  *         <td>The load balancing policy to wrap with token awareness.</td>
  *     </tr>
@@ -35,18 +35,18 @@ public class TokenAwarePolicyFactory implements LoadBalancingPolicyFactory {
 
     @Valid
     @NotNull
-    private LoadBalancingPolicyFactory childPolicy;
+    private LoadBalancingPolicyFactory subPolicy;
 
     private Boolean shuffleReplicas;
 
     @JsonProperty
-    public LoadBalancingPolicyFactory getChildPolicy() {
-        return childPolicy;
+    public LoadBalancingPolicyFactory getSubPolicy() {
+        return subPolicy;
     }
 
     @JsonProperty
-    public void setChildPolicy(LoadBalancingPolicyFactory childPolicy) {
-        this.childPolicy = childPolicy;
+    public void setSubPolicy(LoadBalancingPolicyFactory subPolicy) {
+        this.subPolicy = subPolicy;
     }
 
     @JsonProperty
@@ -62,7 +62,7 @@ public class TokenAwarePolicyFactory implements LoadBalancingPolicyFactory {
     @Override
     public LoadBalancingPolicy build() {
         return (shuffleReplicas == null)
-                ? new TokenAwarePolicy(childPolicy.build())
-                : new TokenAwarePolicy(childPolicy.build(), shuffleReplicas);
+                ? new TokenAwarePolicy(subPolicy.build())
+                : new TokenAwarePolicy(subPolicy.build(), shuffleReplicas);
     }
 }

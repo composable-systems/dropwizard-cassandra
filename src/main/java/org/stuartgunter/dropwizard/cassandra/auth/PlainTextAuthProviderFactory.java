@@ -5,6 +5,8 @@ import com.datastax.driver.core.PlainTextAuthProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * A factory for configuring and building {@link PlainTextAuthProvider} instances.
  * <p/>
@@ -30,7 +32,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("plainText")
 public class PlainTextAuthProviderFactory implements AuthProviderFactory {
 
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     @JsonProperty

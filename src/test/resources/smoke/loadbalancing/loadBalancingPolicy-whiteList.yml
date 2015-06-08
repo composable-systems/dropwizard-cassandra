@@ -3,9 +3,9 @@ cassandra:
   contactPoints: ["localhost"]
   loadBalancingPolicy:
     type: whiteList
-    childPolicy:
+    subPolicy:
       type: dcAwareRoundRobin
       localDC: dc1
       usedHostsPerRemoteDC: 2
       allowRemoteDCsForLocalConsistencyLevel: true
-    whiteList: ["localhost:8911", "10.1.65.123"]
+    whiteList: ["localhost:9042", "10.1.65.123"]

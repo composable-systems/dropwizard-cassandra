@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
  *         <td>Description</td>
  *     </tr>
  *     <tr>
- *         <td>childPolicy</td>
+ *         <td>subPolicy</td>
  *         <td>No default. You must provide a child policy.</td>
  *         <td>The child policy that the resulting policy wraps.</td>
  *     </tr>
@@ -56,7 +56,7 @@ public class LatencyAwarePolicyFactory implements LoadBalancingPolicyFactory {
 
     @Valid
     @NotNull
-    private LoadBalancingPolicyFactory childPolicy;
+    private LoadBalancingPolicyFactory subPolicy;
 
     private Double exclusionThreshold;
     private Integer minimumMeasurements;
@@ -65,13 +65,13 @@ public class LatencyAwarePolicyFactory implements LoadBalancingPolicyFactory {
     private Duration updateRate;
 
     @JsonProperty
-    public LoadBalancingPolicyFactory getChildPolicy() {
-        return childPolicy;
+    public LoadBalancingPolicyFactory getSubPolicy() {
+        return subPolicy;
     }
 
     @JsonProperty
-    public void setChildPolicy(LoadBalancingPolicyFactory childPolicy) {
-        this.childPolicy = childPolicy;
+    public void setSubPolicy(LoadBalancingPolicyFactory subPolicy) {
+        this.subPolicy = subPolicy;
     }
 
     @JsonProperty
@@ -126,7 +126,7 @@ public class LatencyAwarePolicyFactory implements LoadBalancingPolicyFactory {
 
     @Override
     public LoadBalancingPolicy build() {
-        LatencyAwarePolicy.Builder builder = LatencyAwarePolicy.builder(childPolicy.build());
+        LatencyAwarePolicy.Builder builder = LatencyAwarePolicy.builder(subPolicy.build());
 
         if (exclusionThreshold != null) {
             builder.withExclusionThreshold(exclusionThreshold);

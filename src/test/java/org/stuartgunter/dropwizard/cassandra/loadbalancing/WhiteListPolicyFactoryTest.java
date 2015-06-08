@@ -14,22 +14,22 @@ import static org.mockito.Mockito.when;
 
 public class WhiteListPolicyFactoryTest {
 
-    private final LoadBalancingPolicyFactory childPolicyFactory = mock(LoadBalancingPolicyFactory.class);
-    private final LoadBalancingPolicy childPolicy = mock(LoadBalancingPolicy.class);
+    private final LoadBalancingPolicyFactory subPolicyFactory = mock(LoadBalancingPolicyFactory.class);
+    private final LoadBalancingPolicy subPolicy = mock(LoadBalancingPolicy.class);
 
     @Before
     public void setUp() throws Exception {
-        when(childPolicyFactory.build()).thenReturn(childPolicy);
+        when(subPolicyFactory.build()).thenReturn(subPolicy);
     }
 
     @Test
     public void buildsPolicy() throws Exception {
         final WhiteListPolicyFactory factory = new WhiteListPolicyFactory();
-        factory.setChildPolicy(childPolicyFactory);
+        factory.setSubPolicy(subPolicyFactory);
         factory.setWhiteList(Collections.singletonList(new InetSocketAddress("localhost", 9876)));
 
         final WhiteListPolicy policy = (WhiteListPolicy) factory.build();
 
-        assertThat(policy.getChildPolicy()).isSameAs(childPolicy);
+        assertThat(policy.getChildPolicy()).isSameAs(subPolicy);
     }
 }

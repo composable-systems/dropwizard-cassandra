@@ -11,21 +11,21 @@ import static org.mockito.Mockito.when;
 
 public class TokenAwarePolicyFactoryTest {
 
-    private final LoadBalancingPolicyFactory childPolicyFactory = mock(LoadBalancingPolicyFactory.class);
-    private final LoadBalancingPolicy childPolicy = mock(LoadBalancingPolicy.class);
+    private final LoadBalancingPolicyFactory subPolicyFactory = mock(LoadBalancingPolicyFactory.class);
+    private final LoadBalancingPolicy subPolicy = mock(LoadBalancingPolicy.class);
 
     @Before
     public void setUp() throws Exception {
-        when(childPolicyFactory.build()).thenReturn(childPolicy);
+        when(subPolicyFactory.build()).thenReturn(subPolicy);
     }
 
     @Test
     public void buildsPolicyWithChildPolicy() throws Exception {
         final TokenAwarePolicyFactory factory = new TokenAwarePolicyFactory();
-        factory.setChildPolicy(childPolicyFactory);
+        factory.setSubPolicy(subPolicyFactory);
 
         final TokenAwarePolicy policy = (TokenAwarePolicy) factory.build();
 
-        assertThat(policy.getChildPolicy()).isSameAs(childPolicy);
+        assertThat(policy.getChildPolicy()).isSameAs(subPolicy);
     }
 }

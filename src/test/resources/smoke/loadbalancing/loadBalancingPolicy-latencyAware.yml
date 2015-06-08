@@ -8,7 +8,7 @@ cassandra:
     retryPeriod: 5 seconds
     scale: 10 seconds
     updateRate: 1 minute
-    childPolicy:
+    subPolicy:
       type: dcAwareRoundRobin
       localDC: dc1
       usedHostsPerRemoteDC: 2

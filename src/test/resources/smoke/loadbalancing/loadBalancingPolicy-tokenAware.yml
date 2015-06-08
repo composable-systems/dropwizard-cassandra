@@ -4,7 +4,7 @@ cassandra:
   loadBalancingPolicy:
     type: tokenAware
     shuffleReplicas: true
-    childPolicy:
+    subPolicy:
       type: dcAwareRoundRobin
       localDC: dc1
       usedHostsPerRemoteDC: 2

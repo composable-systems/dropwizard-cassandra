@@ -52,12 +52,19 @@ public class SmokeIntegrationTest {
                 { "smoke/queryOptions.yml" },
                 { "smoke/socketOptions.yml" },
                 { "smoke/auth/authProvider-plainText.yml" },
+                { "smoke/loadbalancing/loadBalancingPolicy-dcAwareRoundRobin.yml" },
+                { "smoke/loadbalancing/loadBalancingPolicy-latencyAware.yml" },
+                { "smoke/loadbalancing/loadBalancingPolicy-roundRobin.yml" },
+                { "smoke/loadbalancing/loadBalancingPolicy-tokenAware.yml" },
+                { "smoke/loadbalancing/loadBalancingPolicy-whiteList.yml" },
                 { "smoke/reconnection/reconnectionPolicy-constant.yml" },
                 { "smoke/reconnection/reconnectionPolicy-exponential.yml" },
                 { "smoke/retry/retryPolicy-default.yml" },
                 { "smoke/retry/retryPolicy-downgradingConsistency.yml" },
                 { "smoke/retry/retryPolicy-fallthrough.yml" },
-                { "smoke/retry/retryPolicy-log.yml" }
+                { "smoke/retry/retryPolicy-log.yml" },
+                { "smoke/speculativeexecution/speculativeExecutionPolicy-constant.yml" },
+                { "smoke/speculativeexecution/speculativeExecutionPolicy-none.yml" }
         });
     }
 

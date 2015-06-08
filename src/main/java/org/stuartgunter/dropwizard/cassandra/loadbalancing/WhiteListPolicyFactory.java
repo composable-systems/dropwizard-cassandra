@@ -21,7 +21,7 @@ import java.util.Collection;
  *         <td>Description</td>
  *     </tr>
  *     <tr>
- *         <td>childPolicy</td>
+ *         <td>subPolicy</td>
  *         <td>No default. You must provide a child policy.</td>
  *         <td>The wrapped policy.</td>
  *     </tr>
@@ -37,19 +37,19 @@ public class WhiteListPolicyFactory implements LoadBalancingPolicyFactory {
 
     @Valid
     @NotNull
-    private LoadBalancingPolicyFactory childPolicy;
+    private LoadBalancingPolicyFactory subPolicy;
 
     @NotNull
     private Collection<InetSocketAddress> whiteList;
 
     @JsonProperty
-    public LoadBalancingPolicyFactory getChildPolicy() {
-        return childPolicy;
+    public LoadBalancingPolicyFactory getSubPolicy() {
+        return subPolicy;
     }
 
     @JsonProperty
-    public void setChildPolicy(LoadBalancingPolicyFactory childPolicy) {
-        this.childPolicy = childPolicy;
+    public void setSubPolicy(LoadBalancingPolicyFactory subPolicy) {
+        this.subPolicy = subPolicy;
     }
 
     @JsonProperty
@@ -64,6 +64,6 @@ public class WhiteListPolicyFactory implements LoadBalancingPolicyFactory {
 
     @Override
     public LoadBalancingPolicy build() {
-        return new WhiteListPolicy(childPolicy.build(), whiteList);
+        return new WhiteListPolicy(subPolicy.build(), whiteList);
     }
 }
