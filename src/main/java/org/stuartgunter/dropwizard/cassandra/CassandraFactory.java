@@ -31,6 +31,7 @@ import org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFa
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
+import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -105,6 +106,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The {@link LoadBalancingPolicyFactory load balancing policy} to use.</td>
  *     </tr>
  *     <tr>
+ *         <td>speculativeExecutionPolicy</td>
+ *         <td>No default.</td>
+ *         <td>The {@link SpeculativeExecutionPolicyFactory speculative execution policy} to use.</td>
+ *     </tr>
+ *     <tr>
  *         <td>queryOptions</td>
  *         <td>No default.</td>
  *         <td>The {@link QueryOptions} to use.</td>
@@ -169,6 +175,9 @@ public class CassandraFactory {
 
     @Valid
     private LoadBalancingPolicyFactory loadBalancingPolicy;
+
+    @Valid
+    private SpeculativeExecutionPolicyFactory speculativeExecutionPolicy;
 
     private QueryOptions queryOptions;
     private SocketOptions socketOptions;
@@ -293,6 +302,16 @@ public class CassandraFactory {
     }
 
     @JsonProperty
+    public SpeculativeExecutionPolicyFactory getSpeculativeExecutionPolicy() {
+        return speculativeExecutionPolicy;
+    }
+
+    @JsonProperty
+    public void setSpeculativeExecutionPolicy(SpeculativeExecutionPolicyFactory speculativeExecutionPolicy) {
+        this.speculativeExecutionPolicy = speculativeExecutionPolicy;
+    }
+
+    @JsonProperty
     public QueryOptions getQueryOptions() {
         return queryOptions;
     }
@@ -401,6 +420,10 @@ public class CassandraFactory {
 
         if (loadBalancingPolicy != null) {
             builder.withLoadBalancingPolicy(loadBalancingPolicy.build());
+        }
+
+        if (speculativeExecutionPolicy != null) {
+            builder.withSpeculativeExecutionPolicy(speculativeExecutionPolicy.build());
         }
 
         if (queryOptions != null) {

@@ -1,0 +1,7 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  speculativeExecutionPolicy:
+    type: constant
+    delay: 500 milliseconds
+    maxSpeculativeExecutions: 3

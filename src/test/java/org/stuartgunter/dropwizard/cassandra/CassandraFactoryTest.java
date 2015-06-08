@@ -23,6 +23,7 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.LoadBalancingPolicy;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
+import com.datastax.driver.core.policies.SpeculativeExecutionPolicy;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
 import org.junit.Before;
@@ -35,6 +36,7 @@ import org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFa
 import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
+import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
 import java.net.InetAddress;
 import java.util.Collections;
@@ -64,6 +66,8 @@ public class CassandraFactoryTest {
     private final RetryPolicy retryPolicy = mock(RetryPolicy.class);
     private final LoadBalancingPolicyFactory loadBalancingPolicyFactory = mock(LoadBalancingPolicyFactory.class);
     private final LoadBalancingPolicy loadBalancingPolicy = mock(LoadBalancingPolicy.class);
+    private final SpeculativeExecutionPolicyFactory speculativeExecutionPolicyFactory = mock(SpeculativeExecutionPolicyFactory.class);
+    private final SpeculativeExecutionPolicy speculativeExecutionPolicy = mock(SpeculativeExecutionPolicy.class);
     private final QueryOptions queryOptions = mock(QueryOptions.class);
     private final SocketOptions socketOptions = mock(SocketOptions.class);
     private final PoolingOptionsFactory poolingOptionsFactory = mock(PoolingOptionsFactory.class);
@@ -84,6 +88,7 @@ public class CassandraFactoryTest {
         when(reconnectionPolicyFactory.build()).thenReturn(reconnectionPolicy);
         when(retryPolicyFactory.build()).thenReturn(retryPolicy);
         when(loadBalancingPolicyFactory.build()).thenReturn(loadBalancingPolicy);
+        when(speculativeExecutionPolicyFactory.build()).thenReturn(speculativeExecutionPolicy);
         when(poolingOptionsFactory.build()).thenReturn(poolingOptions);
         when(cluster.getMetrics()).thenReturn(clusterMetrics);
         when(clusterMetrics.getRegistry()).thenReturn(driverRegistry);
@@ -104,6 +109,7 @@ public class CassandraFactoryTest {
         configuration.setReconnectionPolicy(reconnectionPolicyFactory);
         configuration.setRetryPolicy(retryPolicyFactory);
         configuration.setLoadBalancingPolicy(loadBalancingPolicyFactory);
+        configuration.setSpeculativeExecutionPolicy(speculativeExecutionPolicyFactory);
         configuration.setQueryOptions(queryOptions);
         configuration.setSocketOptions(socketOptions);
         configuration.setPoolingOptions(poolingOptionsFactory);
@@ -122,6 +128,7 @@ public class CassandraFactoryTest {
         verify(builder).withReconnectionPolicy(reconnectionPolicy);
         verify(builder).withRetryPolicy(retryPolicy);
         verify(builder).withLoadBalancingPolicy(loadBalancingPolicy);
+        verify(builder).withSpeculativeExecutionPolicy(speculativeExecutionPolicy);
         verify(builder).withQueryOptions(queryOptions);
         verify(builder).withSocketOptions(socketOptions);
         verify(builder).withPoolingOptions(poolingOptions);
