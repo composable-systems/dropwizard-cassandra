@@ -1,3 +1,4 @@
 org.stuartgunter.dropwizard.cassandra.auth.AuthProviderFactory
 org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory
 org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory
+org.stuartgunter.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory
