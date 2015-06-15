@@ -1,9 +1,13 @@
 # Changes
 
-## In Progress
+## 1.1-dw0.8-cs2.1
 
 * Added support for `LoadBalancingPolicy` via YAML configuration (credit to [adejanovski](https://github.com/) for [PR 12](https://github.com/stuartgunter/dropwizard-cassandra/pull/12) that sparked this)
 * Added support for `SpeculativeExecutionPolicy` via YAML configuration
+
+## 1.0-dw0.8-cs2.1
+
+* Upgraded to Dropwizard 0.8.1
 
 ## 1.0-dw0.7-cs2.1 (Dropwizard 0.7.x & Cassandra Driver 2.1.x)
 
