@@ -2,7 +2,7 @@
 
 ## 1.1-dw0.8-cs2.1
 
-* Added support for `LoadBalancingPolicy` via YAML configuration (credit to [adejanovski](https://github.com/) for [PR 12](https://github.com/stuartgunter/dropwizard-cassandra/pull/12) that sparked this)
+* Added support for `LoadBalancingPolicy` via YAML configuration (credit to [adejanovski](https://github.com/adejanovski) for [PR 12](https://github.com/stuartgunter/dropwizard-cassandra/pull/12) that sparked this)
 * Added support for `SpeculativeExecutionPolicy` via YAML configuration
 
 ## 1.0-dw0.8-cs2.1
