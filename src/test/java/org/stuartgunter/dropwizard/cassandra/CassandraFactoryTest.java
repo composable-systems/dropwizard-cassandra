@@ -39,13 +39,16 @@ import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -137,8 +140,56 @@ public class CassandraFactoryTest {
     }
 
     @Test
-    public void registersHealthCheck() throws Exception {
+    public void buildsAClusterWithDnsContactPoint() throws Exception {
         final CassandraFactory configuration = new CassandraFactory();
+        configuration.setDnsContactPoint("localhost");
+
+        configuration.build(environment);
+
+        verify(builder).addContactPoints("localhost");
+    }
+
+    @Test
+    public void failsToBuildAClusterWhenNoContactPointsAreProvided() {
+        try {
+            new CassandraFactory().build(environment);
+            fail("ConfigurationException expected because neither contactPoints nor dnsContactPoint was provided");
+        } catch (ValidationException ex) {
+            assertThat(ex).hasMessage("Exactly one between contactPoints and dnsContactPoint must be specified. " +
+                    "The configuration supplied is not valid.");
+        }
+    }
+
+    @Test
+    public void failsToBuildAClusterEmptyContactPointsAreProvided() {
+        try {
+            final CassandraFactory configuration = new CassandraFactory();
+            configuration.setContactPoints(new InetAddress[]{});
+            configuration.build(environment);
+            fail("ConfigurationException expected because contactPoints was empty");
+        } catch (ValidationException ex) {
+            assertThat(ex).hasMessage("Exactly one between contactPoints and dnsContactPoint must be specified. " +
+                    "The configuration supplied is not valid.");
+        }
+    }
+
+    @Test
+    public void failsToBuildAClusterWhenBothContactPointsAndDnsContactPointAreProvided() throws Exception {
+        try {
+            final CassandraFactory cassandraFactory = new CassandraFactory();
+            cassandraFactory.setContactPoints(new InetAddress[]{InetAddress.getByName("localhost")});
+            cassandraFactory.setDnsContactPoint("localhost");
+            cassandraFactory.build(environment);
+            fail("ConfigurationException expected because both contactPoints and dnsContactPoint were provided");
+        } catch (ValidationException ex) {
+            assertThat(ex).hasMessage("Exactly one between contactPoints and dnsContactPoint must be specified. " +
+                    "The configuration supplied is not valid.");
+        }
+    }
+
+    @Test
+    public void registersHealthCheck() throws Exception {
+        final CassandraFactory configuration = aCassandraFactoryWithDefaultContactPoints();
         when(cluster.getClusterName()).thenReturn("test-cluster");
 
         final Cluster result = configuration.build(environment);
@@ -148,7 +199,7 @@ public class CassandraFactoryTest {
 
     @Test
     public void registersMetricsWhenEnabled() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = aCassandraFactoryWithDefaultContactPoints();
         configuration.setMetricsEnabled(true);
 
         final Cluster result = configuration.build(environment);
@@ -158,7 +209,7 @@ public class CassandraFactoryTest {
 
     @Test
     public void doesNotRegistersMetricsWhenDisabled() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = aCassandraFactoryWithDefaultContactPoints();
         configuration.setMetricsEnabled(false);
 
         final Cluster result = configuration.build(environment);
@@ -168,11 +219,16 @@ public class CassandraFactoryTest {
 
     @Test
     public void managesClusterLifecycle() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = aCassandraFactoryWithDefaultContactPoints();
 
         final Cluster result = configuration.build(environment);
         assertThat(result).isNotNull();
         verify(lifecycle).manage(isA(CassandraManager.class));
     }
 
+    private CassandraFactory aCassandraFactoryWithDefaultContactPoints() throws UnknownHostException {
+        final CassandraFactory configuration = new CassandraFactory();
+        configuration.setContactPoints(new InetAddress[]{InetAddress.getByName("localhost")});
+        return configuration;
+    }
 }

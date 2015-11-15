@@ -105,11 +105,15 @@ for polymorphic configuration - e.g. `ReconnectionPolicyFactory`. There are also
 that the major configuration options are parseable. To find examples of particular config variants, take a look at the
 [test resources](src/test/resources) folder.
 
+The `dnsContactPoint` property has been added in order to be able to support a hostname that resolves to multiple A records. 
+For more information see [here](http://docs.datastax.com/en/drivers/java/2.1/com/datastax/driver/core/Cluster.Builder.html#addContactPoints-java.lang.String-)
+
 ```yaml
 clusterName:
 keyspace:
 validationQuery:
 contactPoints:
+dnsContactPoint:
 port:
 protocolVersion:
 compression:

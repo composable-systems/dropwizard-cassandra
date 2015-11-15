@@ -34,6 +34,7 @@ import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.net.InetAddress;
@@ -68,7 +69,12 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
- *         <td></td>
+ *         <td>Exactly one between this and <i>dnsContactPoint</i> values must be provided.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>dnsContactPoint</td>
+ *         <td>No default. Allows to specify a single contact point. If this contact point resolves to a DNS entry containing multiple A records for the hosts, all the hosts will be used.</td>
+ *         <td>Exactly one between this and <i>contactPoints</i> values must be provided.</td>
  *     </tr>
  *     <tr>
  *         <td>port</td>
@@ -153,8 +159,8 @@ public class CassandraFactory {
     @NotEmpty
     private String validationQuery = "SELECT * FROM system.schema_keyspaces";
 
-    @NotEmpty
     private InetAddress[] contactPoints;
+    private String dnsContactPoint;
 
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
@@ -229,6 +235,16 @@ public class CassandraFactory {
     @JsonProperty
     public void setContactPoints(InetAddress[] contactPoints) {
         this.contactPoints = contactPoints;
+    }
+
+    @JsonProperty
+    public String getDnsContactPoint() {
+        return dnsContactPoint;
+    }
+
+    @JsonProperty
+    public void setDnsContactPoint(String dnsContactPoint) {
+        this.dnsContactPoint = dnsContactPoint;
     }
 
     @JsonProperty
@@ -401,7 +417,18 @@ public class CassandraFactory {
      */
     public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
         final Cluster.Builder builder = Cluster.builder();
-        builder.addContactPoints(contactPoints);
+
+        if (!onlyOneContactPointTypeHasBeenSpecified()) {
+            throw new ValidationException("Exactly one between contactPoints and dnsContactPoint must be specified. " +
+                    "The configuration supplied is not valid.");
+        }
+
+        if (contactPoints != null) {
+            builder.addContactPoints(contactPoints);
+        } else {
+            builder.addContactPoints(dnsContactPoint);
+        }
+
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
@@ -462,5 +489,9 @@ public class CassandraFactory {
         }
 
         return cluster;
+    }
+
+    private boolean onlyOneContactPointTypeHasBeenSpecified() {
+        return (contactPoints != null && contactPoints.length > 0) ^ dnsContactPoint != null;
     }
 }
