@@ -42,7 +42,7 @@ public class CassandraHealthCheckIntegrationTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 { "minimal.yml" },
-                { "minimalWithDnsContactPoint.yml" }
+                { "minimalWithDnsContactPointsType.yml" }
         });
     }
 
