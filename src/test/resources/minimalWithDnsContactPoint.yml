@@ -1,3 +1,0 @@
-cassandra:
-  clusterName: "minimal-cluster"
-  dnsContactPoint: "localhost"

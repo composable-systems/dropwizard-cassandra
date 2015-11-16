@@ -37,9 +37,10 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.net.InetAddress;
 
 import static com.codahale.metrics.MetricRegistry.name;
+import static org.stuartgunter.dropwizard.cassandra.CassandraFactory.ContactPointsType.DNS;
+import static org.stuartgunter.dropwizard.cassandra.CassandraFactory.ContactPointsType.IP;
 
 /**
  * A factory for configuring the Cassandra bundle.
@@ -69,12 +70,14 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
- *         <td>Exactly one between this and <i>dnsContactPoint</i> values must be provided.</td>
+ *         <td>If contactPointsType is set to DNS, only a list containing one value can be passed.</td>
  *     </tr>
  *     <tr>
- *         <td>dnsContactPoint</td>
- *         <td>No default. Allows to specify a single contact point. If this contact point resolves to a DNS entry containing multiple A records for the hosts, all the hosts will be used.</td>
- *         <td>Exactly one between this and <i>contactPoints</i> values must be provided.</td>
+ *         <td>contactPointsType</td>
+ *         <td>IP</td>
+ *         <td>The type of the provided contact points. Must be a value in the {@link CassandraFactory.ContactPointsType enum}.
+ *         When set to IP, treats the contact points as single IP addresses.
+ *         When set to DNS, resolves all the IPs related to the contactPoint entry and uses all of them to build the cluster.</td>
  *     </tr>
  *     <tr>
  *         <td>port</td>
@@ -159,8 +162,10 @@ public class CassandraFactory {
     @NotEmpty
     private String validationQuery = "SELECT * FROM system.schema_keyspaces";
 
-    private InetAddress[] contactPoints;
-    private String dnsContactPoint;
+    @NotEmpty
+    private String[] contactPoints;
+
+    private ContactPointsType contactPointsType = IP;
 
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
@@ -228,23 +233,23 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public InetAddress[] getContactPoints() {
+    public String[] getContactPoints() {
         return contactPoints;
     }
 
     @JsonProperty
-    public void setContactPoints(InetAddress[] contactPoints) {
+    public void setContactPoints(String[] contactPoints) {
         this.contactPoints = contactPoints;
     }
 
     @JsonProperty
-    public String getDnsContactPoint() {
-        return dnsContactPoint;
+    public ContactPointsType getContactPointsType() {
+        return contactPointsType;
     }
 
     @JsonProperty
-    public void setDnsContactPoint(String dnsContactPoint) {
-        this.dnsContactPoint = dnsContactPoint;
+    public void setContactPointsType(ContactPointsType contactPointsType) {
+        this.contactPointsType = contactPointsType;
     }
 
     @JsonProperty
@@ -416,17 +421,16 @@ public class CassandraFactory {
      * @return a fully configured {@link Cluster}.
      */
     public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
+
+        validateDnsContactPointsType();
+
         final Cluster.Builder builder = Cluster.builder();
 
-        if (!onlyOneContactPointTypeHasBeenSpecified()) {
-            throw new ValidationException("Exactly one between contactPoints and dnsContactPoint must be specified. " +
-                    "The configuration supplied is not valid.");
-        }
-
-        if (contactPoints != null) {
+        if (IP.equals(contactPointsType)) {
             builder.addContactPoints(contactPoints);
         } else {
-            builder.addContactPoints(dnsContactPoint);
+            String dnsContactPoints = contactPoints[0];
+            builder.addContactPoints(dnsContactPoints);
         }
 
         builder.withPort(port);
@@ -491,7 +495,14 @@ public class CassandraFactory {
         return cluster;
     }
 
-    private boolean onlyOneContactPointTypeHasBeenSpecified() {
-        return (contactPoints != null && contactPoints.length > 0) ^ dnsContactPoint != null;
+    private void validateDnsContactPointsType() {
+        if (DNS.equals(contactPointsType) && contactPoints.length > 1) {
+            throw new ValidationException("Cannot specify more than one contact point when contactPointsType is DNS.");
+        }
+    }
+
+    public enum ContactPointsType {
+        IP,
+        DNS
     }
 }

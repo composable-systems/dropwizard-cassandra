@@ -51,7 +51,7 @@ public class DropwizardCassandraIntegrationTest {
     public final DropwizardAppRule<SmokeTestConfiguration> app;
 
     public DropwizardCassandraIntegrationTest(String configPath) {
-        this.app = new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource(configPath).getPath());
+        app = new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource(configPath).getPath());
     }
 
     @Test

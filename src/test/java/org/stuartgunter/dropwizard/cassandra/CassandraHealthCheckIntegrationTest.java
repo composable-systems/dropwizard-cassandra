@@ -18,8 +18,10 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.google.common.io.Resources;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestApp;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
@@ -27,20 +29,34 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(Parameterized.class)
 public class CassandraHealthCheckIntegrationTest {
 
-    @ClassRule
-    public static final DropwizardAppRule<SmokeTestConfiguration> APP =
-            new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
+    @Parameterized.Parameters(name = "Config: {0}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                { "minimal.yml" },
+                { "minimalWithDnsContactPoint.yml" }
+        });
+    }
+
+    @Rule
+    public final DropwizardAppRule<SmokeTestConfiguration> app;
+
+    public CassandraHealthCheckIntegrationTest(String configPath) {
+        app = new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource(configPath).getPath());
+    }
 
     @Test
     public void reportsSuccess() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort() + 1)
+                .port(app.getLocalPort() + 1)
                 .path("healthcheck")
                 .build();
 
