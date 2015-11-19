@@ -34,13 +34,10 @@ import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import static com.codahale.metrics.MetricRegistry.name;
-import static org.stuartgunter.dropwizard.cassandra.CassandraFactory.ContactPointsType.DNS;
-import static org.stuartgunter.dropwizard.cassandra.CassandraFactory.ContactPointsType.IP;
 
 /**
  * A factory for configuring the Cassandra bundle.
@@ -70,14 +67,7 @@ import static org.stuartgunter.dropwizard.cassandra.CassandraFactory.ContactPoin
  *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
- *         <td>If contactPointsType is set to DNS, only a list containing one value can be passed.</td>
- *     </tr>
- *     <tr>
- *         <td>contactPointsType</td>
- *         <td>IP</td>
- *         <td>The type of the provided contact points. Must be a value in the {@link CassandraFactory.ContactPointsType enum}.
- *         When set to IP, treats the contact points as single IP addresses.
- *         When set to DNS, resolves all the IPs related to the contactPoint entry and uses all of them to build the cluster.</td>
+ *         <td>Each contact point can be a DNS record resolving to multiple hosts. In this case all of them will be added to the {@link Cluster}.</td>
  *     </tr>
  *     <tr>
  *         <td>port</td>
@@ -165,8 +155,6 @@ public class CassandraFactory {
     @NotEmpty
     private String[] contactPoints;
 
-    private ContactPointsType contactPointsType = IP;
-
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
 
@@ -240,16 +228,6 @@ public class CassandraFactory {
     @JsonProperty
     public void setContactPoints(String[] contactPoints) {
         this.contactPoints = contactPoints;
-    }
-
-    @JsonProperty
-    public ContactPointsType getContactPointsType() {
-        return contactPointsType;
-    }
-
-    @JsonProperty
-    public void setContactPointsType(ContactPointsType contactPointsType) {
-        this.contactPointsType = contactPointsType;
     }
 
     @JsonProperty
@@ -422,15 +400,10 @@ public class CassandraFactory {
      */
     public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
 
-        validateDnsContactPointsType();
-
         final Cluster.Builder builder = Cluster.builder();
 
-        if (IP.equals(contactPointsType)) {
-            builder.addContactPoints(contactPoints);
-        } else {
-            String dnsContactPoints = contactPoints[0];
-            builder.addContactPoints(dnsContactPoints);
+        for (String contactPoint: contactPoints) {
+            builder.addContactPoints(contactPoint);
         }
 
         builder.withPort(port);
@@ -493,16 +466,5 @@ public class CassandraFactory {
         }
 
         return cluster;
-    }
-
-    private void validateDnsContactPointsType() {
-        if (DNS.equals(contactPointsType) && contactPoints.length > 1) {
-            throw new ValidationException("Cannot specify more than one contact point when contactPointsType is DNS.");
-        }
-    }
-
-    public enum ContactPointsType {
-        IP,
-        DNS
     }
 }

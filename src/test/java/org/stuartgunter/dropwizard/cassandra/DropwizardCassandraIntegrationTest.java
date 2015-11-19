@@ -19,10 +19,8 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestApp;
 import org.stuartgunter.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
@@ -30,34 +28,20 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Parameterized.class)
 public class DropwizardCassandraIntegrationTest {
 
-    @Parameterized.Parameters(name = "Config: {0}")
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-                { "minimal.yml" },
-                { "minimalWithDnsContactPointsType.yml" }
-        });
-    }
-
-    @Rule
-    public final DropwizardAppRule<SmokeTestConfiguration> app;
-
-    public DropwizardCassandraIntegrationTest(String configPath) {
-        app = new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource(configPath).getPath());
-    }
+    @ClassRule
+    public static final DropwizardAppRule<SmokeTestConfiguration> APP =
+            new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
 
     @Test
     public void canQueryCassandra() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(app.getLocalPort())
+                .port(APP.getLocalPort())
                 .path("query")
                 .build();
 
@@ -70,7 +54,7 @@ public class DropwizardCassandraIntegrationTest {
     @Test
     public void cassandraMetricsArePublished() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(app.getLocalPort() + 1)
+                .port(APP.getLocalPort() + 1)
                 .path("metrics")
                 .build();
 
@@ -83,7 +67,7 @@ public class DropwizardCassandraIntegrationTest {
     @Test
     public void cassandraHealthCheckIsPublished() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(app.getLocalPort() + 1)
+                .port(APP.getLocalPort() + 1)
                 .path("healthcheck")
                 .build();
 
