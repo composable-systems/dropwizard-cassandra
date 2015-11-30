@@ -402,7 +402,7 @@ public class CassandraFactory {
 
         final Cluster.Builder builder = Cluster.builder();
 
-        for (String contactPoint: contactPoints) {
+        for (String contactPoint : contactPoints) {
             builder.addContactPoints(contactPoint);
         }
 
