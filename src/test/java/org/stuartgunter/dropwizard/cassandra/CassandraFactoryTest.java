@@ -38,14 +38,13 @@ import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFact
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 
-import java.net.InetAddress;
 import java.util.Collections;
 import java.util.Map;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -101,7 +100,7 @@ public class CassandraFactoryTest {
         configuration.setAuthProvider(authProviderFactory);
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
-        configuration.setContactPoints(new InetAddress[] { InetAddress.getByName("localhost") });
+        configuration.setContactPoints(new String[]{"localhost", "127.0.0.1"});
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
@@ -117,7 +116,8 @@ public class CassandraFactoryTest {
         final Cluster result = configuration.build(environment);
 
         assertThat(result).isSameAs(cluster);
-        verify(builder).addContactPoints(InetAddress.getByName("localhost"));
+        verify(builder).addContactPoints("localhost");
+        verify(builder).addContactPoints("127.0.0.1");
         verify(builder).withPort(1234);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");
@@ -138,7 +138,7 @@ public class CassandraFactoryTest {
 
     @Test
     public void registersHealthCheck() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = configurationWithDefaultContactPoints();
         when(cluster.getClusterName()).thenReturn("test-cluster");
 
         final Cluster result = configuration.build(environment);
@@ -148,7 +148,7 @@ public class CassandraFactoryTest {
 
     @Test
     public void registersMetricsWhenEnabled() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = configurationWithDefaultContactPoints();
         configuration.setMetricsEnabled(true);
 
         final Cluster result = configuration.build(environment);
@@ -158,7 +158,7 @@ public class CassandraFactoryTest {
 
     @Test
     public void doesNotRegistersMetricsWhenDisabled() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = configurationWithDefaultContactPoints();
         configuration.setMetricsEnabled(false);
 
         final Cluster result = configuration.build(environment);
@@ -168,11 +168,16 @@ public class CassandraFactoryTest {
 
     @Test
     public void managesClusterLifecycle() throws Exception {
-        final CassandraFactory configuration = new CassandraFactory();
+        final CassandraFactory configuration = configurationWithDefaultContactPoints();
 
         final Cluster result = configuration.build(environment);
         assertThat(result).isNotNull();
         verify(lifecycle).manage(isA(CassandraManager.class));
     }
 
+    private CassandraFactory configurationWithDefaultContactPoints() {
+        final CassandraFactory configuration = new CassandraFactory();
+        configuration.setContactPoints(new String[] { "localhost" });
+        return configuration;
+    }
 }

@@ -105,6 +105,10 @@ for polymorphic configuration - e.g. `ReconnectionPolicyFactory`. There are also
 that the major configuration options are parseable. To find examples of particular config variants, take a look at the
 [test resources](src/test/resources) folder.
 
+`contactPoints` now support entries that resolve to multiple `InetAddress`es. In this case, every address resolved will
+be added to the cluster. This is particularly useful when your Cassandra nodes are handled by an external service discovery
+platform. For more information see [here](http://docs.datastax.com/en/drivers/java/2.1/com/datastax/driver/core/Cluster.Builder.html#addContactPoints-java.lang.String-)
+
 ```yaml
 clusterName:
 keyspace:

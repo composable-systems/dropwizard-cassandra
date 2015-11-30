@@ -36,7 +36,6 @@ import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExe
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.net.InetAddress;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
@@ -68,7 +67,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
- *         <td></td>
+ *         <td>Each contact point can be a DNS record resolving to multiple hosts. In this case all of them will be added to the {@link Cluster}.</td>
  *     </tr>
  *     <tr>
  *         <td>port</td>
@@ -154,7 +153,7 @@ public class CassandraFactory {
     private String validationQuery = "SELECT * FROM system.schema_keyspaces";
 
     @NotEmpty
-    private InetAddress[] contactPoints;
+    private String[] contactPoints;
 
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
@@ -222,12 +221,12 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public InetAddress[] getContactPoints() {
+    public String[] getContactPoints() {
         return contactPoints;
     }
 
     @JsonProperty
-    public void setContactPoints(InetAddress[] contactPoints) {
+    public void setContactPoints(String[] contactPoints) {
         this.contactPoints = contactPoints;
     }
 
@@ -400,8 +399,13 @@ public class CassandraFactory {
      * @return a fully configured {@link Cluster}.
      */
     public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
+
         final Cluster.Builder builder = Cluster.builder();
-        builder.addContactPoints(contactPoints);
+
+        for (String contactPoint: contactPoints) {
+            builder.addContactPoints(contactPoint);
+        }
+
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
