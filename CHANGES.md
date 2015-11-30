@@ -2,7 +2,7 @@
 
 ## 2.0-dw0.8-cs2.1
 
-* Modified `contactPoints` to use all A records associated with DNS names instead of just one A record per DNS name (thanks to [manub](https://github.com/manub) for [PR 12](https://github.com/stuartgunter/dropwizard-cassandra/pull/12)).
+* Modified `contactPoints` to use all A records associated with DNS names instead of just one A record per DNS name (thanks to [manub](https://github.com/manub) for [PR 14](https://github.com/stuartgunter/dropwizard-cassandra/pull/14)).
   This should not be a breaking change, but the version bump to `2.0` is precautionary as it informs users to be aware of the change in behaviour.
 
 ## 1.1-dw0.8-cs2.1
