@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0-dw0.9-cs2.1
+
+* Updated to support Dropwizard 0.9.x (thanks to [mmusnjak](https://github.com/mmusnjak) for [PR 15](https://github.com/stuartgunter/dropwizard-cassandra/pull/15)).
+
 ## 2.0-dw0.8-cs2.1
 
 * Modified `contactPoints` to use all A records associated with DNS names instead of just one A record per DNS name (thanks to [manub](https://github.com/manub) for [PR 14](https://github.com/stuartgunter/dropwizard-cassandra/pull/14)).
