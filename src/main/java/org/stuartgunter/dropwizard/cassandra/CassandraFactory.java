@@ -87,7 +87,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     <tr>
  *         <td>maxSchemaAgreementWait</td>
  *         <td>No default.</td>
- *         <td>Sets the maximum time in seconds to wait for schema agreement before returning from a DDL query.</td>
+ *         <td>Sets the maximum time to wait for schema agreement before returning from a DDL query.</td>
  *     </tr>
  *     <tr>
  *         <td>reconnectionPolicy</td>
