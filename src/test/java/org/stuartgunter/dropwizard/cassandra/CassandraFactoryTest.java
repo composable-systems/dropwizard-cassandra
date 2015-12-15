@@ -26,6 +26,7 @@ import com.datastax.driver.core.policies.RetryPolicy;
 import com.datastax.driver.core.policies.SpeculativeExecutionPolicy;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.util.Duration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +41,7 @@ import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExe
 
 import java.util.Collections;
 import java.util.Map;
-
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -104,7 +105,7 @@ public class CassandraFactoryTest {
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
-        configuration.setMaxSchemaAgreementWait(90);
+        configuration.setMaxSchemaAgreementWait(Duration.seconds(90));
         configuration.setProtocolVersion(ProtocolVersion.V2);
         configuration.setReconnectionPolicy(reconnectionPolicyFactory);
         configuration.setRetryPolicy(retryPolicyFactory);

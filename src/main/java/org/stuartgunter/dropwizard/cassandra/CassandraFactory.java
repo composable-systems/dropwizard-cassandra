@@ -168,7 +168,8 @@ public class CassandraFactory {
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
 
-    private int maxSchemaAgreementWait = 0;
+    @NotNull
+    private Duration maxSchemaAgreementWait = Duration.seconds(0);
 
     @Valid
     private ReconnectionPolicyFactory reconnectionPolicy;
@@ -268,7 +269,7 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public void setMaxSchemaAgreementWait(int maxSchemaAgreementWait) {
+    public void setMaxSchemaAgreementWait(Duration maxSchemaAgreementWait) {
         this.maxSchemaAgreementWait = maxSchemaAgreementWait;
     }
 
@@ -422,8 +423,8 @@ public class CassandraFactory {
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
 
-        if(maxSchemaAgreementWait != 0) {
-            builder.withMaxSchemaAgreementWaitSeconds(maxSchemaAgreementWait);
+        if(maxSchemaAgreementWait.getQuantity() != 0) {
+            builder.withMaxSchemaAgreementWaitSeconds((int)maxSchemaAgreementWait.toSeconds());
         }
 
         if (authProvider != null) {
