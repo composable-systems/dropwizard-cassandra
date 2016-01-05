@@ -117,6 +117,7 @@ contactPoints:
 port:
 protocolVersion:
 compression:
+maxSchemaAgreementWait:
 reconnectionPolicy:
   type:
 authProvider:
