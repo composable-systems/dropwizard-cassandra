@@ -85,6 +85,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>Sets the compression to use for the transport. Must a value in the {@link ProtocolOptions.Compression compression enum}.</td>
  *     </tr>
  *     <tr>
+ *         <td>maxSchemaAgreementWait</td>
+ *         <td>No default.</td>
+ *         <td>Sets the maximum time to wait for schema agreement before returning from a DDL query.</td>
+ *     </tr>
+ *     <tr>
  *         <td>reconnectionPolicy</td>
  *         <td>No default.</td>
  *         <td>The {@link ReconnectionPolicyFactory reconnection policy} to use.</td>
@@ -162,6 +167,8 @@ public class CassandraFactory {
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
+
+    private Duration maxSchemaAgreementWait;
 
     @Valid
     private ReconnectionPolicyFactory reconnectionPolicy;
@@ -258,6 +265,11 @@ public class CassandraFactory {
     @JsonProperty
     public void setCompression(ProtocolOptions.Compression compression) {
         this.compression = compression;
+    }
+
+    @JsonProperty
+    public void setMaxSchemaAgreementWait(Duration maxSchemaAgreementWait) {
+        this.maxSchemaAgreementWait = maxSchemaAgreementWait;
     }
 
     @JsonProperty
@@ -409,6 +421,10 @@ public class CassandraFactory {
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
+
+        if(maxSchemaAgreementWait != null) {
+            builder.withMaxSchemaAgreementWaitSeconds((int)maxSchemaAgreementWait.toSeconds());
+        }
 
         if (authProvider != null) {
             builder.withAuthProvider(authProvider.build());
