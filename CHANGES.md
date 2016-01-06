@@ -1,5 +1,9 @@
 # Changes
 
+## 2.1-dw0.9-cs2.1
+
+* Added support for `maxSchemaAgreementWait` via YAML configuration (thanks to [mmusnjak](https://github.com/mmusnjak) for [PR 16](https://github.com/stuartgunter/dropwizard-cassandra/pull/16)).
+
 ## 2.0-dw0.9-cs2.1
 
 * Updated to support Dropwizard 0.9.x (thanks to [mmusnjak](https://github.com/mmusnjak) for [PR 15](https://github.com/stuartgunter/dropwizard-cassandra/pull/15)).

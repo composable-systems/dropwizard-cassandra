@@ -41,7 +41,6 @@ import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExe
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;

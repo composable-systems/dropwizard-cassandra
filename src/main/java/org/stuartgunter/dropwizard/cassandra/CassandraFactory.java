@@ -422,8 +422,8 @@ public class CassandraFactory {
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
 
-        if(maxSchemaAgreementWait != null) {
-            builder.withMaxSchemaAgreementWaitSeconds((int)maxSchemaAgreementWait.toSeconds());
+        if (maxSchemaAgreementWait != null) {
+            builder.withMaxSchemaAgreementWaitSeconds((int) maxSchemaAgreementWait.toSeconds());
         }
 
         if (authProvider != null) {
