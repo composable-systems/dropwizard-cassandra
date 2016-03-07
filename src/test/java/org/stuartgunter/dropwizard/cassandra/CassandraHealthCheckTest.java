@@ -18,13 +18,18 @@ package org.stuartgunter.dropwizard.cassandra;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
+import io.dropwizard.util.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.util.concurrent.TimeUnit;
 
 public class CassandraHealthCheckTest {
 
@@ -36,11 +41,15 @@ public class CassandraHealthCheckTest {
     @Before
     public void setUp() throws Exception {
         when(cluster.connect()).thenReturn(session);
-        healthCheck = new CassandraHealthCheck(cluster, validationQuery);
+        healthCheck = new CassandraHealthCheck(cluster, validationQuery, Duration.seconds(1));
     }
 
     @Test
     public void isHealthyIfValidationQuerySucceeds() throws Exception {
+        ResultSetFuture mockResultSetFuture = mock(ResultSetFuture.class);
+        ResultSet mockResultSet = mock(ResultSet.class);
+        when(mockResultSetFuture.get(Duration.seconds(1).toMilliseconds(), TimeUnit.MILLISECONDS)).thenReturn(mockResultSet);
+        when(session.executeAsync(validationQuery)).thenReturn(mockResultSetFuture);
         final HealthCheck.Result result = healthCheck.execute();
 
         assertThat(result.isHealthy()).isTrue();

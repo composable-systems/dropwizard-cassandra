@@ -197,6 +197,9 @@ public class CassandraFactory {
     @NotNull
     private Duration shutdownGracePeriod = Duration.seconds(30);
 
+    @NotNull
+    Duration healthCheckTimeOut = Duration.seconds(2);
+
     @JsonProperty
     public String getClusterName() {
         return clusterName;
@@ -382,6 +385,16 @@ public class CassandraFactory {
         this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
+    @JsonProperty
+    public Duration getHealthCheckTimeOut() {
+        return healthCheckTimeOut;
+    }
+
+    @JsonProperty
+    public void setHealthCheckTimeOut(Duration healthCheckTimeOut) {
+        this.healthCheckTimeOut = healthCheckTimeOut;
+    }
+
     /**
      * Builds a {@link Cluster} instance for the given {@link Environment}.
      * <p/>
@@ -473,7 +486,7 @@ public class CassandraFactory {
         Cluster cluster = builder.build();
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery);
+        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery, healthCheckTimeOut);
         healthChecks.register(name("cassandra", cluster.getClusterName()), healthCheck);
 
         if (isMetricsEnabled()) {
