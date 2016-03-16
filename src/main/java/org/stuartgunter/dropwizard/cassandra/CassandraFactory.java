@@ -65,6 +65,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
+ *         <td>healthCheckTimeOut</td>
+ *         <td>2 seconds.</td>
+ *         <td>Sets the maximum time to wait for the validation query to respond.</td>
+ *     </tr>
+ *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
  *         <td>Each contact point can be a DNS record resolving to multiple hosts. In this case all of them will be added to the {@link Cluster}.</td>
