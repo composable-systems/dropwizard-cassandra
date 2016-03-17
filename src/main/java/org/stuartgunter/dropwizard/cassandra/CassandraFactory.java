@@ -65,6 +65,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
+ *         <td>healthCheckTimeOut</td>
+ *         <td>2 seconds.</td>
+ *         <td>Sets the maximum time to wait for the validation query to respond.</td>
+ *     </tr>
+ *     <tr>
  *         <td>contactPoints</td>
  *         <td>No default. You must provide a list of contact points for the Cassandra driver.</td>
  *         <td>Each contact point can be a DNS record resolving to multiple hosts. In this case all of them will be added to the {@link Cluster}.</td>
@@ -196,6 +201,9 @@ public class CassandraFactory {
 
     @NotNull
     private Duration shutdownGracePeriod = Duration.seconds(30);
+
+    @NotNull
+    Duration healthCheckTimeOut = Duration.seconds(2);
 
     @JsonProperty
     public String getClusterName() {
@@ -382,6 +390,16 @@ public class CassandraFactory {
         this.shutdownGracePeriod = shutdownGracePeriod;
     }
 
+    @JsonProperty
+    public Duration getHealthCheckTimeOut() {
+        return healthCheckTimeOut;
+    }
+
+    @JsonProperty
+    public void setHealthCheckTimeOut(Duration healthCheckTimeOut) {
+        this.healthCheckTimeOut = healthCheckTimeOut;
+    }
+
     /**
      * Builds a {@link Cluster} instance for the given {@link Environment}.
      * <p/>
@@ -473,7 +491,7 @@ public class CassandraFactory {
         Cluster cluster = builder.build();
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery);
+        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery, healthCheckTimeOut);
         healthChecks.register(name("cassandra", cluster.getClusterName()), healthCheck);
 
         if (isMetricsEnabled()) {

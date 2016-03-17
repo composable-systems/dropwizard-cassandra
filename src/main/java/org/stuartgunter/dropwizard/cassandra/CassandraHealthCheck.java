@@ -19,8 +19,11 @@ package org.stuartgunter.dropwizard.cassandra;
 import com.codahale.metrics.health.HealthCheck;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import io.dropwizard.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * HealthCheck for a Cassandra Cluster.
@@ -28,21 +31,23 @@ import org.slf4j.LoggerFactory;
  * The health check returns healthy if the {@link CassandraFactory#validationQuery validationQuery} succeeds.
  */
 public class CassandraHealthCheck extends HealthCheck {
+    private final Duration timeOut;
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraHealthCheck.class);
 
     private final Session session;
     private final String validationQuery;
 
-    public CassandraHealthCheck(Cluster cluster, String validationQuery) {
+    public CassandraHealthCheck(Cluster cluster, String validationQuery, Duration timeOut) {
         this.session = cluster.connect();
         this.validationQuery = validationQuery;
+        this.timeOut = timeOut;
     }
 
     @Override
     protected Result check() throws Exception {
         try {
-            session.execute(validationQuery);
+            session.executeAsync(validationQuery).get(timeOut.toMilliseconds(), TimeUnit.MILLISECONDS);
             return Result.healthy();
         } catch (Exception ex) {
             LOG.error("Unable to connect to Cassandra cluster [{}]", session.getCluster().getClusterName(), ex);
