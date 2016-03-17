@@ -1,5 +1,9 @@
 # Changes
 
+## 2.2-dw0.9-cs2.1
+
+* Added `healthCheckTimeout` with default value of `2 seconds` (thanks to [mmusnjak](https://github.com/mmusnjak) for [PR 18](https://github.com/stuartgunter/dropwizard-cassandra/pull/18)).
+
 ## 2.1-dw0.9-cs2.1
 
 * Added support for `maxSchemaAgreementWait` via YAML configuration (thanks to [mmusnjak](https://github.com/mmusnjak) for [PR 16](https://github.com/stuartgunter/dropwizard-cassandra/pull/16)).
