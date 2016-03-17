@@ -31,23 +31,23 @@ import java.util.concurrent.TimeUnit;
  * The health check returns healthy if the {@link CassandraFactory#validationQuery validationQuery} succeeds.
  */
 public class CassandraHealthCheck extends HealthCheck {
-    private final Duration timeOut;
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraHealthCheck.class);
 
     private final Session session;
     private final String validationQuery;
+    private final Duration timeout;
 
-    public CassandraHealthCheck(Cluster cluster, String validationQuery, Duration timeOut) {
+    public CassandraHealthCheck(Cluster cluster, String validationQuery, Duration timeout) {
         this.session = cluster.connect();
         this.validationQuery = validationQuery;
-        this.timeOut = timeOut;
+        this.timeout = timeout;
     }
 
     @Override
     protected Result check() throws Exception {
         try {
-            session.executeAsync(validationQuery).get(timeOut.toMilliseconds(), TimeUnit.MILLISECONDS);
+            session.executeAsync(validationQuery).get(timeout.toMilliseconds(), TimeUnit.MILLISECONDS);
             return Result.healthy();
         } catch (Exception ex) {
             LOG.error("Unable to connect to Cassandra cluster [{}]", session.getCluster().getClusterName(), ex);

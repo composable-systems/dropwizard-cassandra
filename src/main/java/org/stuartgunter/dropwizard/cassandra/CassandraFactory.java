@@ -65,7 +65,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
- *         <td>healthCheckTimeOut</td>
+ *         <td>healthCheckTimeout</td>
  *         <td>2 seconds.</td>
  *         <td>Sets the maximum time to wait for the validation query to respond.</td>
  *     </tr>
@@ -203,7 +203,7 @@ public class CassandraFactory {
     private Duration shutdownGracePeriod = Duration.seconds(30);
 
     @NotNull
-    Duration healthCheckTimeOut = Duration.seconds(2);
+    private Duration healthCheckTimeout = Duration.seconds(2);
 
     @JsonProperty
     public String getClusterName() {
@@ -391,13 +391,13 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public Duration getHealthCheckTimeOut() {
-        return healthCheckTimeOut;
+    public Duration getHealthCheckTimeout() {
+        return healthCheckTimeout;
     }
 
     @JsonProperty
-    public void setHealthCheckTimeOut(Duration healthCheckTimeOut) {
-        this.healthCheckTimeOut = healthCheckTimeOut;
+    public void setHealthCheckTimeout(Duration healthCheckTimeout) {
+        this.healthCheckTimeout = healthCheckTimeout;
     }
 
     /**
@@ -491,7 +491,7 @@ public class CassandraFactory {
         Cluster cluster = builder.build();
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
-        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery, healthCheckTimeOut);
+        CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery, healthCheckTimeout);
         healthChecks.register(name("cassandra", cluster.getClusterName()), healthCheck);
 
         if (isMetricsEnabled()) {

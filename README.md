@@ -113,7 +113,7 @@ platform. For more information see [here](http://docs.datastax.com/en/drivers/ja
 clusterName:
 keyspace:
 validationQuery:
-healthCheckTimeOut:
+healthCheckTimeout:
 contactPoints:
 port:
 protocolVersion:
