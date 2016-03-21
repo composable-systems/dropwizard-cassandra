@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/stuartgunter/dropwizard-cassandra.png?branch=master)](https://travis-ci.org/stuartgunter/dropwizard-cassandra)
 
 The `dropwizard-cassandra` library provides useful functionality for Dropwizard apps that communicate with [Cassandra](http://cassandra.apache.org) clusters.
-Under the hood, it uses the [DataStax Cassandra Driver](http://www.datastax.com/documentation/developer/java-driver/2.0/java-driver/whatsNew2.html).
+Under the hood, it uses the [DataStax Cassandra Driver](http://www.datastax.com/documentation/developer/java-driver/3.0/java-driver/whatsNew2.html).
 
 ## What's Included
 
@@ -107,7 +107,7 @@ that the major configuration options are parseable. To find examples of particul
 
 `contactPoints` now support entries that resolve to multiple `InetAddress`es. In this case, every address resolved will
 be added to the cluster. This is particularly useful when your Cassandra nodes are handled by an external service discovery
-platform. For more information see [here](http://docs.datastax.com/en/drivers/java/2.1/com/datastax/driver/core/Cluster.Builder.html#addContactPoints-java.lang.String-)
+platform. For more information see [here](http://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/Cluster.Builder.html#addContactPoints-java.lang.String-)
 
 ```yaml
 clusterName:
@@ -119,6 +119,8 @@ port:
 protocolVersion:
 compression:
 maxSchemaAgreementWait:
+ssl:
+  type:
 reconnectionPolicy:
   type:
 authProvider:
@@ -146,13 +148,13 @@ poolingOptions:
   heartbeatInterval:
   poolTimeout:
   local:
-    minSimultaneousRequests:
-    maxSimultaneousRequests:
+    maxRequestsPerConnection:
+    newConnectionThreshold:
     coreConnections:
     maxConnections:
   remote:
-    minSimultaneousRequests:
-    maxSimultaneousRequests:
+    maxRequestsPerConnection:
+    newConnectionThreshold:
     coreConnections:
     maxConnections:
 metricsEnabled:

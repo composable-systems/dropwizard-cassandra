@@ -71,18 +71,20 @@ public class DCAwareRoundRobinPolicyFactory implements LoadBalancingPolicyFactor
 
     @Override
     public LoadBalancingPolicy build() {
-        if (allowRemoteDCsForLocalConsistencyLevel == null) {
-            if (usedHostsPerRemoteDC == null) {
-                if (localDC == null) {
-                    return new DCAwareRoundRobinPolicy();
-                } else {
-                    return new DCAwareRoundRobinPolicy(localDC);
-                }
-            } else {
-                return new DCAwareRoundRobinPolicy(localDC, usedHostsPerRemoteDC);
-            }
-        } else {
-            return new DCAwareRoundRobinPolicy(localDC, usedHostsPerRemoteDC, allowRemoteDCsForLocalConsistencyLevel);
+        DCAwareRoundRobinPolicy.Builder builder = DCAwareRoundRobinPolicy.builder();
+
+        if (allowRemoteDCsForLocalConsistencyLevel == Boolean.TRUE) {
+            builder.allowRemoteDCsForLocalConsistencyLevel();
         }
+
+        if (localDC != null) {
+            builder.withLocalDc(localDC);
+        }
+
+        if (usedHostsPerRemoteDC != null) {
+            builder.withUsedHostsPerRemoteDc(usedHostsPerRemoteDC);
+        }
+
+        return builder.build();
     }
 }

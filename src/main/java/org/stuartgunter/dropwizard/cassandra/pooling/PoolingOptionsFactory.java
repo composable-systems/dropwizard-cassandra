@@ -62,6 +62,8 @@ public class PoolingOptionsFactory {
     @Valid
     private Duration poolTimeout;
     @Valid
+    private Duration idleTimeout;
+    @Valid
     private HostDistanceOptions remote;
     @Valid
     private HostDistanceOptions local;
@@ -84,6 +86,16 @@ public class PoolingOptionsFactory {
     @JsonProperty
     public void setPoolTimeout(Duration poolTimeout) {
         this.poolTimeout = poolTimeout;
+    }
+
+    @JsonProperty
+    public Duration getIdleTimeout() {
+        return idleTimeout;
+    }
+
+    @JsonProperty
+    public void setIdleTimeout(Duration idleTimeout) {
+        this.idleTimeout = idleTimeout;
     }
 
     @JsonProperty
@@ -120,6 +132,9 @@ public class PoolingOptionsFactory {
         if (poolTimeout != null) {
             poolingOptions.setPoolTimeoutMillis((int) poolTimeout.toMilliseconds());
         }
+        if (idleTimeout != null) {
+            poolingOptions.setIdleTimeoutSeconds((int) idleTimeout.toSeconds());
+        }
         return poolingOptions;
     }
 
@@ -130,11 +145,11 @@ public class PoolingOptionsFactory {
         if (options.getMaxConnections() != null) {
             poolingOptions.setMaxConnectionsPerHost(hostDistance, options.getMaxConnections());
         }
-        if (options.getMaxSimultaneousRequests() != null) {
-            poolingOptions.setMaxSimultaneousRequestsPerConnectionThreshold(hostDistance, options.getMaxSimultaneousRequests());
+        if (options.getMaxRequestsPerConnection() != null) {
+            poolingOptions.setMaxRequestsPerConnection(hostDistance, options.getMaxRequestsPerConnection());
         }
-        if (options.getMinSimultaneousRequests() != null) {
-            poolingOptions.setMinSimultaneousRequestsPerConnectionThreshold(hostDistance, options.getMinSimultaneousRequests());
+        if (options.getNewConnectionThreshold() != null) {
+            poolingOptions.setNewConnectionThreshold(hostDistance, options.getNewConnectionThreshold());
         }
     }
 

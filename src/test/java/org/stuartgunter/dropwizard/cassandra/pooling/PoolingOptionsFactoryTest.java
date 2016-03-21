@@ -43,19 +43,21 @@ public class PoolingOptionsFactoryTest {
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(1);
         assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.LOCAL)).isEqualTo(3);
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.LOCAL)).isEqualTo(25);
+        assertThat(poolingOptions.getMaxRequestsPerConnection(HostDistance.LOCAL)).isEqualTo(5);
+        assertThat(poolingOptions.getNewConnectionThreshold(HostDistance.LOCAL)).isEqualTo(25);
 
         assertThat(poolingOptions.getCoreConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(2);
         assertThat(poolingOptions.getMaxConnectionsPerHost(HostDistance.REMOTE)).isEqualTo(4);
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(HostDistance.REMOTE)).isEqualTo(30);
+        assertThat(poolingOptions.getMaxRequestsPerConnection(HostDistance.REMOTE)).isEqualTo(6);
+        assertThat(poolingOptions.getNewConnectionThreshold(HostDistance.REMOTE)).isEqualTo(30);
     }
 
-    private HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int minSimultaneousRequests, int maxSimultaneousRequests) {
+    private HostDistanceOptions createHostDistanceOptions(int coreConnections, int maxConnections, int maxRequestsPerConnection, int newConnectionThreshold) {
         HostDistanceOptions options = new HostDistanceOptions();
         options.setCoreConnections(coreConnections);
         options.setMaxConnections(maxConnections);
-        options.setMinSimultaneousRequests(minSimultaneousRequests);
-        options.setMaxSimultaneousRequests(maxSimultaneousRequests);
+        options.setMaxRequestsPerConnection(maxRequestsPerConnection);
+        options.setNewConnectionThreshold(newConnectionThreshold);
         return options;
     }
 
@@ -77,7 +79,9 @@ public class PoolingOptionsFactoryTest {
                 .isEqualTo(defaultPoolingOptions.getCoreConnectionsPerHost(hostDistance));
         assertThat(poolingOptions.getMaxConnectionsPerHost(hostDistance))
                 .isEqualTo(defaultPoolingOptions.getMaxConnectionsPerHost(hostDistance));
-        assertThat(poolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance))
-                .isEqualTo(defaultPoolingOptions.getMaxSimultaneousRequestsPerConnectionThreshold(hostDistance));
+        assertThat(poolingOptions.getMaxRequestsPerConnection(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getMaxRequestsPerConnection(hostDistance));
+        assertThat(poolingOptions.getNewConnectionThreshold(hostDistance))
+                .isEqualTo(defaultPoolingOptions.getNewConnectionThreshold(hostDistance));
     }
 }

@@ -5,12 +5,12 @@ cassandra:
     heartbeatInterval: 5 seconds
     poolTimeout: 2 seconds
     local:
-      minSimultaneousRequests: 10
-      maxSimultaneousRequests: 50
+      maxRequestsPerConnection: 10
+      newConnectionThreshold: 50
       coreConnections: 3
       maxConnections: 4
     remote:
-      minSimultaneousRequests: 10
-      maxSimultaneousRequests: 50
+      maxRequestsPerConnection: 10
+      newConnectionThreshold: 50
       coreConnections: 1
       maxConnections: 1

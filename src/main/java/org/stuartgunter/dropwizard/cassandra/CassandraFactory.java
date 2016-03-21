@@ -32,6 +32,7 @@ import org.stuartgunter.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import org.stuartgunter.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.retry.RetryPolicyFactory;
 import org.stuartgunter.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
+import org.stuartgunter.dropwizard.cassandra.ssl.SSLOptionsFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -83,6 +84,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>protocolVersion</td>
  *         <td>-1</td>
  *         <td>The native protocol version to use.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>ssl</td>
+ *         <td>No default.</td>
+ *         <td>The {@link SSLOptionsFactory SSL options} to use.</td>
  *     </tr>
  *     <tr>
  *         <td>compression</td>
@@ -169,6 +175,8 @@ public class CassandraFactory {
     private int port = ProtocolOptions.DEFAULT_PORT;
 
     private ProtocolVersion protocolVersion;
+
+    private SSLOptionsFactory ssl;
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
@@ -263,6 +271,16 @@ public class CassandraFactory {
     @JsonProperty
     public void setProtocolVersion(ProtocolVersion protocolVersion) {
         this.protocolVersion = protocolVersion;
+    }
+
+    @JsonProperty
+    public SSLOptionsFactory getSsl() {
+        return ssl;
+    }
+
+    @JsonProperty
+    public void setSsl(SSLOptionsFactory ssl) {
+        this.ssl = ssl;
     }
 
     @JsonProperty
@@ -439,6 +457,10 @@ public class CassandraFactory {
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
+
+        if (ssl != null) {
+            builder.withSSL(ssl.build());
+        }
 
         if (maxSchemaAgreementWait != null) {
             builder.withMaxSchemaAgreementWaitSeconds((int) maxSchemaAgreementWait.toSeconds());

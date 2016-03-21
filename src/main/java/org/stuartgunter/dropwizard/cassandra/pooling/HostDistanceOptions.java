@@ -31,14 +31,14 @@ import javax.validation.constraints.Min;
  *         <td>Description</td>
  *     </tr>
  *     <tr>
- *         <td>minSimultaneousRequests</td>
- *         <td>No default. You must specify minimum simultaneous requests.</td>
- *         <td>The number of simultaneous requests on a connection below which connections in excess are reclaimed.</td>
+ *         <td>maxRequestsPerConnection</td>
+ *         <td>Default is dependent on protocol version. See driver docs for details.</td>
+ *         <td>The maximum number of connections per host.</td>
  *     </tr>
  *     <tr>
- *         <td>maxSimultaneousRequests</td>
- *         <td>No default. You must specify maximum simultaneous requests.</td>
- *         <td>The number of simultaneous requests on all connections to an host after which more connections are created.</td>
+ *         <td>newConnectionThreshold</td>
+ *         <td>Default is dependent on protocol version. See driver docs for details.</td>
+ *         <td>The threshold that triggers the creation of a new connection to a host.</td>
  *     </tr>
  *     <tr>
  *         <td>coreConnections</td>
@@ -55,32 +55,32 @@ import javax.validation.constraints.Min;
 public class HostDistanceOptions {
 
     @Min(0)
-    private Integer minSimultaneousRequests;
+    private Integer maxRequestsPerConnection;
     @Min(0)
-    private Integer maxSimultaneousRequests;
+    private Integer newConnectionThreshold;
     @Min(0)
     private Integer coreConnections;
     @Min(0)
     private Integer maxConnections;
 
     @JsonProperty
-    public Integer getMinSimultaneousRequests() {
-        return minSimultaneousRequests;
+    public Integer getMaxRequestsPerConnection() {
+        return maxRequestsPerConnection;
     }
 
     @JsonProperty
-    public void setMinSimultaneousRequests(Integer minSimultaneousRequests) {
-        this.minSimultaneousRequests = minSimultaneousRequests;
+    public void setMaxRequestsPerConnection(Integer maxRequestsPerConnection) {
+        this.maxRequestsPerConnection = maxRequestsPerConnection;
     }
 
     @JsonProperty
-    public Integer getMaxSimultaneousRequests() {
-        return maxSimultaneousRequests;
+    public Integer getNewConnectionThreshold() {
+        return newConnectionThreshold;
     }
 
     @JsonProperty
-    public void setMaxSimultaneousRequests(Integer maxSimultaneousRequests) {
-        this.maxSimultaneousRequests = maxSimultaneousRequests;
+    public void setNewConnectionThreshold(Integer newConnectionThreshold) {
+        this.newConnectionThreshold = newConnectionThreshold;
     }
 
     @JsonProperty

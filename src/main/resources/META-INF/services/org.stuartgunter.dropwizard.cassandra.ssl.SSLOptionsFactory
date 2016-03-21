@@ -1,0 +1,2 @@
+org.stuartgunter.dropwizard.cassandra.ssl.JDKSSLOptionsFactory
+org.stuartgunter.dropwizard.cassandra.ssl.NettySSLOptionsFactory

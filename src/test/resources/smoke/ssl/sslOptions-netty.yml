@@ -1,0 +1,13 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  keyspace: "bundle"
+  contactPoints: ["localhost"]
+  port: 9042
+  protocolVersion: "V2"
+  compression: "LZ4"
+  metricsEnabled: false
+  jmxEnabled: false
+  shutdownGracePeriod: "10 seconds"
+  ssl:
+    type: netty
+    provider: openssl
