@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *
  * @see ConstantSpeculativeExecutionPolicyFactory
  * @see NoSpeculativeExecutionPolicyFactory
- * @see PercentileSpeculativeExecutionPolicyFactory
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface SpeculativeExecutionPolicyFactory {
