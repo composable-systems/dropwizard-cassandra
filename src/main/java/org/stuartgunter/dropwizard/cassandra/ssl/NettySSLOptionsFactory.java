@@ -11,6 +11,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 
 import javax.net.ssl.SSLException;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -46,7 +47,13 @@ import java.util.List;
  *     <tr>
  *         <td>sessionTimeout</td>
  *         <td>No default.</td>
- *         <td>The timeout for the cached SSL session objects</td>
+ *         <td>The timeout for the cached SSL session objects.</td>
+ *     </tr>
+ *     <tr>
+ *         <td>trustCertChainFile</td>
+ *         <td>No default.</td>
+ *         <td>Trusted certificates for verifying the remote endpoint's certificate. The file should contain
+ *         an X.509 certificate chain in PEM format.</td>
  *     </tr>
  * </table>
  */
@@ -58,6 +65,7 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
     private ClientAuth clientAuth;
     private Long sessionCacheSize;
     private Duration sessionTimeout;
+    private File trustCertChainFile;
 
     @JsonProperty
     public SslProvider getProvider() {
@@ -109,6 +117,16 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
         this.sessionTimeout = sessionTimeout;
     }
 
+    @JsonProperty
+    public File getTrustCertChainFile() {
+        return trustCertChainFile;
+    }
+
+    @JsonProperty
+    public void setTrustCertChainFile(File trustCertChainFile) {
+        this.trustCertChainFile = trustCertChainFile;
+    }
+
     @Override
     public SSLOptions build() {
         SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
@@ -127,6 +145,10 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
 
         if (sessionTimeout != null) {
             sslContextBuilder.sessionTimeout(sessionTimeout.toSeconds());
+        }
+
+        if (trustCertChainFile != null) {
+            sslContextBuilder.trustManager(trustCertChainFile);
         }
 
         if (ciphers != null) {
