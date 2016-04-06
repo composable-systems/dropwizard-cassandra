@@ -64,9 +64,7 @@ public class SmokeIntegrationTest {
                 { "smoke/retry/retryPolicy-fallthrough.yml" },
                 { "smoke/retry/retryPolicy-log.yml" },
                 { "smoke/speculativeexecution/speculativeExecutionPolicy-constant.yml" },
-                { "smoke/speculativeexecution/speculativeExecutionPolicy-none.yml" },
-                { "smoke/ssl/ssl-jdk.yml" },
-                { "smoke/ssl/ssl-netty.yml" }
+                { "smoke/speculativeexecution/speculativeExecutionPolicy-none.yml" }
         });
     }
 

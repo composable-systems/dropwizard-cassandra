@@ -1,5 +1,0 @@
-cassandra:
-  clusterName: "smoke-cluster"
-  contactPoints: ["127.0.0.1"]
-  ssl:
-    type: jdk
