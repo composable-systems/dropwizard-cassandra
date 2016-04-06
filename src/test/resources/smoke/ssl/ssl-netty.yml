@@ -1,0 +1,15 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["127.0.0.1"]
+  ssl:
+    type: netty
+    provider: openssl
+#    ciphers: [rsa]
+    clientAuth: optional
+    sessionCacheSize: 1000
+    sessionTimeout: "10 minutes"
+#    trustCertChainFile: trust-chain.pem
+#    keyManager:
+#      keyCertChainFile: key-chain.pem
+#      keyFile: key.p8
+#      keyPassword: s3cr3t

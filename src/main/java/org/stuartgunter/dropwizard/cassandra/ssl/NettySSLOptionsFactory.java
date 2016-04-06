@@ -11,6 +11,8 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 
 import javax.net.ssl.SSLException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.util.List;
 
@@ -66,6 +68,9 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
     private Long sessionCacheSize;
     private Duration sessionTimeout;
     private File trustCertChainFile;
+
+    @Valid
+    private KeyManagerConfig keyManager;
 
     @JsonProperty
     public SslProvider getProvider() {
@@ -127,6 +132,16 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
         this.trustCertChainFile = trustCertChainFile;
     }
 
+    @JsonProperty
+    public KeyManagerConfig getKeyManager() {
+        return keyManager;
+    }
+
+    @JsonProperty
+    public void setKeyManager(KeyManagerConfig keyManager) {
+        this.keyManager = keyManager;
+    }
+
     @Override
     public SSLOptions build() {
         SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
@@ -151,6 +166,13 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
             sslContextBuilder.trustManager(trustCertChainFile);
         }
 
+        if (keyManager != null) {
+            sslContextBuilder.keyManager(
+                    keyManager.getKeyCertChainFile(),
+                    keyManager.getKeyFile(),
+                    keyManager.getKeyPassword());
+        }
+
         if (ciphers != null) {
             sslContextBuilder.ciphers(ciphers);
         }
@@ -163,5 +185,46 @@ public class NettySSLOptionsFactory implements SSLOptionsFactory {
         }
 
         return new NettySSLOptions(sslContext);
+    }
+
+    static class KeyManagerConfig {
+
+        @NotNull
+        private File keyCertChainFile;
+
+        @NotNull
+        private File keyFile;
+
+        private String keyPassword;
+
+        @JsonProperty
+        public File getKeyCertChainFile() {
+            return keyCertChainFile;
+        }
+
+        @JsonProperty
+        public void setKeyCertChainFile(File keyCertChainFile) {
+            this.keyCertChainFile = keyCertChainFile;
+        }
+
+        @JsonProperty
+        public File getKeyFile() {
+            return keyFile;
+        }
+
+        @JsonProperty
+        public void setKeyFile(File keyFile) {
+            this.keyFile = keyFile;
+        }
+
+        @JsonProperty
+        public String getKeyPassword() {
+            return keyPassword;
+        }
+
+        @JsonProperty
+        public void setKeyPassword(String keyPassword) {
+            this.keyPassword = keyPassword;
+        }
     }
 }

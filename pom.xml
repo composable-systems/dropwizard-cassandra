@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.stuartgunter</groupId>
@@ -236,6 +237,14 @@
                             <cuDataSet>${project.basedir}/src/test/resources/cu-dataset.yaml</cuDataSet>
                             <stopPort>8082</stopPort>
                             <startNativeTransport>true</startNativeTransport>
+                            <yaml>
+client_encryption_options:
+  enabled: true
+  optional: true
+  keystore: ${basedir}/src/test/scripts/cassandra-cluster.p12
+  keystore_password: cassandra
+  store_type: PKCS12
+                            </yaml>
                         </configuration>
                     </execution>
                 </executions>

@@ -2,6 +2,7 @@ package org.stuartgunter.dropwizard.cassandra.speculativeexecution;
 
 import com.datastax.driver.core.policies.SpeculativeExecutionPolicy;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.dropwizard.jackson.Discoverable;
 
 /**
  * A service provider interface for creating DataStax {@link SpeculativeExecutionPolicy speculative execution policies}.
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @see NoSpeculativeExecutionPolicyFactory
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-public interface SpeculativeExecutionPolicyFactory {
+public interface SpeculativeExecutionPolicyFactory extends Discoverable {
 
     SpeculativeExecutionPolicy build();
 }
