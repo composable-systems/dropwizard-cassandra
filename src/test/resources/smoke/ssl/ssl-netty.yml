@@ -4,12 +4,12 @@ cassandra:
   ssl:
     type: netty
     provider: openssl
-#    ciphers: [rsa]
+    ciphers: [rsa]
     clientAuth: optional
     sessionCacheSize: 1000
     sessionTimeout: "10 minutes"
-#    trustCertChainFile: trust-chain.pem
-#    keyManager:
-#      keyCertChainFile: key-chain.pem
-#      keyFile: key.p8
-#      keyPassword: s3cr3t
+    trustCertChainFile: trust-chain.pem
+    keyManager:
+      keyCertChainFile: key-chain.pem
+      keyFile: key.p8
+      keyPassword: s3cr3t
