@@ -1,0 +1,2 @@
+systems.composable.dropwizard.cassandra.reconnection.ConstantReconnectionPolicyFactory
+systems.composable.dropwizard.cassandra.reconnection.ExponentialReconnectionPolicyFactory

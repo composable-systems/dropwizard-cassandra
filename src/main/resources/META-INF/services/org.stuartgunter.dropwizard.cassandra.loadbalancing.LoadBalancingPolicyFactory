@@ -1,5 +1,0 @@
-org.stuartgunter.dropwizard.cassandra.loadbalancing.DCAwareRoundRobinPolicyFactory
-org.stuartgunter.dropwizard.cassandra.loadbalancing.LatencyAwarePolicyFactory
-org.stuartgunter.dropwizard.cassandra.loadbalancing.RoundRobinPolicyFactory
-org.stuartgunter.dropwizard.cassandra.loadbalancing.TokenAwarePolicyFactory
-org.stuartgunter.dropwizard.cassandra.loadbalancing.WhiteListPolicyFactory

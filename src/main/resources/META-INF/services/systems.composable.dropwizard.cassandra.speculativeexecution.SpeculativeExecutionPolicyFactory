@@ -1,0 +1,2 @@
+systems.composable.dropwizard.cassandra.speculativeexecution.ConstantSpeculativeExecutionPolicyFactory
+systems.composable.dropwizard.cassandra.speculativeexecution.NoSpeculativeExecutionPolicyFactory

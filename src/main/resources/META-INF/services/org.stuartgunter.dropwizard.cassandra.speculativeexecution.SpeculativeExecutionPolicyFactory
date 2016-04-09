@@ -1,2 +1,0 @@
-org.stuartgunter.dropwizard.cassandra.speculativeexecution.ConstantSpeculativeExecutionPolicyFactory
-org.stuartgunter.dropwizard.cassandra.speculativeexecution.NoSpeculativeExecutionPolicyFactory

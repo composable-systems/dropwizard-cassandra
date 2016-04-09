@@ -1,6 +1,6 @@
 # dropwizard-cassandra
 
-[![Build Status](https://travis-ci.org/stuartgunter/dropwizard-cassandra.png?branch=master)](https://travis-ci.org/stuartgunter/dropwizard-cassandra)
+[![Build Status](https://travis-ci.org/composable-systems/dropwizard-cassandra.png?branch=master)](https://travis-ci.org/composable-systems/dropwizard-cassandra)
 
 The `dropwizard-cassandra` library provides useful functionality for Dropwizard apps that communicate with [Cassandra](http://cassandra.apache.org) clusters.
 Under the hood, it uses the [DataStax Cassandra Driver](http://www.datastax.com/documentation/developer/java-driver/3.0/java-driver/whatsNew2.html).
@@ -52,7 +52,7 @@ with the following coordinates:
 
 ```xml
 <dependency>
-  <groupId>org.stuartgunter</groupId>
+  <groupId>systems.composable</groupId>
   <artifactId>dropwizard-cassandra</artifactId>
   <version>${dropwizard-cassandra.version}</version>
 </dependency>

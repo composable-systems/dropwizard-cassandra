@@ -1,0 +1,4 @@
+systems.composable.dropwizard.cassandra.retry.DefaultRetryPolicyFactory
+systems.composable.dropwizard.cassandra.retry.DowngradingConsistencyRetryPolicyFactory
+systems.composable.dropwizard.cassandra.retry.FallthroughRetryPolicyFactory
+systems.composable.dropwizard.cassandra.retry.LoggingRetryPolicyFactory

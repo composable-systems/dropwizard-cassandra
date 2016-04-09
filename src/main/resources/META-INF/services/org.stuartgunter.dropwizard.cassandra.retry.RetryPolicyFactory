@@ -1,4 +1,0 @@
-org.stuartgunter.dropwizard.cassandra.retry.DefaultRetryPolicyFactory
-org.stuartgunter.dropwizard.cassandra.retry.DowngradingConsistencyRetryPolicyFactory
-org.stuartgunter.dropwizard.cassandra.retry.FallthroughRetryPolicyFactory
-org.stuartgunter.dropwizard.cassandra.retry.LoggingRetryPolicyFactory

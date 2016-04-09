@@ -2,25 +2,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.stuartgunter</groupId>
+    <groupId>systems.composable</groupId>
     <artifactId>dropwizard-cassandra</artifactId>
-    <version>3.0-dw0.9-cs2.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>dropwizard-cassandra</name>
-    <description>Dropwizard Bundle for Cassandra</description>
-    <url>http://www.stuartgunter.org/open-source.html</url>
+    <description>Cassandra library for Dropwizard</description>
+    <url>http://www.composable.co.uk/</url>
 
     <organization>
-        <name>Stuart Gunter</name>
-        <url>http://www.stuartgunter.org</url>
+        <name>Composable Systems Limited</name>
+        <url>http://www.composable.co.uk</url>
     </organization>
 
     <developers>
         <developer>
             <id>sgunter</id>
             <name>Stuart Gunter</name>
-            <email>stuart@stuartgunter.org</email>
+            <email>stuart.gunter@composable.co.uk</email>
             <url>http://www.stuartgunter.org</url>
         </developer>
     </developers>
@@ -34,14 +34,14 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/stuartgunter/dropwizard-cassandra</url>
-        <connection>scm:git:git@github.com:stuartgunter/dropwizard-cassandra.git</connection>
-        <developerConnection>scm:git:git@github.com:stuartgunter/dropwizard-cassandra.git</developerConnection>
+        <url>https://github.com/composable-systems/dropwizard-cassandra</url>
+        <connection>scm:git:git@github.com:composable-systems/dropwizard-cassandra.git</connection>
+        <developerConnection>scm:git:git@github.com:composable-systems/dropwizard-cassandra.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/stuartgunter/dropwizard-cassandra/issues</url>
+        <url>https://github.com/composable-systems/dropwizard-cassandra/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -148,7 +148,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>7</source>
                     <target>7</target>
@@ -169,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -198,7 +198,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19</version>
+                <version>2.19.1</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*IntegrationTest.java</exclude>
@@ -208,7 +208,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.19</version>
+                <version>2.19.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -319,6 +319,10 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <keyname>${gpg.keyname}</keyname>
+                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
