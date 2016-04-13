@@ -1,8 +1,6 @@
-sudo: false
-
 language: java
 
 install:
-  - pip install ccm
+  - sudo pip install ccm
 
 script: mvn verify
