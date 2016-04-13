@@ -16,8 +16,10 @@
 
 package systems.composable.dropwizard.cassandra.smoke;
 
+import com.datastax.driver.core.Cluster;
 import com.google.common.io.Resources;
 import io.dropwizard.testing.junit.DropwizardAppRule;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +66,8 @@ public class SmokeIntegrationTest {
                 { "smoke/retry/retryPolicy-fallthrough.yml" },
                 { "smoke/retry/retryPolicy-log.yml" },
                 { "smoke/speculativeexecution/speculativeExecutionPolicy-constant.yml" },
-                { "smoke/speculativeexecution/speculativeExecutionPolicy-none.yml" }
+                { "smoke/speculativeexecution/speculativeExecutionPolicy-none.yml" },
+                //{ "smoke/ssl/ssl-jdk.yml" }
         });
     }
 

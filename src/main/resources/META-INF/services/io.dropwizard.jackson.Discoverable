@@ -3,3 +3,4 @@ systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory
 systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory
 systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory
 systems.composable.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory
+systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory

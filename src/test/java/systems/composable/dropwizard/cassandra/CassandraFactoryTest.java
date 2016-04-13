@@ -38,6 +38,7 @@ import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory;
 import systems.composable.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
+import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
 
 import java.util.Collections;
 import java.util.Map;
@@ -45,6 +46,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -57,6 +59,8 @@ public class CassandraFactoryTest {
     private final MetricRegistry metrics = mock(MetricRegistry.class);
     private final Cluster.Builder builder = mock(Cluster.Builder.class);
     private final Cluster cluster = mock(Cluster.class);
+    private final SSLOptionsFactory sslOptionsFactory = mock(SSLOptionsFactory.class);
+    private final SSLOptions sslOptions = mock(SSLOptions.class);
     private final AuthProviderFactory authProviderFactory = mock(AuthProviderFactory.class);
     private final AuthProvider authProvider = mock(AuthProvider.class);
     private final ReconnectionPolicyFactory reconnectionPolicyFactory = mock(ReconnectionPolicyFactory.class);
@@ -83,6 +87,7 @@ public class CassandraFactoryTest {
         when(environment.healthChecks()).thenReturn(healthChecks);
         when(Cluster.builder()).thenReturn(builder);
         when(builder.build()).thenReturn(cluster);
+        when(sslOptionsFactory.build()).thenReturn(sslOptions);
         when(authProviderFactory.build()).thenReturn(authProvider);
         when(reconnectionPolicyFactory.build()).thenReturn(reconnectionPolicy);
         when(retryPolicyFactory.build()).thenReturn(retryPolicy);
@@ -104,6 +109,7 @@ public class CassandraFactoryTest {
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
+        configuration.setSsl(sslOptionsFactory);
         configuration.setMaxSchemaAgreementWait(Duration.seconds(90));
         configuration.setProtocolVersion(ProtocolVersion.V2);
         configuration.setReconnectionPolicy(reconnectionPolicyFactory);
@@ -120,6 +126,7 @@ public class CassandraFactoryTest {
         verify(builder).addContactPoints("localhost");
         verify(builder).addContactPoints("127.0.0.1");
         verify(builder).withPort(1234);
+        verify(builder).withSSL(sslOptions);
         verify(builder).withMaxSchemaAgreementWaitSeconds(90);
         verify(builder).withCompression(ProtocolOptions.Compression.LZ4);
         verify(builder).withClusterName("test-cluster");

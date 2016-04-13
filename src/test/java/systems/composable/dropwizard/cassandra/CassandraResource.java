@@ -41,7 +41,7 @@ public class CassandraResource {
     @GET
     @Path("/query")
     public List<String> query() {
-        final ResultSet resultSet = session.execute("SELECT * FROM SYSTEM.SCHEMA_COLUMNFAMILIES;");
+        final ResultSet resultSet = session.execute("SELECT * FROM system_schema.columns");
         return FluentIterable.from(resultSet.all())
                 .transform(new Function<Row, String>() {
                     @Override

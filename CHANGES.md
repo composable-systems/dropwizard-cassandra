@@ -7,6 +7,7 @@
 * Migrated `dropwizard-cassandra` from GitHub user [stuartgunter](https://github.com/composable-systems) to GitHub organisation [composable-systems](https://github.com/composable-systems)
 * Changed Maven groupId from `org.stuartgunter` to `systems.composable`
 * Changed root package from `org.stuartgunter` to `systems.composable`
+* Changed default healthcheck query to support newer versions of Cassandra
 
 ## 2.2-dw0.9-cs2.1
 

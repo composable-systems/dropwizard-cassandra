@@ -1,0 +1,6 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  port: 9142
+  ssl:
+    type: jdk

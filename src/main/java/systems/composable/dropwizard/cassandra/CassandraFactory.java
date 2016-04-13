@@ -32,6 +32,7 @@ import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory;
 import systems.composable.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
+import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -61,7 +62,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     </tr>
  *     <tr>
  *         <td>validationQuery</td>
- *         <td>SELECT * FROM system.schema_keyspaces</td>
+ *         <td>SELECT * FROM system_schema.keyspaces</td>
  *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
@@ -160,7 +161,7 @@ public class CassandraFactory {
     private String keyspace;
 
     @NotEmpty
-    private String validationQuery = "SELECT * FROM system.schema_keyspaces";
+    private String validationQuery = "SELECT * FROM system_schema.keyspaces";
 
     @NotEmpty
     private String[] contactPoints;
@@ -169,6 +170,9 @@ public class CassandraFactory {
     private int port = ProtocolOptions.DEFAULT_PORT;
 
     private ProtocolVersion protocolVersion;
+
+    @Valid
+    private SSLOptionsFactory ssl;
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
@@ -263,6 +267,16 @@ public class CassandraFactory {
     @JsonProperty
     public void setProtocolVersion(ProtocolVersion protocolVersion) {
         this.protocolVersion = protocolVersion;
+    }
+
+    @JsonProperty
+    public SSLOptionsFactory getSsl() {
+        return ssl;
+    }
+
+    @JsonProperty
+    public void setSsl(SSLOptionsFactory ssl) {
+        this.ssl = ssl;
     }
 
     @JsonProperty
@@ -439,6 +453,10 @@ public class CassandraFactory {
         builder.withPort(port);
         builder.withCompression(compression);
         builder.withProtocolVersion(protocolVersion);
+
+        if (ssl != null) {
+            builder.withSSL(ssl.build());
+        }
 
         if (maxSchemaAgreementWait != null) {
             builder.withMaxSchemaAgreementWaitSeconds((int) maxSchemaAgreementWait.toSeconds());
