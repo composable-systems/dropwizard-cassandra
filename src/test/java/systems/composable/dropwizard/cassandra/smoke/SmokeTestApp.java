@@ -21,9 +21,13 @@ import com.datastax.driver.core.Session;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import systems.composable.dropwizard.cassandra.CassandraResource;
 
 public class SmokeTestApp extends Application<SmokeTestConfiguration> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SmokeTestApp.class);
 
     @Override
     public void initialize(Bootstrap<SmokeTestConfiguration> bootstrap) {
@@ -31,6 +35,8 @@ public class SmokeTestApp extends Application<SmokeTestConfiguration> {
 
     @Override
     public void run(SmokeTestConfiguration configuration, Environment environment) throws Exception {
+        LOG.debug("Running smoke test for {}", configuration.getCassandraConfig().getClusterName());
+
         final Cluster cluster = configuration.getCassandraConfig().build(environment);
         final String keyspace = configuration.getCassandraConfig().getKeyspace();
         final Session session = keyspace != null ? cluster.connect(keyspace) : cluster.connect();

@@ -219,6 +219,8 @@
                             <includes>
                                 <include>**/*IntegrationTest.java</include>
                             </includes>
+                            <!-- this argLine is only needed to support the ssl-jdk smoke test -->
+                            <argLine>-Djavax.net.ssl.trustStore=${basedir}/src/test/certs/truststore.jks -Djavax.net.ssl.trustStorePassword=cassandra</argLine>
                         </configuration>
                     </execution>
                 </executions>
@@ -229,7 +231,7 @@
                 <version>1.3</version>
                 <executions>
                     <execution>
-                        <id>start-cassandra</id>
+                        <id>create-cassandra-cluster</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>exec</goal>
@@ -243,12 +245,41 @@
                                 <argument>3.0.5</argument>
                                 <argument>-n</argument>
                                 <argument>1</argument>
-                                <argument>-s</argument>
                             </arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>stop-cassandra</id>
+                        <id>configure-cassandra-cluster</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>ccm</executable>
+                            <arguments>
+                                <argument>updateconf</argument>
+                                <argument>native_transport_port_ssl: 9142</argument>
+                                <argument>client_encryption_options.enabled: true</argument>
+                                <argument>client_encryption_options.optional: true</argument>
+                                <argument>client_encryption_options.keystore: ${basedir}/src/test/certs/keystore.jks</argument>
+                            </arguments>
+                        </configuration>
+                     </execution>
+                    <execution>
+                        <id>start-cassandra-cluster</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>ccm</executable>
+                            <arguments>
+                                <argument>start</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-cassandra-cluster</id>
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>exec</goal>
@@ -262,35 +293,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cassandra-maven-plugin</artifactId>
-                <version>2.1.7-1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>start</goal>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <cqlVersion>3.0.0</cqlVersion>
-                            <script>${basedir}/src/test/cql/load.cql</script>
-                            <stopPort>8082</stopPort>
-                            <startNativeTransport>true</startNativeTransport>
-                            <yaml>
-client_encryption_options:
-  enabled: true
-  keystore: ${basedir}/src/test/certs/.keystore
-  keystore_password: cassandra
-  store_type: JKS
-  require_client_auth: false
-                            </yaml>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
--->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
