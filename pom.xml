@@ -54,6 +54,7 @@
         <powermock.version>1.6.3</powermock.version>
         <assertj.version>1.5.0</assertj.version>
         <guava.version>18.0</guava.version>
+        <os.detection.classifierWithLikes>fedora</os.detection.classifierWithLikes>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +94,13 @@
         </dependency>
 
         <!-- test dependencies -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative</artifactId>
+            <version>1.1.33.Fork13</version>
+            <classifier>${os.detected.classifier}</classifier>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-testing</artifactId>
@@ -144,6 +152,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.5.0.Final</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

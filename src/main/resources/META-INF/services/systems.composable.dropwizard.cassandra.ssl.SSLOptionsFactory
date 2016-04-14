@@ -1,1 +1,2 @@
 systems.composable.dropwizard.cassandra.ssl.JDKSSLOptionsFactory
+systems.composable.dropwizard.cassandra.ssl.NettySSLOptionsFactory
