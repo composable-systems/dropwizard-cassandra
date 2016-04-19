@@ -1,6 +1,6 @@
 # Changes
 
-## 3.0.0 (in progress)
+## 3.0.0
 
 * Simplified the versioning scheme to use [Semantic Versioning](http://semver.org/), largely based on [Issue 19](https://github.com/composable-systems/dropwizard-cassandra/issues/19)
 * Upgraded to use version `3.0.0` of the Cassandra Driver at the request of [devshorts](https://github.com/devshorts) in [Issue 17](https://github.com/composable-systems/dropwizard-cassandra/issues/17)
