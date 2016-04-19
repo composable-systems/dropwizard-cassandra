@@ -8,6 +8,7 @@
 * Changed Maven groupId from `org.stuartgunter` to `systems.composable`
 * Changed root package from `org.stuartgunter` to `systems.composable`
 * Changed default healthcheck query to support newer versions of Cassandra
+* First class support for SSL configuration using either `jdk` or `netty` (and `netty` supports either `jdk` or `openssl` providers)
 
 ## 2.2-dw0.9-cs2.1
 

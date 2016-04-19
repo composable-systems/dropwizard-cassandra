@@ -119,6 +119,8 @@ port:
 protocolVersion:
 compression:
 maxSchemaAgreementWait:
+ssl:
+  type:
 reconnectionPolicy:
   type:
 authProvider:
