@@ -4,7 +4,7 @@
 
 * Simplified the versioning scheme to use [Semantic Versioning](http://semver.org/), largely based on [Issue 19](https://github.com/composable-systems/dropwizard-cassandra/issues/19)
 * Upgraded to use version `3.0.0` of the Cassandra Driver at the request of [devshorts](https://github.com/devshorts) in [Issue 17](https://github.com/composable-systems/dropwizard-cassandra/issues/17)
-* Migrated `dropwizard-cassandra` from GitHub user [stuartgunter](https://github.com/composable-systems) to GitHub organisation [composable-systems](https://github.com/composable-systems)
+* Migrated `dropwizard-cassandra` from GitHub user [stuartgunter](https://github.com/stuartgunter) to GitHub organisation [composable-systems](https://github.com/composable-systems)
 * Changed Maven groupId from `org.stuartgunter` to `systems.composable`
 * Changed root package from `org.stuartgunter` to `systems.composable`
 * Changed default healthcheck query to support newer versions of Cassandra
