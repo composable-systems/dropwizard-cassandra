@@ -54,7 +54,7 @@ public class DropwizardCassandraIntegrationTest {
     @Test
     public void cassandraMetricsArePublished() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort() + 1)
+                .port(APP.getAdminPort())
                 .path("metrics")
                 .build();
 
@@ -67,7 +67,7 @@ public class DropwizardCassandraIntegrationTest {
     @Test
     public void cassandraHealthCheckIsPublished() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort() + 1)
+                .port(APP.getAdminPort())
                 .path("healthcheck")
                 .build();
 

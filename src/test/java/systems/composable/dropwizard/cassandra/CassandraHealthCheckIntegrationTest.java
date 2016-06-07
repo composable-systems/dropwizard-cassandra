@@ -40,7 +40,7 @@ public class CassandraHealthCheckIntegrationTest {
     @Test
     public void reportsSuccess() throws Exception {
         final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort() + 1)
+                .port(APP.getAdminPort())
                 .path("healthcheck")
                 .build();
 
