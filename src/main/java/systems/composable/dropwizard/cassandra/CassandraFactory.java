@@ -161,7 +161,7 @@ public class CassandraFactory {
     private String keyspace;
 
     @NotEmpty
-    private String validationQuery = "SELECT * FROM system_schema.keyspaces";
+    private String validationQuery = "SELECT key FROM system.local";
 
     @NotEmpty
     private String[] contactPoints;
