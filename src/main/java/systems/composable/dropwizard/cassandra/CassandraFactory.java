@@ -62,7 +62,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     </tr>
  *     <tr>
  *         <td>validationQuery</td>
- *         <td>SELECT * FROM system_schema.keyspaces</td>
+ *         <td>SELECT key FROM system.local</td>
  *         <td>The query to execute against the cluster to determine whether it is healthy.</td>
  *     </tr>
  *     <tr>
