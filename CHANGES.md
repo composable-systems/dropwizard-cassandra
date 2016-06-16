@@ -1,5 +1,9 @@
 # Changes
 
+## 3.0.1
+
+* Updated `validationQuery` to work across a broader range of Cassandra versions (thanks to [adejanovski](https://github.com/adejanovski) for [PR 20](https://github.com/composable-systems/dropwizard-cassandra/pull/20))
+
 ## 3.0.0
 
 * Simplified the versioning scheme to use [Semantic Versioning](http://semver.org/), largely based on [Issue 19](https://github.com/composable-systems/dropwizard-cassandra/issues/19)
