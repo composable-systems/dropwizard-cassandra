@@ -48,7 +48,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.9.2</dropwizard.version>
-        <cassandra-driver.version>3.0.0</cassandra-driver.version>
+        <cassandra-driver.version>3.1.0</cassandra-driver.version>
         <mockito.version>1.10.19</mockito.version>
         <powermock.version>1.6.3</powermock.version>
         <assertj.version>1.5.0</assertj.version>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative</artifactId>
-            <version>1.1.33.Fork13</version>
+            <version>1.1.33.Fork17</version>
             <classifier>${os.detected.classifier}</classifier>
             <scope>test</scope>
         </dependency>

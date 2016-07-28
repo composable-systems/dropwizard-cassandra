@@ -1,5 +1,9 @@
 # Changes
 
+## 3.0.2
+
+* Upgraded to use version `3.1.0` of the Cassandra Driver
+
 ## 3.0.1
 
 * Updated `validationQuery` to work across a broader range of Cassandra versions (thanks to [adejanovski](https://github.com/adejanovski) for [PR 20](https://github.com/composable-systems/dropwizard-cassandra/pull/20))

@@ -1,4 +1,5 @@
 systems.composable.dropwizard.cassandra.loadbalancing.DCAwareRoundRobinPolicyFactory
+systems.composable.dropwizard.cassandra.loadbalancing.ErrorAwarePolicyFactory
 systems.composable.dropwizard.cassandra.loadbalancing.LatencyAwarePolicyFactory
 systems.composable.dropwizard.cassandra.loadbalancing.RoundRobinPolicyFactory
 systems.composable.dropwizard.cassandra.loadbalancing.TokenAwarePolicyFactory

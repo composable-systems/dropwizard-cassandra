@@ -1,0 +1,12 @@
+cassandra:
+  clusterName: "smoke-cluster"
+  contactPoints: ["localhost"]
+  loadBalancingPolicy:
+    type: errorAware
+    maxErrorsPerMinute: 5
+    retryPeriod: 10 minutes
+    subPolicy:
+      type: dcAwareRoundRobin
+      localDC: dc1
+      usedHostsPerRemoteDC: 2
+      allowRemoteDCsForLocalConsistencyLevel: true
