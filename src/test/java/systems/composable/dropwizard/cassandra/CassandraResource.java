@@ -17,16 +17,14 @@
 package systems.composable.dropwizard.cassandra;
 
 import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
@@ -42,13 +40,8 @@ public class CassandraResource {
     @Path("/query")
     public List<String> query() {
         final ResultSet resultSet = session.execute("SELECT * FROM system_schema.columns");
-        return FluentIterable.from(resultSet.all())
-                .transform(new Function<Row, String>() {
-                    @Override
-                    public String apply(Row input) {
-                        return input.getString(0);
-                    }
-                })
-                .toList();
+        return resultSet.all().stream()
+                .map(r -> r.getString(0))
+                .collect(Collectors.toList());
     }
 }

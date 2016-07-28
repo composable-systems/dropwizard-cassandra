@@ -1,5 +1,9 @@
 # Changes
 
+## 4.0.0
+
+* Upgraded to Dropwizard `1.0.0`. This includes an upgrade to Java 8, hence the major version bump.
+
 ## 3.0.2
 
 * Upgraded to use version `3.1.0` of the Cassandra Driver

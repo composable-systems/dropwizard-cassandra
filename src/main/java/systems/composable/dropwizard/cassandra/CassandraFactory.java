@@ -37,6 +37,7 @@ import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
@@ -169,36 +170,36 @@ public class CassandraFactory {
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
 
-    private ProtocolVersion protocolVersion;
+    private Optional<ProtocolVersion> protocolVersion = Optional.empty();
 
     @Valid
-    private SSLOptionsFactory ssl;
+    private Optional<SSLOptionsFactory> ssl = Optional.empty();
 
     @NotNull
     private ProtocolOptions.Compression compression = ProtocolOptions.Compression.NONE;
 
-    private Duration maxSchemaAgreementWait;
+    private Optional<Duration> maxSchemaAgreementWait = Optional.empty();
 
     @Valid
-    private ReconnectionPolicyFactory reconnectionPolicy;
+    private Optional<ReconnectionPolicyFactory> reconnectionPolicy = Optional.empty();
 
     @Valid
-    private AuthProviderFactory authProvider;
+    private Optional<AuthProviderFactory> authProvider = Optional.empty();
 
     @Valid
-    private RetryPolicyFactory retryPolicy;
+    private Optional<RetryPolicyFactory> retryPolicy = Optional.empty();
 
     @Valid
-    private LoadBalancingPolicyFactory loadBalancingPolicy;
+    private Optional<LoadBalancingPolicyFactory> loadBalancingPolicy = Optional.empty();
 
     @Valid
-    private SpeculativeExecutionPolicyFactory speculativeExecutionPolicy;
+    private Optional<SpeculativeExecutionPolicyFactory> speculativeExecutionPolicy = Optional.empty();
 
-    private QueryOptions queryOptions;
-    private SocketOptions socketOptions;
+    private Optional<QueryOptions> queryOptions = Optional.empty();
+    private Optional<SocketOptions> socketOptions = Optional.empty();
 
     @Valid
-    private PoolingOptionsFactory poolingOptions;
+    private Optional<PoolingOptionsFactory> poolingOptions = Optional.empty();
 
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = false;
@@ -260,22 +261,22 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public ProtocolVersion getProtocolVersion() {
+    public Optional<ProtocolVersion> getProtocolVersion() {
         return protocolVersion;
     }
 
     @JsonProperty
-    public void setProtocolVersion(ProtocolVersion protocolVersion) {
+    public void setProtocolVersion(Optional<ProtocolVersion> protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
     @JsonProperty
-    public SSLOptionsFactory getSsl() {
+    public Optional<SSLOptionsFactory> getSsl() {
         return ssl;
     }
 
     @JsonProperty
-    public void setSsl(SSLOptionsFactory ssl) {
+    public void setSsl(Optional<SSLOptionsFactory> ssl) {
         this.ssl = ssl;
     }
 
@@ -290,87 +291,87 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public void setMaxSchemaAgreementWait(Duration maxSchemaAgreementWait) {
+    public void setMaxSchemaAgreementWait(Optional<Duration> maxSchemaAgreementWait) {
         this.maxSchemaAgreementWait = maxSchemaAgreementWait;
     }
 
     @JsonProperty
-    public ReconnectionPolicyFactory getReconnectionPolicy() {
+    public Optional<ReconnectionPolicyFactory> getReconnectionPolicy() {
         return reconnectionPolicy;
     }
 
     @JsonProperty
-    public void setReconnectionPolicy(ReconnectionPolicyFactory reconnectionPolicy) {
+    public void setReconnectionPolicy(Optional<ReconnectionPolicyFactory> reconnectionPolicy) {
         this.reconnectionPolicy = reconnectionPolicy;
     }
 
     @JsonProperty
-    public AuthProviderFactory getAuthProvider() {
+    public Optional<AuthProviderFactory> getAuthProvider() {
         return authProvider;
     }
 
     @JsonProperty
-    public void setAuthProvider(AuthProviderFactory authProvider) {
+    public void setAuthProvider(Optional<AuthProviderFactory> authProvider) {
         this.authProvider = authProvider;
     }
 
     @JsonProperty
-    public RetryPolicyFactory getRetryPolicy() {
+    public Optional<RetryPolicyFactory> getRetryPolicy() {
         return retryPolicy;
     }
 
     @JsonProperty
-    public void setRetryPolicy(RetryPolicyFactory retryPolicy) {
+    public void setRetryPolicy(Optional<RetryPolicyFactory> retryPolicy) {
         this.retryPolicy = retryPolicy;
     }
 
     @JsonProperty
-    public LoadBalancingPolicyFactory getLoadBalancingPolicy() {
+    public Optional<LoadBalancingPolicyFactory> getLoadBalancingPolicy() {
         return loadBalancingPolicy;
     }
 
     @JsonProperty
-    public void setLoadBalancingPolicy(LoadBalancingPolicyFactory loadBalancingPolicy) {
+    public void setLoadBalancingPolicy(Optional<LoadBalancingPolicyFactory> loadBalancingPolicy) {
         this.loadBalancingPolicy = loadBalancingPolicy;
     }
 
     @JsonProperty
-    public SpeculativeExecutionPolicyFactory getSpeculativeExecutionPolicy() {
+    public Optional<SpeculativeExecutionPolicyFactory> getSpeculativeExecutionPolicy() {
         return speculativeExecutionPolicy;
     }
 
     @JsonProperty
-    public void setSpeculativeExecutionPolicy(SpeculativeExecutionPolicyFactory speculativeExecutionPolicy) {
+    public void setSpeculativeExecutionPolicy(Optional<SpeculativeExecutionPolicyFactory> speculativeExecutionPolicy) {
         this.speculativeExecutionPolicy = speculativeExecutionPolicy;
     }
 
     @JsonProperty
-    public QueryOptions getQueryOptions() {
+    public Optional<QueryOptions> getQueryOptions() {
         return queryOptions;
     }
 
     @JsonProperty
-    public void setQueryOptions(QueryOptions queryOptions) {
+    public void setQueryOptions(Optional<QueryOptions> queryOptions) {
         this.queryOptions = queryOptions;
     }
 
     @JsonProperty
-    public SocketOptions getSocketOptions() {
+    public Optional<SocketOptions> getSocketOptions() {
         return socketOptions;
     }
 
     @JsonProperty
-    public void setSocketOptions(SocketOptions socketOptions) {
+    public void setSocketOptions(Optional<SocketOptions> socketOptions) {
         this.socketOptions = socketOptions;
     }
 
     @JsonProperty
-    public PoolingOptionsFactory getPoolingOptions() {
+    public Optional<PoolingOptionsFactory> getPoolingOptions() {
         return poolingOptions;
     }
 
     @JsonProperty
-    public void setPoolingOptions(PoolingOptionsFactory poolingOptions) {
+    public void setPoolingOptions(Optional<PoolingOptionsFactory> poolingOptions) {
         this.poolingOptions = poolingOptions;
     }
 
@@ -452,47 +453,18 @@ public class CassandraFactory {
 
         builder.withPort(port);
         builder.withCompression(compression);
-        builder.withProtocolVersion(protocolVersion);
 
-        if (ssl != null) {
-            builder.withSSL(ssl.build());
-        }
-
-        if (maxSchemaAgreementWait != null) {
-            builder.withMaxSchemaAgreementWaitSeconds((int) maxSchemaAgreementWait.toSeconds());
-        }
-
-        if (authProvider != null) {
-            builder.withAuthProvider(authProvider.build());
-        }
-
-        if (reconnectionPolicy != null) {
-            builder.withReconnectionPolicy(reconnectionPolicy.build());
-        }
-
-        if (retryPolicy != null) {
-            builder.withRetryPolicy(retryPolicy.build());
-        }
-
-        if (loadBalancingPolicy != null) {
-            builder.withLoadBalancingPolicy(loadBalancingPolicy.build());
-        }
-
-        if (speculativeExecutionPolicy != null) {
-            builder.withSpeculativeExecutionPolicy(speculativeExecutionPolicy.build());
-        }
-
-        if (queryOptions != null) {
-            builder.withQueryOptions(queryOptions);
-        }
-
-        if (socketOptions != null) {
-            builder.withSocketOptions(socketOptions);
-        }
-
-        if (poolingOptions != null) {
-            builder.withPoolingOptions(poolingOptions.build());
-        }
+        protocolVersion.ifPresent(builder::withProtocolVersion);
+        ssl.map(SSLOptionsFactory::build).ifPresent(builder::withSSL);
+        maxSchemaAgreementWait.map(Duration::toSeconds).map(Long::intValue).ifPresent(builder::withMaxSchemaAgreementWaitSeconds);
+        authProvider.map(AuthProviderFactory::build).ifPresent(builder::withAuthProvider);
+        reconnectionPolicy.map(ReconnectionPolicyFactory::build).ifPresent(builder::withReconnectionPolicy);
+        retryPolicy.map(RetryPolicyFactory::build).ifPresent(builder::withRetryPolicy);
+        loadBalancingPolicy.map(LoadBalancingPolicyFactory::build).ifPresent(builder::withLoadBalancingPolicy);
+        speculativeExecutionPolicy.map(SpeculativeExecutionPolicyFactory::build).ifPresent(builder::withSpeculativeExecutionPolicy);
+        queryOptions.ifPresent(builder::withQueryOptions);
+        socketOptions.ifPresent(builder::withSocketOptions);
+        poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
 
         if (!metricsEnabled) {
             builder.withoutMetrics();

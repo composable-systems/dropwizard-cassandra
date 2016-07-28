@@ -42,6 +42,7 @@ import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -102,23 +103,23 @@ public class CassandraFactoryTest {
     @Test
     public void buildsACluster() throws Exception {
         final CassandraFactory configuration = new CassandraFactory();
-        configuration.setAuthProvider(authProviderFactory);
+        configuration.setAuthProvider(Optional.of(authProviderFactory));
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
         configuration.setContactPoints(new String[]{"localhost", "127.0.0.1"});
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
-        configuration.setSsl(sslOptionsFactory);
-        configuration.setMaxSchemaAgreementWait(Duration.seconds(90));
-        configuration.setProtocolVersion(ProtocolVersion.V2);
-        configuration.setReconnectionPolicy(reconnectionPolicyFactory);
-        configuration.setRetryPolicy(retryPolicyFactory);
-        configuration.setLoadBalancingPolicy(loadBalancingPolicyFactory);
-        configuration.setSpeculativeExecutionPolicy(speculativeExecutionPolicyFactory);
-        configuration.setQueryOptions(queryOptions);
-        configuration.setSocketOptions(socketOptions);
-        configuration.setPoolingOptions(poolingOptionsFactory);
+        configuration.setSsl(Optional.of(sslOptionsFactory));
+        configuration.setMaxSchemaAgreementWait(Optional.of(Duration.seconds(90)));
+        configuration.setProtocolVersion(Optional.of(ProtocolVersion.V2));
+        configuration.setReconnectionPolicy(Optional.of(reconnectionPolicyFactory));
+        configuration.setRetryPolicy(Optional.of(retryPolicyFactory));
+        configuration.setLoadBalancingPolicy(Optional.of(loadBalancingPolicyFactory));
+        configuration.setSpeculativeExecutionPolicy(Optional.of(speculativeExecutionPolicyFactory));
+        configuration.setQueryOptions(Optional.of(queryOptions));
+        configuration.setSocketOptions(Optional.of(socketOptions));
+        configuration.setPoolingOptions(Optional.of(poolingOptionsFactory));
 
         final Cluster result = configuration.build(environment);
 

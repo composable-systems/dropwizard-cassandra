@@ -62,9 +62,7 @@ public class CassandraMetricSet implements MetricSet {
         final String clusterName = cluster.getClusterName();
         Map<String, Metric> driverMetrics = cluster.getMetrics().getRegistry().getMetrics();
         ImmutableMap.Builder<String, Metric> builder = ImmutableMap.builder();
-        for (Map.Entry<String, Metric> metricEntry : driverMetrics.entrySet()) {
-            builder.put(name(Cluster.class, clusterName, metricEntry.getKey()), metricEntry.getValue());
-        }
+        driverMetrics.forEach((k, v) -> builder.put(name(Cluster.class, clusterName, k), v));
         metrics = builder.build();
     }
 
