@@ -1,5 +1,7 @@
 cassandra:
   clusterName: "smoke-cluster"
-  contactPoints: ["localhost"]
+  contactPoints:
+    type: static
+    contactPoints: ["localhost"]
   retryPolicy:
     type: default

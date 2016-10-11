@@ -1,9 +1,13 @@
 cassandra1:
   clusterName: "cluster1"
   keyspace: "ks1"
-  contactPoints: ["localhost"]
+  contactPoints:
+    type: static
+    contactPoints: ["localhost"]
 
 cassandra2:
   clusterName: "cluster2"
   keyspace: "ks2"
-  contactPoints: ["localhost"]
+  contactPoints:
+    type: static
+    contactPoints: ["localhost"]

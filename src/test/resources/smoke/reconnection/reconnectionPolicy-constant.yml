@@ -1,6 +1,8 @@
 cassandra:
   clusterName: "smoke-cluster"
-  contactPoints: ["localhost"]
+  contactPoints:
+    type: static
+    contactPoints: ["localhost"]
   reconnectionPolicy:
     type: constant
     delay: 10 milliseconds
