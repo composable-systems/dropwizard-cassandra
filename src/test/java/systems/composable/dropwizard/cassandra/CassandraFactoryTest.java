@@ -16,10 +16,22 @@
 
 package systems.composable.dropwizard.cassandra;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.datastax.driver.core.*;
+import com.datastax.driver.core.AuthProvider;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Metrics;
+import com.datastax.driver.core.PoolingOptions;
+import com.datastax.driver.core.ProtocolOptions;
+import com.datastax.driver.core.ProtocolVersion;
+import com.datastax.driver.core.QueryOptions;
+import com.datastax.driver.core.SSLOptions;
+import com.datastax.driver.core.SocketOptions;
 import com.datastax.driver.core.policies.LoadBalancingPolicy;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
 import com.datastax.driver.core.policies.RetryPolicy;
@@ -33,6 +45,7 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import systems.composable.dropwizard.cassandra.auth.AuthProviderFactory;
+import systems.composable.dropwizard.cassandra.contactpoints.ContactPointsFactory;
 import systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
@@ -40,14 +53,14 @@ import systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory;
 import systems.composable.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -79,6 +92,7 @@ public class CassandraFactoryTest {
     private final Map<String, Metric> driverMetrics = Collections.emptyMap();
     private final Metrics clusterMetrics = mock(Metrics.class);
     private final MetricRegistry driverRegistry = mock(MetricRegistry.class);
+    private final ContactPointsFactory contactPointsFactory = mock(ContactPointsFactory.class);
 
     @Before
     public void setUp() throws Exception {
@@ -98,6 +112,7 @@ public class CassandraFactoryTest {
         when(cluster.getMetrics()).thenReturn(clusterMetrics);
         when(clusterMetrics.getRegistry()).thenReturn(driverRegistry);
         when(driverRegistry.getMetrics()).thenReturn(driverMetrics);
+        when(contactPointsFactory.build()).thenReturn(new String[] {"localhost", "127.0.0.1"});
     }
 
     @Test
@@ -106,7 +121,7 @@ public class CassandraFactoryTest {
         configuration.setAuthProvider(Optional.of(authProviderFactory));
         configuration.setClusterName("test-cluster");
         configuration.setCompression(ProtocolOptions.Compression.LZ4);
-        configuration.setContactPoints(new String[]{"localhost", "127.0.0.1"});
+        configuration.setContactPoints(contactPointsFactory);
         configuration.setJmxEnabled(false);
         configuration.setMetricsEnabled(false);
         configuration.setPort(1234);
@@ -187,7 +202,7 @@ public class CassandraFactoryTest {
 
     private CassandraFactory configurationWithDefaultContactPoints() {
         final CassandraFactory configuration = new CassandraFactory();
-        configuration.setContactPoints(new String[] { "localhost" });
+        configuration.setContactPoints(contactPointsFactory);
         return configuration;
     }
 }
