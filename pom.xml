@@ -22,6 +22,12 @@
             <email>stuart.gunter@composable.co.uk</email>
             <url>http://www.stuartgunter.org</url>
         </developer>
+        <developer>
+            <id>domax</id>
+            <name>Max Dominichenko</name>
+            <email>max@dominichenko.com</email>
+            <url>https://github.com/domax</url>
+        </developer>
     </developers>
 
     <licenses>
