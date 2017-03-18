@@ -31,6 +31,12 @@ public class SmokeTestApp extends Application<SmokeTestConfiguration> {
 
     @Override
     public void initialize(Bootstrap<SmokeTestConfiguration> bootstrap) {
+        // Prevents NoHostAvailable test errors
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

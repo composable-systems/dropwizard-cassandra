@@ -49,6 +49,7 @@ import io.dropwizard.setup.Environment;
  *
  *   &#64;Produces(MediaType.APPLICATION_JSON)
  *   &#64;GET
+ *   &#64;Path("/users")
  *   public List&lt;User&gt; getUsers() {
  *     try (final Session session = cluster.connect("auth")) {
  *       final ResultSet resultSet = session.execute("SELECT * FROM users");
@@ -63,6 +64,7 @@ import io.dropwizard.setup.Environment;
  * public class TestService {
  *   &#64;Produces(MediaType.APPLICATION_JSON)
  *   &#64;GET
+ *   &#64;Path("/users")
  *   public List&lt;User&gt; getUsers(&#64;Context Session session) {
  *     final ResultSet resultSet = session.execute("SELECT * FROM users");
  *     //...

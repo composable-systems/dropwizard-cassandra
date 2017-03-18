@@ -22,13 +22,15 @@
             <email>stuart.gunter@composable.co.uk</email>
             <url>http://www.stuartgunter.org</url>
         </developer>
-        <developer>
-            <id>domax</id>
+    </developers>
+
+    <contributors>
+        <contributor>
             <name>Max Dominichenko</name>
             <email>max@dominichenko.com</email>
             <url>https://github.com/domax</url>
-        </developer>
-    </developers>
+        </contributor>
+    </contributors>
 
     <licenses>
         <license>
@@ -59,6 +61,7 @@
         <powermock.version>1.6.3</powermock.version>
         <assertj.version>3.5.2</assertj.version>
         <guava.version>19.0</guava.version>
+        <jersey.version>2.23.1</jersey.version>
         <os.detection.classifierWithLikes>fedora</os.detection.classifierWithLikes>
     </properties>
 
@@ -153,6 +156,22 @@
             <artifactId>powermock-module-junit4</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

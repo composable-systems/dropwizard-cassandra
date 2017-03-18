@@ -1,0 +1,11 @@
+cassandra:
+  clusterName: "minimal-cluster"
+  contactPoints: ["localhost"]
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 8090
+  adminConnectors:
+  - type: http
+    port: 8091

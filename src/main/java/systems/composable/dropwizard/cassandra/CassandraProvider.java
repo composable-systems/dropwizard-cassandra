@@ -20,7 +20,7 @@ import com.datastax.driver.core.Session;
 import io.dropwizard.setup.Environment;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.process.internal.RequestScoped;
+//import org.glassfish.jersey.process.internal.RequestScoped;
 
 import javax.inject.Singleton;
 
@@ -35,8 +35,8 @@ import javax.inject.Singleton;
 class CassandraProvider {
 
 	/**
-	 * Encapsulates logic that binds {@link Cluster} and {@link Session} classes to
-	 * {@link Singleton} or {@link RequestScoped} interfaces respectively.
+	 * Encapsulates logic that binds {@link Cluster} and {@link Session} classes
+	 * via {@link javax.ws.rs.core.Context} annotation.
 	 */
 	public static class Binder extends AbstractBinder {
 
@@ -49,7 +49,10 @@ class CassandraProvider {
 		@Override
 		protected void configure() {
 			bindFactory(cassandraProvider.clusterFactory).to(Cluster.class).in(Singleton.class);
-			bindFactory(cassandraProvider.sessionFactory).to(Session.class).in(RequestScoped.class);
+			// It is Singleton instead of RequestScoped, because
+			// [documentation](http://docs.datastax.com/en/drivers/java/3.1/com/datastax/driver/core/Session.html)
+			// recommends to use one Session instance per application
+			bindFactory(cassandraProvider.sessionFactory).to(Session.class).in(Singleton.class);
 		}
 	}
 
@@ -82,6 +85,7 @@ class CassandraProvider {
 
 		private final ClusterFactory clusterFactory;
 		private final String keyspace;
+		private Session session;
 
 		SessionFactory(ClusterFactory clusterFactory, String keyspace) {
 			this.clusterFactory = clusterFactory;
@@ -90,8 +94,11 @@ class CassandraProvider {
 
 		@Override
 		public Session provide() {
-			final Cluster cluster = clusterFactory.provide();
-			return keyspace == null || keyspace.isEmpty() ? cluster.connect() : cluster.connect(keyspace);
+			if (session == null) {
+				final Cluster cluster = clusterFactory.provide();
+				session = keyspace == null || keyspace.isEmpty() ? cluster.connect() : cluster.connect(keyspace);
+			}
+			return session;
 		}
 
 		@Override

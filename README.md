@@ -124,6 +124,7 @@ public class TestService {
 
     @Produces(MediaType.APPLICATION_JSON)
     @GET
+    @Path("/users")
     public List<User> getUsers() {
         try (final Session session = cluster.connect("auth")) {
             final ResultSet resultSet = session.execute("SELECT * FROM users");
@@ -141,6 +142,7 @@ public class TestService {
 
     @Produces(MediaType.APPLICATION_JSON)
     @GET
+    @Path("/users")
     public List<User> getUsers(@Context Session session) {
         final ResultSet resultSet = session.execute("SELECT * FROM users");
         //...

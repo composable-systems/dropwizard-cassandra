@@ -21,6 +21,7 @@ import com.google.common.io.Resources;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.ClassRule;
 import org.junit.Test;
+import systems.composable.dropwizard.cassandra.smoke.SmokeInjectedApp;
 import systems.composable.dropwizard.cassandra.smoke.SmokeTestApp;
 import systems.composable.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
@@ -36,19 +37,48 @@ public class DropwizardCassandraIntegrationTest {
 
     @ClassRule
     public static final DropwizardAppRule<SmokeTestConfiguration> APP =
-            new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
+        new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
+
+    @ClassRule
+    public static final DropwizardAppRule<SmokeTestConfiguration> APP_INJ =
+        new DropwizardAppRule<>(SmokeInjectedApp.class, Resources.getResource("injected.yml").getPath());
+
+    private void canQuery(URI uri) {
+        final WebTarget target = ClientBuilder.newClient().target(uri);
+        final List<String> result = Lists.newArrayList(target.request().get(String[].class));
+        assertThat(result).contains("system");
+    }
 
     @Test
     public void canQueryCassandra() throws Exception {
-        final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort())
-                .path("query")
-                .build();
+        canQuery(UriBuilder.fromUri("http://localhost")
+            .port(APP.getLocalPort())
+            .path("query")
+            .build());
+    }
 
-        final WebTarget target = ClientBuilder.newClient().target(uri);
-        final List<String> result = Lists.newArrayList(target.request().get(String[].class));
+    @Test
+    public void canQuerySessionField() throws Exception {
+        canQuery(UriBuilder.fromUri("http://localhost")
+            .port(APP_INJ.getLocalPort())
+            .path("querySessionField")
+            .build());
+    }
 
-        assertThat(result).contains("system");
+    @Test
+    public void canQuerySessionParameter() throws Exception {
+        canQuery(UriBuilder.fromUri("http://localhost")
+            .port(APP_INJ.getLocalPort())
+            .path("querySessionParameter")
+            .build());
+    }
+
+    @Test
+    public void canQueryClusterField() throws Exception {
+        canQuery(UriBuilder.fromUri("http://localhost")
+            .port(APP_INJ.getLocalPort())
+            .path("queryClusterField")
+            .build());
     }
 
     @Test
