@@ -24,10 +24,7 @@ import systems.composable.dropwizard.cassandra.smoke.SmokeInjectedApp;
 import systems.composable.dropwizard.cassandra.smoke.SmokeTestConfiguration;
 
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,33 +34,30 @@ public class DropwizardInjectionIntegrationTest {
 	public static final DropwizardAppRule<SmokeTestConfiguration> APP =
 			new DropwizardAppRule<>(SmokeInjectedApp.class, Resources.getResource("minimal.yml").getPath());
 
-	private void canQuery(URI uri) {
-		final WebTarget target = ClientBuilder.newClient().target(uri);
-		final List<String> result = Lists.newArrayList(target.request().get(String[].class));
-		assertThat(result).contains("system");
+	private void canQuery(String path) {
+		assertThat(Lists.newArrayList(
+				ClientBuilder.newClient()
+						.target(UriBuilder.fromUri("http://localhost")
+								.port(APP.getLocalPort())
+								.path(path)
+								.build())
+						.request()
+						.get(String[].class)))
+				.contains("system");
 	}
 
 	@Test
 	public void canQuerySessionField() throws Exception {
-		canQuery(UriBuilder.fromUri("http://localhost")
-				.port(APP.getLocalPort())
-				.path("querySessionField")
-				.build());
+		canQuery("querySessionField");
 	}
 
 	@Test
 	public void canQuerySessionParameter() throws Exception {
-		canQuery(UriBuilder.fromUri("http://localhost")
-				.port(APP.getLocalPort())
-				.path("querySessionParameter")
-				.build());
+		canQuery("querySessionParameter");
 	}
 
 	@Test
 	public void canQueryClusterField() throws Exception {
-		canQuery(UriBuilder.fromUri("http://localhost")
-				.port(APP.getLocalPort())
-				.path("queryClusterField")
-				.build());
+		canQuery("queryClusterField");
 	}
 }
