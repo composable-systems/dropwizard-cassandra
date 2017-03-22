@@ -29,7 +29,7 @@ import systems.composable.dropwizard.cassandra.CassandraInjectedResource;
  */
 public class SmokeInjectedApp extends Application<SmokeTestConfiguration> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SmokeTestApp.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SmokeInjectedApp.class);
 
 	@Override
 	public void initialize(Bootstrap<SmokeTestConfiguration> bootstrap) {
