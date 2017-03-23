@@ -1,4 +1,5 @@
 systems.composable.dropwizard.cassandra.auth.AuthProviderFactory
+systems.composable.dropwizard.cassandra.contactpoints.ContactPointsFactory
 systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory
 systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory
 systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory

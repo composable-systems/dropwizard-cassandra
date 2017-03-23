@@ -16,9 +16,19 @@
 
 package systems.composable.dropwizard.cassandra;
 
+import java.util.Optional;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.datastax.driver.core.*;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ProtocolOptions;
+import com.datastax.driver.core.ProtocolVersion;
+import com.datastax.driver.core.QueryOptions;
+import com.datastax.driver.core.SocketOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 import io.dropwizard.setup.Environment;
@@ -27,17 +37,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import systems.composable.dropwizard.cassandra.auth.AuthProviderFactory;
+import systems.composable.dropwizard.cassandra.contactpoints.ContactPointsFactory;
+import systems.composable.dropwizard.cassandra.contactpoints.StaticHostContactsPointFactory;
 import systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
 import systems.composable.dropwizard.cassandra.retry.RetryPolicyFactory;
 import systems.composable.dropwizard.cassandra.speculativeexecution.SpeculativeExecutionPolicyFactory;
 import systems.composable.dropwizard.cassandra.ssl.SSLOptionsFactory;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
@@ -164,8 +171,8 @@ public class CassandraFactory {
     @NotEmpty
     private String validationQuery = "SELECT key FROM system.local";
 
-    @NotEmpty
-    private String[] contactPoints;
+    @NotNull
+    private ContactPointsFactory contactPoints = new StaticHostContactsPointFactory();
 
     @Min(1)
     private int port = ProtocolOptions.DEFAULT_PORT;
@@ -241,12 +248,12 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public String[] getContactPoints() {
+    public ContactPointsFactory getContactPoints() {
         return contactPoints;
     }
 
     @JsonProperty
-    public void setContactPoints(String[] contactPoints) {
+    public void setContactPoints(ContactPointsFactory contactPoints) {
         this.contactPoints = contactPoints;
     }
 
@@ -447,7 +454,7 @@ public class CassandraFactory {
 
         final Cluster.Builder builder = Cluster.builder();
 
-        for (String contactPoint : contactPoints) {
+        for (String contactPoint : contactPoints.build()) {
             builder.addContactPoints(contactPoint);
         }
 

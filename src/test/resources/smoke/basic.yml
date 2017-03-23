@@ -1,7 +1,9 @@
 cassandra:
   clusterName: "smoke-cluster"
   keyspace: "system"
-  contactPoints: ["localhost"]
+  contactPoints:
+    type: static
+    contactPoints: ["localhost"]
   port: 9042
   protocolVersion: "V4"
   compression: "LZ4"
