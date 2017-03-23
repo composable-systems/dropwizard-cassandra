@@ -24,6 +24,12 @@ public class MultiClusterTestApp extends Application<MultiClusterTestConfigurati
 
     @Override
     public void initialize(Bootstrap<MultiClusterTestConfiguration> bootstrap) {
+        // Prevents NoHostAvailable test errors
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

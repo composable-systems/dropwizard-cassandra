@@ -28,7 +28,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,19 +35,19 @@ public class DropwizardCassandraIntegrationTest {
 
     @ClassRule
     public static final DropwizardAppRule<SmokeTestConfiguration> APP =
-            new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
+        new DropwizardAppRule<>(SmokeTestApp.class, Resources.getResource("minimal.yml").getPath());
 
     @Test
     public void canQueryCassandra() throws Exception {
-        final URI uri = UriBuilder.fromUri("http://localhost")
-                .port(APP.getLocalPort())
-                .path("query")
-                .build();
-
-        final WebTarget target = ClientBuilder.newClient().target(uri);
-        final List<String> result = Lists.newArrayList(target.request().get(String[].class));
-
-        assertThat(result).contains("system");
+        assertThat(Lists.newArrayList(
+            ClientBuilder.newClient()
+                .target(UriBuilder.fromUri("http://localhost")
+                    .port(APP.getLocalPort())
+                    .path("query")
+                    .build())
+                .request()
+                .get(String[].class)))
+            .contains("system");
     }
 
     @Test

@@ -14,6 +14,7 @@ By default, the bundle includes:
 * Health Check
 * Metrics
 * Support for multiple clusters
+* Injected Cluster and Session instances
 
 ### Configuration
 
@@ -92,6 +93,67 @@ public class YourApp extends Application<YourAppConfig> {
 }
 ```
 
+Or, you may setup automatic injection of `Cluster` or `Session` instances into your resources.
+To do that, just add `CassandraBundle` class into your bootstrap:
+
+```java
+public class YourApp extends Application<YourAppConfig> {
+	
+    @Override
+    public void initialize(final Bootstrap<YourAppConfig> bootstrap) {
+     //...
+     bootstrap.addBundle(new CassandraBundle<YourAppConfig>() {
+        @Override
+        public CassandraFactory getCassandraFactory(YourAppConfig configuration) {
+            return configuration.getCassandraFactory();
+        }
+     });
+     //...
+    }
+}
+```
+
+and then you're able to inject Cassandra stuff into your resources.
+You may either provide a singleton `Cluster` instance:
+
+```java
+@Path("/test")
+public class TestService {
+
+    @Context Cluster cluster;
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    @Path("/users")
+    public List<User> getUsers() {
+        try (final Session session = cluster.connect("auth")) {
+            final ResultSet resultSet = session.execute("SELECT * FROM users");
+            //...
+        }
+    }
+}
+```
+
+or request-related `Session` instance:
+
+```java
+@Path("/test")
+public class TestService {
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    @Path("/users")
+    public List<User> getUsers(@Context Session session) {
+        final ResultSet resultSet = session.execute("SELECT * FROM users");
+        //...
+    }
+}
+```
+
+If you use injected `Session` instance, then session is opened with keyspace that is defined in your 
+application configuration for Cassandra (see `CassandraFactory.getKeyspace()`). 
+If keyspace isn't specified in your configuration, then session will be opened with no defined keyspace, 
+so that you have to explicitly specify it in statements for tables/column families.
 
 ## Configuration Reference
 
