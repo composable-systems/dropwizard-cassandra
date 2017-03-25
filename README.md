@@ -15,6 +15,7 @@ By default, the bundle includes:
 * Metrics
 * Support for multiple clusters
 * Injected Cluster and Session instances
+* CLI migration commands
 
 ### Configuration
 
@@ -154,6 +155,104 @@ If you use injected `Session` instance, then session is opened with keyspace tha
 application configuration for Cassandra (see `CassandraFactory.getKeyspace()`). 
 If keyspace isn't specified in your configuration, then session will be opened with no defined keyspace, 
 so that you have to explicitly specify it in statements for tables/column families.
+
+`CassandraBundle` also brings support of CLI migration commands.
+If you don't specify migration configuration in your application descriptor,
+then default values will be used, as specified here:
+```yaml
+migration:
+  # Migration scripts settings
+  scripts:
+    # The encoding of CQL scripts.
+    encoding: UTF-8
+    # Array of locations of the migration scripts.
+    # Scripts are scanned in the specified folder(s) recursively.
+    locations:
+    - db/migration
+    # CQL scripts timeout in seconds.
+    timeout: 60
+    # Allow out of order migration.
+    allowOutOfOrder: false
+  # Baseline-related settings
+  baseline:
+    # Version to apply for an existing schema when baseline is run.
+    version: "1"
+    # Description to apply to an existing schema when baseline is run.
+    description: "<< Cassandra Baseline >>"
+  # The target version. Migrations with a higher version number will be ignored.
+  # Default value will be a latest available version.
+  targetVersion:
+  # Prefix to be prepended to cassandra_migration_version* table names.
+  tablePrefix: ""
+```
+
+To change defaults, you have to extend your `CassandraBundle` implementation 
+with overridden method `getMigrationFactory(Configuration)`, like that:
+```java
+public class YourApp extends Application<YourAppConfig> {
+    @Override
+    public void initialize(final Bootstrap<YourAppConfig> bootstrap) {
+        //...
+        bootstrap.addBundle(new CassandraBundle<YourAppConfig>() {
+            @Override
+            public CassandraFactory getCassandraFactory(YourAppConfig configuration) {
+                return configuration.getCassandraFactory();
+            }
+            @Override
+            public MigrationFactory getMigrationFactory(YourAppConfig configuration) {
+                return configuration.MigrationFactory();
+            }
+        });
+        //...
+    }
+    //...
+}
+```
+
+and, of course, you have to add one more property into your application configuration class:
+```java
+public class YourAppConfig extends Configuration {
+
+    @Valid
+    @NotNull
+    @JsonProperty("migration")
+    private MigrationFactory migrationFactory;
+
+    public MigrationFactory getMigrationFactory() { 
+        return migrationFactory; 
+    }
+    
+    public void setMigrationFactory(MigrationFactory migrationFactory) {
+        this.migrationFactory = migrationFactory;
+    }
+}
+```
+
+See detailed info about migration functionality here: 
+[builtamont-oss/cassandra-migration](https://github.com/builtamont-oss/cassandra-migration).
+
+### CLI Migration Commands
+
+Migration commands are available from your application JAR bundle:
+
+    $ java -jar your_dropwizard_app.jar cassandra <subcommand> config.yaml
+
+where `<subcommand>` - one of sub-commands enumerated below:
+
+* `info` - Retrieves and prints the complete information about all the migrations.
+* `validate` - Validates the applied migrations against the available ones.
+* `baseline` - Baselines an existing database, excluding all migrations up to and including `baselineVersion`.
+* `migrate` - Starts the database migration. All pending migrations will be applied in order.
+
+`info` command prints migration state like that:
+```text
++-------------+---------+---------+----------------+-----------------------------------+------------+--------------------------+-----------+
+|    Type     |  State  | Version |  Description   |              Script               |  Checksum  |       Installed On       | Exec Time |
++-------------+---------+---------+----------------+-----------------------------------+------------+--------------------------+-----------+
+|         CQL | Success |     1.0 |    Base schema |             V1_0__Base_schema.cql | -781680509 | 2017-03-25T01:00:32.006Z |  PT1.783S |
+| JAVA_DRIVER | Pending |     1.1 | Generate users | db.migration.V1_1__Generate_users |          0 |                          |           |
++-------------+---------+---------+----------------+-----------------------------------+------------+--------------------------+-----------+
+```
 
 ## Configuration Reference
 
