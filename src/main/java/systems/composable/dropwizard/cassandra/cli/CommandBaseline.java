@@ -22,7 +22,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import systems.composable.dropwizard.cassandra.CassandraConfiguration;
 
 /**
- * A CLI command that baselines an existing database, excluding all migrations up to and including baselineVersion.
+ * A CLI command that baselines an existing database, excluding all migrations up to and including baseline.version.
  * It's a subcommand of {@link CommandCassandra}.
  *
  * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
@@ -31,7 +31,7 @@ class CommandBaseline<T extends Configuration> extends AbstractCommand<T> {
 
 	private static final String NAME = "baseline";
 	private static final String DESC = "Baselines an existing database, " +
-			"excluding all migrations up to and including baselineVersion.";
+			"excluding all migrations up to and including baseline.version.";
 
 	CommandBaseline(
 			CassandraConfiguration<T> cassandraConfiguration,

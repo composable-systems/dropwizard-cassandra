@@ -241,7 +241,7 @@ where `<subcommand>` - one of sub-commands enumerated below:
 
 * `info` - Retrieves and prints the complete information about all the migrations.
 * `validate` - Validates the applied migrations against the available ones.
-* `baseline` - Baselines an existing database, excluding all migrations up to and including `baselineVersion`.
+* `baseline` - Baselines an existing database, excluding all migrations up to and including `baseline.version`.
 * `migrate` - Starts the database migration. All pending migrations will be applied in order.
 
 `info` command prints migration state like that:
