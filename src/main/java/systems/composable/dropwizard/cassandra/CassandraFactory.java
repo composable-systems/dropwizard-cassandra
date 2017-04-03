@@ -154,7 +154,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>The time to wait while the cluster closes gracefully; after which, the cluster will be forcefully terminated.</td>
  *     </tr>
  *     <tr>
- *         <td>translatorOptions</td>
+ *         <td>addressTranslator</td>
  *         <td>No default.</td>
  *         <td>The {@link com.datastax.driver.core.policies.AddressTranslator} to use.</td>
  *     </tr>
@@ -208,7 +208,7 @@ public class CassandraFactory {
     private Optional<PoolingOptionsFactory> poolingOptions = Optional.empty();
 
     @Valid
-    private Optional<AddressTranslatorFactory> translatorOptions = Optional.empty();
+    private Optional<AddressTranslatorFactory> addressTranslator = Optional.empty();
 
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = false;
@@ -425,13 +425,13 @@ public class CassandraFactory {
     }
 
     @JsonProperty
-    public Optional<AddressTranslatorFactory> getTranslatorOptions() {
-        return translatorOptions;
+    public Optional<AddressTranslatorFactory> getAddressTranslator() {
+        return addressTranslator;
     }
 
     @JsonProperty
-    public void setTranslatorOptions(Optional<AddressTranslatorFactory> translatorOptions) {
-        this.translatorOptions = translatorOptions;
+    public void setAddressTranslator(Optional<AddressTranslatorFactory> addressTranslator) {
+        this.addressTranslator = addressTranslator;
     }
 
 
@@ -485,7 +485,7 @@ public class CassandraFactory {
         queryOptions.ifPresent(builder::withQueryOptions);
         socketOptions.ifPresent(builder::withSocketOptions);
         poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
-        translatorOptions.map(AddressTranslatorFactory::build).ifPresent(builder::withAddressTranslator);
+        addressTranslator.map(AddressTranslatorFactory::build).ifPresent(builder::withAddressTranslator);
 
         if (!metricsEnabled) {
             builder.withoutMetrics();
