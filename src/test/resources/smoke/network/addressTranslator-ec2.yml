@@ -2,4 +2,4 @@ cassandra:
   clusterName: "smoke-cluster"
   contactPoints: ["localhost"]
   addressTranslator:
-    type: ec2MultiRegionAddressTranslator
+    type: ec2MultiRegion

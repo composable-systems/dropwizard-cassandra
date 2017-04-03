@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A factory for configuring and building {@link com.datastax.driver.core.policies.EC2MultiRegionAddressTranslator} instances.
  */
-@JsonTypeName("ec2MultiRegionAddressTranslator")
+@JsonTypeName("ec2MultiRegion")
 public class EC2MultiRegionAddressTranslatorFactory implements AddressTranslatorFactory {
     @Override
     public AddressTranslator build() {
