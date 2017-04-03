@@ -10,7 +10,7 @@ import io.dropwizard.jackson.Discoverable;
  * <p>To create your own, just:
  * <p>
  * <ol> <li>Create a class which implements {@link systems.composable.dropwizard.cassandra.network.AddressTranslatorFactory}. <li>Annotate it with
- * {@code @JsonTypeName} and give it a unique type name. <li>Add a {@code META-INF/services/systems.composable.dropwizard.cassandra.connect.AddressTranslatorFactory}
+ * {@code @JsonTypeName} and give it a unique type name. <li>Add a {@code META-INF/services/systems.composable.dropwizard.cassandra.network.AddressTranslatorFactory}
  * file with your implementation's full class name to the class path. </ol>
  *
  * @see EC2MultiRegionAddressTranslatorFactory
