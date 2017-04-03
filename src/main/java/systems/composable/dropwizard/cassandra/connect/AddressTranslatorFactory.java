@@ -22,6 +22,5 @@ import io.dropwizard.jackson.Discoverable;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface AddressTranslatorFactory extends Discoverable {
-
   AddressTranslator build();
 }
