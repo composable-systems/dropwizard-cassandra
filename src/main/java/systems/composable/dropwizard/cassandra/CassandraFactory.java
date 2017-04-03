@@ -153,6 +153,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>30 seconds</td>
  *         <td>The time to wait while the cluster closes gracefully; after which, the cluster will be forcefully terminated.</td>
  *     </tr>
+ *     <tr>
+ *         <td>translatorOptions</td>
+ *         <td>No default.</td>
+ *         <td>The {@link com.datastax.driver.core.policies.AddressTranslator} to use.</td>
+ *     </tr>
  * </table>
  */
 public class CassandraFactory {
@@ -419,6 +424,17 @@ public class CassandraFactory {
     public void setHealthCheckTimeout(Duration healthCheckTimeout) {
         this.healthCheckTimeout = healthCheckTimeout;
     }
+
+    @JsonProperty
+    public Optional<AddressTranslatorFactory> getTranslatorOptions() {
+        return translatorOptions;
+    }
+
+    @JsonProperty
+    public void setTranslatorOptions(Optional<AddressTranslatorFactory> translatorOptions) {
+        this.translatorOptions = translatorOptions;
+    }
+
 
     /**
      * Builds a {@link Cluster} instance for the given {@link Environment}.
