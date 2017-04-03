@@ -1,0 +1,2 @@
+systems.composable.dropwizard.cassandra.connect.EC2MultiRegionAddressTranslatorFactory
+systems.composable.dropwizard.cassandra.connect.IdentityTranslatorFactory

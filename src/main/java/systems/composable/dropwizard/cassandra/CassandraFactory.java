@@ -27,6 +27,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import systems.composable.dropwizard.cassandra.auth.AuthProviderFactory;
+import systems.composable.dropwizard.cassandra.connect.AddressTranslatorFactory;
 import systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
@@ -195,11 +196,15 @@ public class CassandraFactory {
     @Valid
     private Optional<SpeculativeExecutionPolicyFactory> speculativeExecutionPolicy = Optional.empty();
 
+
     private Optional<QueryOptions> queryOptions = Optional.empty();
     private Optional<SocketOptions> socketOptions = Optional.empty();
 
     @Valid
     private Optional<PoolingOptionsFactory> poolingOptions = Optional.empty();
+
+    @Valid
+    private Optional<AddressTranslatorFactory> translatorOptions = Optional.empty();
 
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = false;
@@ -451,6 +456,7 @@ public class CassandraFactory {
             builder.addContactPoints(contactPoint);
         }
 
+
         builder.withPort(port);
         builder.withCompression(compression);
 
@@ -465,6 +471,8 @@ public class CassandraFactory {
         queryOptions.ifPresent(builder::withQueryOptions);
         socketOptions.ifPresent(builder::withSocketOptions);
         poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
+        translatorOptions.ifPresent(builder::withAddressTranslator);
+
 
         if (!metricsEnabled) {
             builder.withoutMetrics();
