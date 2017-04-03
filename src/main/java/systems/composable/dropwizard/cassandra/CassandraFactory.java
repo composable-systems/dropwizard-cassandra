@@ -201,7 +201,6 @@ public class CassandraFactory {
     @Valid
     private Optional<SpeculativeExecutionPolicyFactory> speculativeExecutionPolicy = Optional.empty();
 
-
     private Optional<QueryOptions> queryOptions = Optional.empty();
     private Optional<SocketOptions> socketOptions = Optional.empty();
 
