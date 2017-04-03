@@ -471,7 +471,6 @@ public class CassandraFactory {
             builder.addContactPoints(contactPoint);
         }
 
-
         builder.withPort(port);
         builder.withCompression(compression);
 
@@ -487,7 +486,6 @@ public class CassandraFactory {
         socketOptions.ifPresent(builder::withSocketOptions);
         poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
         translatorOptions.map(AddressTranslatorFactory::build).ifPresent(builder::withAddressTranslator);
-
 
         if (!metricsEnabled) {
             builder.withoutMetrics();
