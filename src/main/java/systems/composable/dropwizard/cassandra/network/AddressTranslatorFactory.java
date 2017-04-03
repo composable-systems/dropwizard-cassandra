@@ -14,7 +14,6 @@ import io.dropwizard.jackson.Discoverable;
  * file with your implementation's full class name to the class path. </ol>
  *
  * @see EC2MultiRegionAddressTranslatorFactory
- * @see IdentityTranslatorFactory
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public interface AddressTranslatorFactory extends Discoverable {

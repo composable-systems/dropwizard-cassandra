@@ -1,5 +1,0 @@
-cassandra:
-  clusterName: "smoke-cluster"
-  contactPoints: ["localhost"]
-  addressTranslator:
-    type: identityTranslator
