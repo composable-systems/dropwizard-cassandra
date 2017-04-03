@@ -471,7 +471,7 @@ public class CassandraFactory {
         queryOptions.ifPresent(builder::withQueryOptions);
         socketOptions.ifPresent(builder::withSocketOptions);
         poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
-        translatorOptions.ifPresent(builder::withAddressTranslator);
+        translatorOptions.map(AddressTranslatorFactory::build).ifPresent(builder::withAddressTranslator);
 
 
         if (!metricsEnabled) {
