@@ -7,7 +7,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 public class EC2MultiRegionAddressTranslatorFactoryTest {
 
     @Test
-    public void buildsPolicyWithChildPolicy() throws Exception {
+    public void buildInstanceNotNullTest() throws Exception {
         EC2MultiRegionAddressTranslatorFactory factory = new EC2MultiRegionAddressTranslatorFactory();
 
         assertNotNull(factory.build());
