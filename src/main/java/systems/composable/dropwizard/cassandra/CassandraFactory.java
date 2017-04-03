@@ -434,7 +434,6 @@ public class CassandraFactory {
         this.addressTranslator = addressTranslator;
     }
 
-
     /**
      * Builds a {@link Cluster} instance for the given {@link Environment}.
      * <p/>
