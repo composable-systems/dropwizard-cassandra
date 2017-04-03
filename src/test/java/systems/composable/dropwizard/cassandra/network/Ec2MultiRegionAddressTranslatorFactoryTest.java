@@ -1,4 +1,4 @@
-package systems.composable.dropwizard.cassandra.connect;
+package systems.composable.dropwizard.cassandra.network;
 
 import org.junit.Test;
 

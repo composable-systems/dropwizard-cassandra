@@ -27,7 +27,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import systems.composable.dropwizard.cassandra.auth.AuthProviderFactory;
-import systems.composable.dropwizard.cassandra.connect.AddressTranslatorFactory;
+import systems.composable.dropwizard.cassandra.network.AddressTranslatorFactory;
 import systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
