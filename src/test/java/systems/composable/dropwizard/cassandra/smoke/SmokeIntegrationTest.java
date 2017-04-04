@@ -52,6 +52,7 @@ public class SmokeIntegrationTest {
                 { "smoke/queryOptions.yml" },
                 { "smoke/socketOptions.yml" },
                 { "smoke/auth/authProvider-plainText.yml" },
+                { "smoke/network/addressTranslator-ec2.yml" },
                 { "smoke/loadbalancing/loadBalancingPolicy-dcAwareRoundRobin.yml" },
                 { "smoke/loadbalancing/loadBalancingPolicy-errorAware.yml" },
                 { "smoke/loadbalancing/loadBalancingPolicy-latencyAware.yml" },
