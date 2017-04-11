@@ -24,9 +24,6 @@ import systems.composable.dropwizard.cassandra.CassandraBundle;
 import systems.composable.dropwizard.cassandra.CassandraFactory;
 import systems.composable.dropwizard.cassandra.CassandraInjectedResource;
 
-/**
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
- */
 public class SmokeInjectedApp extends Application<SmokeTestConfiguration> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SmokeInjectedApp.class);

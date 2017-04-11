@@ -26,10 +26,8 @@ import javax.inject.Singleton;
 
 /**
  * Provides logic for registering factories that provide and dispose injected instances for
- * {@link javax.ws.rs.core.Context}-annotated
- * {@link Cluster} and {@link Session} classes.
+ * {@link javax.ws.rs.core.Context}-annotated {@link Cluster} and {@link Session} classes.
  *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  * @see CassandraBundle
  */
 class CassandraProvider {

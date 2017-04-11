@@ -114,8 +114,7 @@ public class YourApp extends Application<YourAppConfig> {
 }
 ```
 
-and then you're able to inject Cassandra stuff into your resources.
-You may either provide a singleton `Cluster` instance:
+and then you're able to inject Cassandra dependencies into your resources. You may either provide a `Cluster` instance:
 
 ```java
 @Path("/test")
@@ -135,7 +134,7 @@ public class TestService {
 }
 ```
 
-or request-related `Session` instance:
+or `Session` instance:
 
 ```java
 @Path("/test")
@@ -151,10 +150,10 @@ public class TestService {
 }
 ```
 
-If you use injected `Session` instance, then session is opened with keyspace that is defined in your 
-application configuration for Cassandra (see `CassandraFactory.getKeyspace()`). 
-If keyspace isn't specified in your configuration, then session will be opened with no defined keyspace, 
-so that you have to explicitly specify it in statements for tables/column families.
+If you use injected `Session` instance, then session is opened with keyspace that is defined in your application
+configuration for Cassandra (see `CassandraFactory.getKeyspace()`). If keyspace isn't specified in your configuration,
+then session will be opened with no defined keyspace, so that you have to explicitly specify it in statements for
+tables/column families.
 
 `CassandraBundle` also brings support of CLI migration commands.
 If you don't specify migration configuration in your application descriptor,
@@ -281,6 +280,8 @@ protocolVersion:
 compression:
 maxSchemaAgreementWait:
 ssl:
+  type:
+addressTranslator:
   type:
 reconnectionPolicy:
   type:

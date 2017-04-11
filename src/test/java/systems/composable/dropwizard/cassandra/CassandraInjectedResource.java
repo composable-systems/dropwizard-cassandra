@@ -27,9 +27,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
- */
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class CassandraInjectedResource {

@@ -115,8 +115,6 @@ import systems.composable.dropwizard.cassandra.cli.MigrationFactory;
  *   public void setMigrationFactory(MigrationFactory migrationFactory) { this.migrationFactory = migrationFactory; }
  * }
  * </pre>
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 public abstract class CassandraBundle<T extends Configuration>
 		implements ConfiguredBundle<T>, CassandraConfiguration<T>, MigrationConfiguration<T> {

@@ -27,6 +27,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import systems.composable.dropwizard.cassandra.auth.AuthProviderFactory;
+import systems.composable.dropwizard.cassandra.network.AddressTranslatorFactory;
 import systems.composable.dropwizard.cassandra.loadbalancing.LoadBalancingPolicyFactory;
 import systems.composable.dropwizard.cassandra.pooling.PoolingOptionsFactory;
 import systems.composable.dropwizard.cassandra.reconnection.ReconnectionPolicyFactory;
@@ -152,6 +153,11 @@ import static com.codahale.metrics.MetricRegistry.name;
  *         <td>30 seconds</td>
  *         <td>The time to wait while the cluster closes gracefully; after which, the cluster will be forcefully terminated.</td>
  *     </tr>
+ *     <tr>
+ *         <td>addressTranslator</td>
+ *         <td>No default.</td>
+ *         <td>The {@link com.datastax.driver.core.policies.AddressTranslator} to use.</td>
+ *     </tr>
  * </table>
  */
 @SuppressWarnings({"WeakerAccess", "OptionalUsedAsFieldOrParameterType"})
@@ -201,6 +207,9 @@ public class CassandraFactory {
 
     @Valid
     private Optional<PoolingOptionsFactory> poolingOptions = Optional.empty();
+
+    @Valid
+    private Optional<AddressTranslatorFactory> addressTranslator = Optional.empty();
 
     private boolean metricsEnabled = true;
     private boolean jmxEnabled = false;
@@ -416,6 +425,16 @@ public class CassandraFactory {
         this.healthCheckTimeout = healthCheckTimeout;
     }
 
+    @JsonProperty
+    public Optional<AddressTranslatorFactory> getAddressTranslator() {
+        return addressTranslator;
+    }
+
+    @JsonProperty
+    public void setAddressTranslator(Optional<AddressTranslatorFactory> addressTranslator) {
+        this.addressTranslator = addressTranslator;
+    }
+
     /**
      * Builds a {@link Cluster} instance for the given {@link Environment}.
      * <p/>
@@ -460,6 +479,7 @@ public class CassandraFactory {
         queryOptions.ifPresent(builder::withQueryOptions);
         socketOptions.ifPresent(builder::withSocketOptions);
         poolingOptions.map(PoolingOptionsFactory::build).ifPresent(builder::withPoolingOptions);
+        addressTranslator.map(AddressTranslatorFactory::build).ifPresent(builder::withAddressTranslator);
 
         if (!metricsEnabled) {
             builder.withoutMetrics();

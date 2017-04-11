@@ -1,5 +1,14 @@
 # Changes
 
+## 4.2.0 (in progress)
+
+* Support for CLI-based migration
+
+## 4.1.0
+
+* `Cluster` and `Session` instances can now be injected (thanks to [domax](https://github.com/domax) for [PR 23](https://github.com/composable-systems/dropwizard-cassandra/pull/23))
+* `AddressTranslator` is now configurable (thanks to [MALPI](https://github.com/MALPI) for [PR 26](https://github.com/composable-systems/dropwizard-cassandra/pull/26))
+
 ## 4.0.0
 
 * Upgraded to Dropwizard `1.0.0`. This includes an upgrade to Java 8, hence the major version bump.

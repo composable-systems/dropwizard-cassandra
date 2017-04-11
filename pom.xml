@@ -3,7 +3,7 @@
 
     <groupId>systems.composable</groupId>
     <artifactId>dropwizard-cassandra</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>dropwizard-cassandra</name>
@@ -20,7 +20,7 @@
             <id>sgunter</id>
             <name>Stuart Gunter</name>
             <email>stuart.gunter@composable.co.uk</email>
-            <url>http://www.stuartgunter.org</url>
+            <url>https://www.composable.co.uk</url>
         </developer>
     </developers>
 
