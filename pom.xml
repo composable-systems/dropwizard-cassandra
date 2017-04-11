@@ -3,7 +3,7 @@
 
     <groupId>systems.composable</groupId>
     <artifactId>dropwizard-cassandra</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.1.0</version>
     <packaging>jar</packaging>
 
     <name>dropwizard-cassandra</name>
@@ -44,7 +44,7 @@
         <url>https://github.com/composable-systems/dropwizard-cassandra</url>
         <connection>scm:git:git@github.com:composable-systems/dropwizard-cassandra.git</connection>
         <developerConnection>scm:git:git@github.com:composable-systems/dropwizard-cassandra.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v4.1.0</tag>
     </scm>
 
     <issueManagement>
