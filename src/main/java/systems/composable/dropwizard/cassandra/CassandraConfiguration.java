@@ -19,8 +19,6 @@ import io.dropwizard.Configuration;
 
 /**
  * Provides access to Cassandra configuration and factory based on it.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 public interface CassandraConfiguration<T extends Configuration> {
 	CassandraFactory getCassandraFactory(T configuration);

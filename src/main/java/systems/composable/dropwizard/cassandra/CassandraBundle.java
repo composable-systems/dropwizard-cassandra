@@ -79,7 +79,6 @@ import io.dropwizard.setup.Environment;
  * If keyspace isn't specified in your configuration, then session will be opened with no
  * defined keyspace, so that you have to explicitly specify it in statements for tables/column&nbsp;families.
  *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 public abstract class CassandraBundle<T extends Configuration>
 		implements ConfiguredBundle<T>, CassandraConfiguration<T> {
