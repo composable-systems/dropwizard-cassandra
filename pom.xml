@@ -100,6 +100,12 @@
             <artifactId>cassandra-driver-core</artifactId>
             <version>${cassandra-driver.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.builtamont</groupId>
+            <artifactId>cassandra-migration</artifactId>
+            <version>0.10.1</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>

@@ -1,0 +1,16 @@
+cassandra:
+  clusterName: "minimal-cluster"
+  contactPoints: ["localhost"]
+  keyspace: migration
+
+migration:
+  scripts:
+    locations:
+    - migration/cql
+    - systems/composable/dropwizard/cassandra/cli/migration
+  baseline:
+    version: 0.1
+    description: "Empty schema"
+
+logging:
+  level: INFO

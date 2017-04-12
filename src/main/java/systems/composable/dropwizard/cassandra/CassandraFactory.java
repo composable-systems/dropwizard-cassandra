@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Composable Systems Limited
+ * Copyright 2017 Composable Systems Limited
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -160,6 +160,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  *     </tr>
  * </table>
  */
+@SuppressWarnings({"WeakerAccess", "OptionalUsedAsFieldOrParameterType"})
 public class CassandraFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(CassandraFactory.class);
@@ -454,16 +455,10 @@ public class CassandraFactory {
 
     /**
      * Builds a {@link Cluster} instance.
-     * <p/>
-     * The {@link MetricRegistry} will be used to register client metrics, and the {@link
-     * HealthCheckRegistry} to register client health-checks.
      *
-     * @param metrics the registry to register client metrics.
-     * @param healthChecks the registry to register client health-checks.
      * @return a fully configured {@link Cluster}.
      */
-    public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
-
+    public Cluster build() {
         final Cluster.Builder builder = Cluster.builder();
 
         for (String contactPoint : contactPoints) {
@@ -498,7 +493,21 @@ public class CassandraFactory {
             builder.withClusterName(clusterName);
         }
 
-        Cluster cluster = builder.build();
+        return builder.build();
+    }
+
+    /**
+     * Builds a {@link Cluster} instance.
+     * <p/>
+     * The {@link MetricRegistry} will be used to register client metrics, and the {@link
+     * HealthCheckRegistry} to register client health-checks.
+     *
+     * @param metrics the registry to register client metrics.
+     * @param healthChecks the registry to register client health-checks.
+     * @return a fully configured {@link Cluster}.
+     */
+    public Cluster build(MetricRegistry metrics, HealthCheckRegistry healthChecks) {
+        final Cluster cluster = build();
 
         LOG.debug("Registering {} Cassandra health check", cluster.getClusterName());
         CassandraHealthCheck healthCheck = new CassandraHealthCheck(cluster, validationQuery, healthCheckTimeout);
