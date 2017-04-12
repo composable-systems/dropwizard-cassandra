@@ -29,8 +29,6 @@ import systems.composable.dropwizard.cassandra.CassandraFactory;
 
 /**
  * Base abstract class for all CLI migration commands.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 abstract class AbstractCommand<T extends Configuration> extends ConfiguredCommand<T> {
 

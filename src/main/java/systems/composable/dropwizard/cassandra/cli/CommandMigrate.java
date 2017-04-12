@@ -26,8 +26,6 @@ import systems.composable.dropwizard.cassandra.CassandraConfiguration;
 /**
  * A CLI command that starts the database migration. All pending migrations will be applied in order.
  * It's a subcommand of {@link CommandCassandra}.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 class CommandMigrate<T extends Configuration> extends AbstractCommand<T> {
 

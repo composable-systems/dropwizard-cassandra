@@ -24,8 +24,6 @@ import systems.composable.dropwizard.cassandra.CassandraConfiguration;
 /**
  * A CLI command that validates the applied migrations against the available ones.
  * It's a subcommand of {@link CommandCassandra}.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 class CommandValidate<T extends Configuration> extends AbstractCommand<T> {
 

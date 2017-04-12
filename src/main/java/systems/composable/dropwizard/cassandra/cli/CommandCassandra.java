@@ -30,8 +30,6 @@ import java.util.TreeMap;
 /**
  * A root CLI cassandra migration command. Organizes subcommands
  * {@link CommandInfo}, {@link CommandValidate}, {@link CommandBaseline} and {@link CommandMigrate}.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 public class CommandCassandra<T extends Configuration> extends AbstractCommand<T> {
 

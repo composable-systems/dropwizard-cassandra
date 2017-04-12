@@ -33,8 +33,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 /**
  * A CLI command that retrieves and prints the complete information about all the migrations.
  * It's a subcommand of {@link CommandCassandra}.
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 class CommandInfo<T extends Configuration> extends AbstractCommand<T> {
 

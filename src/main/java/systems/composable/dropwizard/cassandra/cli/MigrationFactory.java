@@ -93,8 +93,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  *   <td>Prefix to be prepended to {@code cassandra_migration_version*} table names.</td>
  * </tr>
  * </table>
- *
- * @author <a href="mailto:max@dominichenko.com">Max Dominichenko</a>
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class MigrationFactory {
